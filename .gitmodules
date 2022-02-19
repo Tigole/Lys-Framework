@@ -1,3 +1,0 @@
-[submodule "submodules/ImGui/imgui"]
-	path = submodules/ImGui/imgui
-	url = https://github.com/Tigole/imgui.git
