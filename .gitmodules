@@ -1,0 +1,9 @@
+[submodule "submodules/imgui"]
+	path = submodules/imgui
+	url = https://github.com/Tigole/imgui.git
+[submodule "submodules/TinyXML_Boosted"]
+	path = submodules/TinyXML_Boosted
+	url = https://github.com/Tigole/TinyXML_Boosted.git
+[submodule "submodules/imgui-sfml"]
+	path = submodules/imgui-sfml
+	url = https://github.com/eliasdaler/imgui-sfml.git
