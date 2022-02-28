@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Lys" />
+		<Option pch_mode="2" />
+		<Option compiler="msys2" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../../build/Debug/Lys" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="msys2" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="user32" />
+					<Add directory="../../../build/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../../../build/Release/Lys" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="msys2" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="user32" />
+					<Add directory="../../../build/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DLYS_USE_IMGUI" />
+			<Add directory="../../../include" />
+			<Add directory="../../../submodules/imgui-sfml" />
+			<Add directory="../../../submodules/imgui" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
+		</Compiler>
+		<Linker>
+			<Add library="Lys-imgui" />
+			<Add library="sfml-system" />
+			<Add library="sfml-window" />
+			<Add library="sfml-graphics" />
+			<Add library="sfml-audio" />
+			<Add library="sfml-network" />
+			<Add library="opengl32" />
+			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
+		</Linker>
+		<Unit filename="../../../include/Lys/Application/Application.hpp" />
+		<Unit filename="../../../include/Lys/Application/Event.hpp" />
+		<Unit filename="../../../include/Lys/Application/Lys_Translation.hpp" />
+		<Unit filename="../../../include/Lys/Application/Map/Map.hpp" />
+		<Unit filename="../../../include/Lys/Application/Map/Tileset.hpp" />
+		<Unit filename="../../../include/Lys/Application/Window.hpp" />
+		<Unit filename="../../../include/Lys/Core/Color.hpp" />
+		<Unit filename="../../../include/Lys/Core/Core.hpp" />
+		<Unit filename="../../../include/Lys/Core/FormatHelpers.hpp" />
+		<Unit filename="../../../include/Lys/Core/SFML_Conversion.hpp" />
+		<Unit filename="../../../include/Lys/Core/Singleton.hpp" />
+		<Unit filename="../../../include/Lys/ECSModule/Entity.hpp" />
+		<Unit filename="../../../include/Lys/ECSModule/System.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Button.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Layout.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Separator.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Text.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/Event/IEvent.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Element.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Event.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Interface.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_InterfaceLoader.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Manager.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Manager_Loader.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Styles.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/DrawCommandSettings.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/EmbeddedFonts/JackInput.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/Renderer.hpp" />
+		<Unit filename="../../../include/Lys/Lys.hpp" />
+		<Unit filename="../../../include/Lys/LysApplication.hpp" />
+		<Unit filename="../../../include/Lys/LysCore.hpp" />
+		<Unit filename="../../../include/Lys/LysECS.hpp" />
+		<Unit filename="../../../include/Lys/LysGUI.hpp" />
+		<Unit filename="../../../include/Lys/LysGraphics.hpp" />
+		<Unit filename="../../../include/Lys/LysMath.hpp" />
+		<Unit filename="../../../include/Lys/MathModule/CollisionHandling.hpp" />
+		<Unit filename="../../../include/Lys/MathModule/MathCore.hpp" />
+		<Unit filename="../../../include/Lys/MathModule/Rand.hpp" />
+		<Unit filename="../../../include/Lys/MathModule/Rect.hpp" />
+		<Unit filename="../../../include/Lys/MathModule/Vector2.hpp" />
+		<Unit filename="../../../include/Lys/MessageModule/MessageManager.hpp" />
+		<Unit filename="../../../include/Lys/StateModule/State.hpp" />
+		<Unit filename="../../../include/Lys/StateModule/StateLys.hpp" />
+		<Unit filename="../../../include/Lys/StateModule/StateManager.hpp" />
+		<Unit filename="../../../include/Lys/WorkingModule/WorkingTask.hpp" />
+		<Unit filename="../../../include/Lys/WorkingModule/WorkingThread.hpp" />
+		<Unit filename="../../../source/Lys/Application/Application.cpp" />
+		<Unit filename="../../../source/Lys/Application/Map/Map.cpp" />
+		<Unit filename="../../../source/Lys/Application/Window.cpp" />
+		<Unit filename="../../../source/Lys/ECSModule/Entity.cpp" />
+		<Unit filename="../../../source/Lys/ECSModule/System.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Button.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Layout.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Separator.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Text.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/GUI_Element.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/GUI_Interface.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager_Loader.cpp" />
+		<Unit filename="../../../source/Lys/GraphicModule/Renderer.cpp" />
+		<Unit filename="../../../source/Lys/MathModule/CollisionHandling.cpp" />
+		<Unit filename="../../../source/Lys/StateModule/StateLys.cpp" />
+		<Unit filename="../../../source/Lys/StateModule/StateManager.cpp" />
+		<Unit filename="../../../source/Lys/WorkingModule/WorkingTask.cpp" />
+		<Unit filename="../../../source/Lys/WorkingModule/WorkingThread.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,12 +1,12 @@
 #include "GUI_Element.hpp"
 
-#include "MathModule/CollisionHandling.hpp"
-#include "Core/SFML_Conversion.hpp"
+#include "Lys/MathModule/CollisionHandling.hpp"
+#include "Lys/Core/SFML_Conversion.hpp"
 
 #include <iostream>
 
 
-#include "Core/FormatHelpers.hpp"
+#include "Lys/Core/FormatHelpers.hpp"
 
 namespace lys
 {

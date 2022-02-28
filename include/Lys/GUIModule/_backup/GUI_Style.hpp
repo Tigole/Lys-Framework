@@ -1,8 +1,8 @@
 #ifndef _LYS_GUI_STYLE_HPP
 #define _LYS_GUI_STYLE_HPP 1
 
-#include "MathModule/Vector2.hpp"
-#include "Core/Color.hpp"
+#include "Lys/MathModule/Vector2.hpp"
+#include "Lys/Core/Color.hpp"
 
 namespace lys
 {

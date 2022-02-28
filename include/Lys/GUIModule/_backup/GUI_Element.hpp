@@ -2,9 +2,9 @@
 #define _LYS_GUI_ELEMENT_HPP 1
 
 #include "GUI_Style.hpp"
-#include "MathModule/Rect.hpp"
-#include "GraphicModule/Renderer.hpp"
-#include "GraphicModule/DrawCommandSettings.hpp"
+#include "Lys/MathModule/Rect.hpp"
+#include "Lys/GraphicModule/Renderer.hpp"
+#include "Lys/GraphicModule/DrawCommandSettings.hpp"
 
 #include <map>
 

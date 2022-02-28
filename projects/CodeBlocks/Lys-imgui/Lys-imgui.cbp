@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Lys-imgui" />
+		<Option pch_mode="2" />
+		<Option compiler="msys2" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../../build/Debug/Lys-imgui" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="msys2" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="user32" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../../../build/Release/Lys-imgui" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="msys2" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="user32" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DLYS_USE_IMGUI" />
+			<Add directory="../../../include" />
+			<Add directory="../../../submodules/imgui-sfml" />
+			<Add directory="../../../submodules/imgui" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
+		</Compiler>
+		<Linker>
+			<Add library="sfml-system" />
+			<Add library="sfml-window" />
+			<Add library="sfml-graphics" />
+			<Add library="sfml-audio" />
+			<Add library="sfml-network" />
+			<Add library="opengl32" />
+			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
+		</Linker>
+		<Unit filename="../../../submodules/imgui-sfml/imconfig-SFML.h" />
+		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML.cpp" />
+		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML.h" />
+		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML_export.h" />
+		<Unit filename="../../../submodules/imgui/imconfig.h" />
+		<Unit filename="../../../submodules/imgui/imgui.cpp" />
+		<Unit filename="../../../submodules/imgui/imgui.h" />
+		<Unit filename="../../../submodules/imgui/imgui_demo.cpp" />
+		<Unit filename="../../../submodules/imgui/imgui_draw.cpp" />
+		<Unit filename="../../../submodules/imgui/imgui_internal.h" />
+		<Unit filename="../../../submodules/imgui/imgui_tables.cpp" />
+		<Unit filename="../../../submodules/imgui/imgui_widgets.cpp" />
+		<Unit filename="../../../submodules/imgui/imstb_rectpack.h" />
+		<Unit filename="../../../submodules/imgui/imstb_textedit.h" />
+		<Unit filename="../../../submodules/imgui/imstb_truetype.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

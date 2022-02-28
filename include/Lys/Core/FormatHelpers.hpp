@@ -1,8 +1,8 @@
 #ifndef _LYS_FORMAT_HELPERS_HPP
 #define _LYS_FORMAT_HELPERS_HPP 1
 
-#include "MathModule/Vector2.hpp"
-#include "MathModule/Rect.hpp"
+#include "Lys/MathModule/Vector2.hpp"
+#include "Lys/MathModule/Rect.hpp"
 
 #include <ostream>
 
