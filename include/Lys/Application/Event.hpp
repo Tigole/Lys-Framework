@@ -6,6 +6,23 @@
 namespace lys
 {
 
+struct MouseEvent
+{
+    //
+};
+
+struct KeyEvent
+{
+    bool m_Pressed;
+    sf::Event::KeyEvent m_Key;
+};
+
+struct JoystickButtonEvent
+{
+    bool m_Pressed;
+    sf::Event::JoystickButtonEvent m_Button;
+};
+
 struct Event
 {
     sf::Event m_SFML;

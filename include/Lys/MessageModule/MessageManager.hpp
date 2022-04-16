@@ -57,17 +57,8 @@ private:
 
 class MessageManager
 {
-private:
-    MessageManager() :  m_Reciever(), m_Mutex(), m_Recursive_Handling_Count(0) {}
 public:
-
-    static MessageManager& smt_Get(void)
-    {
-        static MessageManager ls_Message_Manager;
-
-        return ls_Message_Manager;
-    }
-
+    MessageManager() :  m_Reciever(), m_Mutex(), m_Recursive_Handling_Count(0) {}
     ~MessageManager() {}
 
     template<class MsgType, class C>

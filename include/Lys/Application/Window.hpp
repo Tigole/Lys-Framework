@@ -34,6 +34,10 @@ public:
 
 private:
 
+    Window();
+
+    friend Singleton<Window>;
+
     sf::RenderWindow m_Wnd;
 };
 

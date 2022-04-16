@@ -15,11 +15,10 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
-					<Add option="-DBUILD_DLL" />
 					<Add option="-g" />
+					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
-					<Add library="user32" />
 					<Add directory="../../../build/Debug" />
 				</Linker>
 			</Target>
@@ -31,13 +30,12 @@
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
+					<Add option="-O2" />
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
-					<Add option="-O2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="user32" />
 					<Add directory="../../../build/Release" />
 				</Linker>
 			</Target>
@@ -51,12 +49,14 @@
 		</Compiler>
 		<Linker>
 			<Add library="Lys-imgui" />
+			<Add library="Lys-log" />
 			<Add library="sfml-system" />
 			<Add library="sfml-window" />
 			<Add library="sfml-graphics" />
 			<Add library="sfml-audio" />
 			<Add library="sfml-network" />
 			<Add library="opengl32" />
+			<Add library="user32" />
 			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
@@ -100,6 +100,8 @@
 		<Unit filename="../../../include/Lys/MathModule/Rect.hpp" />
 		<Unit filename="../../../include/Lys/MathModule/Vector2.hpp" />
 		<Unit filename="../../../include/Lys/MessageModule/MessageManager.hpp" />
+		<Unit filename="../../../include/Lys/StateModule/Layer.hpp" />
+		<Unit filename="../../../include/Lys/StateModule/LayerLys.hpp" />
 		<Unit filename="../../../include/Lys/StateModule/State.hpp" />
 		<Unit filename="../../../include/Lys/StateModule/StateLys.hpp" />
 		<Unit filename="../../../include/Lys/StateModule/StateManager.hpp" />
@@ -120,6 +122,9 @@
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager_Loader.cpp" />
 		<Unit filename="../../../source/Lys/GraphicModule/Renderer.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/CollisionHandling.cpp" />
+		<Unit filename="../../../source/Lys/StateModule/Layer.cpp" />
+		<Unit filename="../../../source/Lys/StateModule/LayerLys.cpp" />
+		<Unit filename="../../../source/Lys/StateModule/State.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/StateLys.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/StateManager.cpp" />
 		<Unit filename="../../../source/Lys/WorkingModule/WorkingTask.cpp" />

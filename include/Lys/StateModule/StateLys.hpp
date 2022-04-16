@@ -2,6 +2,7 @@
 #define _LYS_STATE_LYS_HPP 1
 
 #include "State.hpp"
+#include "LayerLys.hpp"
 
 #include <cstddef>
 
@@ -13,12 +14,17 @@ class State_Lys : public State
 public:
     State_Lys();
 
-    void mt_OnEvent(const Event& event) override;
-    void mt_OnUpdate(float elapsed_time) override;
+    bool mt_OnCreate(void) override;
+    bool mt_OnDestroy(void) override;
 
-    std::size_t m_Next_State;
+    bool mt_OnEntry(void) override;
+    bool mt_OnExit(void) override;
 
-    bool m_Condition_Change_State;
+    void mt_Set_Next_State(std::size_t next_state);
+
+private:
+
+    LayerLys m_Layer;
 };
 
 

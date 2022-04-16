@@ -7,6 +7,17 @@
 namespace lys
 {
 
+namespace color
+{
+struct RGBA
+{
+    RGBA(float red, float green, float blue, float alpha) : r(red), g(green), b(blue), a(alpha){}
+    float r;
+    float g;
+    float b;
+    float a;
+};
+}
 
 
 struct Color
@@ -18,7 +29,7 @@ struct Color
     Color();
     union
     {
-        float rgba[4];
+        float ar_rgba[4];
         struct
         {
             float r;

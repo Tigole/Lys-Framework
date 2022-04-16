@@ -3,6 +3,7 @@
 
 #include "Lys/StateModule/StateManager.hpp"
 #include "Lys/GraphicModule/Renderer.hpp"
+#include "Lys/MessageModule/MessageManager.hpp"
 #include "Window.hpp"
 
 namespace lys
@@ -46,6 +47,7 @@ protected:
     WindowSettings m_Window_Settings;
 
     StateManager m_State_Manager;
+    MessageManager m_Message_Manager;
 
 private:
 

@@ -52,10 +52,10 @@ int Application::mt_Run(void)
 
     Window::smt_Get().mt_Create(WindowSettings(m_Window_Settings.m_Title, m_Window_Settings.m_VideoMode, m_Window_Settings.m_Full_Screen));
 
-    l_Startup_State->m_Next_State = mt_Initialize();
+    l_Startup_State->mt_Set_Next_State(mt_Initialize());
     m_State_Manager.mt_Change_State(-1);
 
-    MessageManager::smt_Get().mt_Add_Receiver(&Application::mt_On_Change_State, this, true);
+    m_Message_Manager.mt_Add_Receiver(&Application::mt_On_Change_State, this, true);
 
     l_Elapsed_Time = 0.0f;
     l_Clk.restart();

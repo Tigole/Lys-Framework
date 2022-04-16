@@ -60,10 +60,6 @@ inline sf::Uint32 sf_To(gui::TextStyle style)
     return l_Ret;
 }
 
-
-
 }
-
-
 
 #endif // _LYS_SFML_CONVERSION_HPP

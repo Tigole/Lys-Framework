@@ -11,6 +11,7 @@
 #include <memory>
 #include <cstring>
 #include <unordered_map>
+#include <mutex>
 
 
 #define LYS_LOG_TRACE(token, ...)       lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Trace,   __VA_ARGS__)
@@ -40,6 +41,7 @@ enum class LogLevel
 
 struct LogData
 {
+    LogData() : m_Level(LogLevel::Trace), m_Header(), m_Message(){}
     LogLevel m_Level;
     char m_Header[64];
     std::string m_Message;
@@ -58,6 +60,7 @@ public:
 private:
     std::vector<std::unique_ptr<Sink>> m_Sinks;
     LogLevel m_Level;
+	std::mutex m_Mutex;
 };
 
 class LoggerPool : public Singleton<LoggerPool>
@@ -66,7 +69,7 @@ public:
     template<typename... Args>
     void mt_Log(const char* token, const char* file, int line_number, LogLevel level, const char* fmt, Args... args)
     {
-        char l_Msg[128];
+        char l_Msg[1024];
 
         snprintf(l_Msg, sizeof(l_Msg), fmt, args...);
 
@@ -79,15 +82,23 @@ private:
     void mt_Log_Formated(const char* token, const char* file, int line_number, LogLevel level, const char* msg);
     void mt_Log(const char* token, const LogData& data);
 
-    std::unordered_map<std::string, Logger> m_Loggers;
+    std::unordered_map<std::string, std::unique_ptr<Logger>> m_Loggers;
+    std::vector<int> m_Threads;
+    int mt_Get_Thread_Id(void);
+
+private:
+    LoggerPool();
+
+    friend Singleton<LoggerPool>;
 };
 
-#define LYS_LOG_CORE_TRACE(...)        LYS_LOG_TRACE("CORE", __VA_ARGS__)
-#define LYS_LOG_CORE_DEBUG(...)        LYS_LOG_DEBUG("CORE", __VA_ARGS__)
-#define LYS_LOG_CORE_INFORMATION(...)  LYS_LOG_INFORMATION("CORE", __VA_ARGS__)
-#define LYS_LOG_CORE_WARNING(...)      LYS_LOG_WARNING("CORE", __VA_ARGS__)
-#define LYS_LOG_CORE_ERROR(...)        LYS_LOG_ERROR("CORE", __VA_ARGS__)
-#define LYS_LOG_CORE_FATAL(...)        LYS_LOG_FATAL("CORE", __VA_ARGS__)
+#define LYS_LOG_TOKEN "LYS"
+#define LYS_LOG_CORE_TRACE(...)        LYS_LOG_TRACE(LYS_LOG_TOKEN, __VA_ARGS__)
+#define LYS_LOG_CORE_DEBUG(...)        LYS_LOG_DEBUG(LYS_LOG_TOKEN, __VA_ARGS__)
+#define LYS_LOG_CORE_INFORMATION(...)  LYS_LOG_INFORMATION(LYS_LOG_TOKEN, __VA_ARGS__)
+#define LYS_LOG_CORE_WARNING(...)      LYS_LOG_WARNING(LYS_LOG_TOKEN, __VA_ARGS__)
+#define LYS_LOG_CORE_ERROR(...)        LYS_LOG_ERROR(LYS_LOG_TOKEN, __VA_ARGS__)
+#define LYS_LOG_CORE_FATAL(...)        LYS_LOG_FATAL(LYS_LOG_TOKEN, __VA_ARGS__)
 
 }
 

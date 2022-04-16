@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include <array>
 #include <iostream>
+#include <algorithm>
 #include <windows.h>
 
 namespace lys
@@ -25,11 +26,13 @@ static constexpr const std::array<const char*, static_cast<std::size_t>(LogLevel
 
 Logger::Logger() :
     m_Sinks(),
-    m_Level(LogLevel::Trace)
+    m_Level(LogLevel::Trace),
+    m_Mutex()
 {}
 
 void Logger::mt_Log(const LogData& data)
 {
+	m_Mutex.lock();
     if (data.m_Level >= m_Level)
     {
         for (std::size_t ii = 0; ii < m_Sinks.size(); ii++)
@@ -37,6 +40,7 @@ void Logger::mt_Log(const LogData& data)
             m_Sinks[ii]->mt_Log(data);
         }
     }
+	m_Mutex.unlock();
 }
 
 Logger& Logger::mt_Add_Sink(Sink* s)
@@ -46,10 +50,18 @@ Logger& Logger::mt_Add_Sink(Sink* s)
     return *this;
 }
 
+void Logger::mt_Set_Level(LogLevel level)
+{
+    m_Level = level;
+}
 
 
 
 
+LoggerPool::LoggerPool() :
+    m_Loggers(),
+    m_Threads()
+{}
 
 Logger& LoggerPool::mt_Get_Logger(const char* token)
 {
@@ -57,10 +69,10 @@ Logger& LoggerPool::mt_Get_Logger(const char* token)
 
     if (l_it == m_Loggers.end())
     {
-        l_it = m_Loggers.emplace(token, Logger()).first;
+        l_it = m_Loggers.emplace(token, new Logger).first;
     }
 
-    return l_it->second;
+    return *l_it->second;
 }
 
 void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_number, LogLevel level, const char* msg)
@@ -89,17 +101,16 @@ void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_n
         }
     }
 
+    ///"[date - level - thread - file:line]:"
     sprintf_s(l_Data.m_Header,
               sizeof(l_Data.m_Header),
-              "[%s:%03d - %s - %d - %s:%d] ",
+              "[%s:%03d - %s - %02d - %s:%d] ",
               l_Time,
               l_Time_Val.tv_usec / 1000,
               sg_Levels[static_cast<std::size_t>(level)],
-              static_cast<int>(GetCurrentThreadId()),
+              mt_Get_Thread_Id(),
               l_Short_File_Name,
               line_number);
-
-    ///"[date - level - thread - file:line]:"
 
     l_Data.m_Level = level;
     l_Data.m_Message = msg;
@@ -109,6 +120,19 @@ void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_n
 void LoggerPool::mt_Log(const char* token, const LogData& data)
 {
     mt_Get_Logger(token).mt_Log(data);
+}
+
+int LoggerPool::mt_Get_Thread_Id(void)
+{
+    auto it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(GetCurrentThreadId()));
+
+    if (it == m_Threads.end())
+    {
+        m_Threads.push_back(GetCurrentThreadId());
+        it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(GetCurrentThreadId()));
+    }
+
+    return *it;
 }
 
 }

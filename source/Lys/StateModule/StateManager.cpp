@@ -15,6 +15,7 @@ StateManager::StateManager() :
 
 void StateManager::mt_Add_State(std::size_t state_id, State* s)
 {
+    s->m_State_Manager = this;
     m_States.emplace(state_id, s);
 }
 
