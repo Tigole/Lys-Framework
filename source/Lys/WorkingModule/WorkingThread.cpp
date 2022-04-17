@@ -8,8 +8,9 @@ namespace lys
 
 
 
-WorkingThread::WorkingThread()
- :  m_Mutex(),
+WorkingThread::WorkingThread() :
+    Singleton<WorkingThread>("WorkingThread"),
+    m_Mutex(),
     m_Thread(&WorkingThread::mt_Thread, this),
     m_Run(true),
     m_Condition_Mutex(),

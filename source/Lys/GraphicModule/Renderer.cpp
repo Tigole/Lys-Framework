@@ -6,6 +6,7 @@
 
 #include "Lys/GraphicModule/EmbeddedFonts/JackInput.hpp"
 
+#include "Lys/Core/Log.hpp"
 
 #if LYS_USE_IMGUI
 #include "imgui-SFML.h"
@@ -21,6 +22,12 @@ void Renderer::smt_Create(Window* wnd)
     sm_Renderer.reset(new Renderer(wnd));
 }
 
+void Renderer::smt_Destroy(void)
+{
+    LYS_LOG_CORE_DEBUG("Destroying renderer");
+    sm_Renderer.reset(nullptr);
+}
+
 Renderer& Renderer::smt_Get(void)
 {
     return *sm_Renderer;
@@ -33,6 +40,9 @@ Renderer::Renderer(Window* wnd) :
 {
     m_Default_Font.loadFromMemory(font::jack_input, font::jack_input_length);
 }
+
+Renderer::~Renderer()
+{}
 
 void Renderer::mt_Begin_Scene(float elapsed_time)
 {

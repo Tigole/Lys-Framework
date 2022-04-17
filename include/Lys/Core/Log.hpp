@@ -3,8 +3,6 @@
 
 #include "Log/Log_Sink.hpp"
 
-#include "Lys/Core/Singleton.hpp"
-
 #include <string>
 #include <sys/time.h>
 #include <vector>
@@ -63,9 +61,16 @@ private:
 	std::mutex m_Mutex;
 };
 
-class LoggerPool : public Singleton<LoggerPool>
+class LoggerPool
 {
 public:
+    static LoggerPool& smt_Get(void)
+    {
+        static LoggerPool ls_Singleton;
+
+        return ls_Singleton;
+    }
+
     template<typename... Args>
     void mt_Log(const char* token, const char* file, int line_number, LogLevel level, const char* fmt, Args... args)
     {
@@ -88,8 +93,6 @@ private:
 
 private:
     LoggerPool();
-
-    friend Singleton<LoggerPool>;
 };
 
 #define LYS_LOG_TOKEN "LYS"

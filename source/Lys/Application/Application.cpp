@@ -81,7 +81,7 @@ int Application::mt_Run(void)
         l_Elapsed_Time = l_Clk.restart().asSeconds();
     }
 
-    //Window::smt_Get().
+    Renderer::smt_Destroy();
 
     return l_Return_Code;
 }

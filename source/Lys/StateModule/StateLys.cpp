@@ -1,4 +1,5 @@
 #include "Lys/StateModule/StateLys.hpp"
+#include "Lys/Core/Log.hpp"
 
 namespace lys
 {
@@ -9,6 +10,8 @@ State_Lys::State_Lys() : m_Layer()
 
 bool State_Lys::mt_OnEntry(void)
 {
+    LYS_LOG_CORE_DEBUG("Lys State");
+
     mt_Push_Layer(&m_Layer);
 
     return true;

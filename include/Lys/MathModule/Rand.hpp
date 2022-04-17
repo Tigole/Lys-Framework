@@ -39,7 +39,13 @@ public:
 
     float mt_Generate_Float_Range(float min, float max)
     {
-        return mt_Generate_Normalized_Float() * (min - max) + min;
+        return mt_Generate_Normalized_Float() * (max - min) + min;
+    }
+
+    void mt_Set_Seed(uint32_t seed)
+    {
+        m_Seed = seed;
+        m_Lehmer_State = seed;
     }
 
 private:

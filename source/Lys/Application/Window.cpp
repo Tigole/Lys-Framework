@@ -19,7 +19,9 @@ WindowSettings::WindowSettings(const char* title, const sf::VideoMode& vm, bool 
 {}
 
 
-Window::Window() : m_Wnd()
+Window::Window() :
+    Singleton<Window>("Window"),
+    m_Wnd()
 {}
 
 void Window::mt_Create(const WindowSettings& settings)

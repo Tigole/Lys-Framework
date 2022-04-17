@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Lys-imgui" />
+		<Option title="Lys-core" />
 		<Option pch_mode="2" />
 		<Option compiler="msys2" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../../build/Debug/Lys-imgui" prefix_auto="1" extension_auto="1" />
+				<Option output="../../../build/Debug/Lys-core" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="2" />
 				<Option compiler="msys2" />
@@ -15,28 +15,28 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
-					<Add option="-DBUILD_DLL" />
 					<Add option="-g" />
+					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
-					<Add library="user32" />
+					<Add directory="../../../build/Debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="../../../build/Release/Lys-imgui" prefix_auto="1" extension_auto="1" />
+				<Option output="../../../build/Release/Lys-core" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="2" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
+					<Add option="-O2" />
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
-					<Add option="-O2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="user32" />
+					<Add directory="../../../build/Release" />
 				</Linker>
 			</Target>
 		</Build>
@@ -54,23 +54,13 @@
 			<Add library="sfml-audio" />
 			<Add library="sfml-network" />
 			<Add library="opengl32" />
+			<Add library="user32" />
 			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
-		<Unit filename="../../../submodules/imgui-sfml/imconfig-SFML.h" />
-		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML.cpp" />
-		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML.h" />
-		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML_export.h" />
-		<Unit filename="../../../submodules/imgui/imconfig.h" />
-		<Unit filename="../../../submodules/imgui/imgui.cpp" />
-		<Unit filename="../../../submodules/imgui/imgui.h" />
-		<Unit filename="../../../submodules/imgui/imgui_demo.cpp" />
-		<Unit filename="../../../submodules/imgui/imgui_draw.cpp" />
-		<Unit filename="../../../submodules/imgui/imgui_internal.h" />
-		<Unit filename="../../../submodules/imgui/imgui_tables.cpp" />
-		<Unit filename="../../../submodules/imgui/imgui_widgets.cpp" />
-		<Unit filename="../../../submodules/imgui/imstb_rectpack.h" />
-		<Unit filename="../../../submodules/imgui/imstb_textedit.h" />
-		<Unit filename="../../../submodules/imgui/imstb_truetype.h" />
+		<Unit filename="../../../include/Lys/Core/Core.hpp" />
+		<Unit filename="../../../include/Lys/Core/FormatHelpers.hpp" />
+		<Unit filename="../../../include/Lys/Core/Singleton.hpp" />
+		<Unit filename="../../../Source/Lys/Core/Singleton_Private.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

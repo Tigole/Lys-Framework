@@ -68,7 +68,8 @@ void StateManager::mt_OnUpdate(float elapsed_time)
     }
     else
     {
-        m_States[m_Current_State]->mt_OnUpdate(elapsed_time);
+        auto l_Current_State = m_States.find(m_Current_State)->second.get();
+        l_Current_State->mt_OnUpdate(elapsed_time);
     }
 }
 

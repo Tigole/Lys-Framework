@@ -9,7 +9,7 @@
 			<Target title="Debug">
 				<Option output="../../../build/Debug/Lys-log" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
-				<Option type="3" />
+				<Option type="2" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
@@ -26,7 +26,7 @@
 			<Target title="Release">
 				<Option output="../../../build/Release/Lys-log" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
-				<Option type="3" />
+				<Option type="2" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />

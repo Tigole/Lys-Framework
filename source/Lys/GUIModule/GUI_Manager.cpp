@@ -17,6 +17,7 @@ namespace gui
 
 
 Manager::Manager() :
+    Singleton<Manager>("GUI Manager"),
     m_Interfaces(),
     m_Mouse_Captured(false),
     m_Keyboard_Captured(false),

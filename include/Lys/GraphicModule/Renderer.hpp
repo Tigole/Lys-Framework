@@ -35,8 +35,10 @@ class Renderer
 {
     LYS_CLASS_NO_COPY(Renderer)
 public:
+    ~Renderer();
 
     static void smt_Create(Window* wnd);
+    static void smt_Destroy(void);
     static Renderer& smt_Get(void);
 
 public:

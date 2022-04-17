@@ -125,9 +125,21 @@ Vector2<T> operator*(const Vector2<T>& v, float m)
 }
 
 template<typename T>
+Vector2<T> operator*(float m, const Vector2<T>& v)
+{
+    return Vector2<T>(v.x * m, v.y * m);
+}
+
+template<typename T>
 Vector2<T> operator*(const Vector2<T>& a, const Vector2<T>& b)
 {
     return Vector2<T>(a.x * b.x, a.y * b.y);
+}
+
+template<typename T>
+Vector2<T> operator/(const Vector2<T>& a, float d)
+{
+    return Vector2<T>(a.x / d, a.y / d);
 }
 
 template<typename T>
