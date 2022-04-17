@@ -23,7 +23,7 @@ void Button::mt_OnUpdate(float elapsed_time)
 
         if (m_Is_Clicked == true)
         {
-            Manager::smt_Get().mt_Push_Event(BtnClicked(*m_Interface_Id, m_Element_Id));
+            //Manager::smt_Get().mt_Push_Event(BtnClicked(*m_Interface_Id, m_Element_Id));
         }
     }
 }

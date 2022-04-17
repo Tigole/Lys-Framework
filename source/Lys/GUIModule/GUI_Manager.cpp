@@ -20,8 +20,8 @@ Manager::Manager() :
     m_Interfaces(),
     m_Mouse_Captured(false),
     m_Keyboard_Captured(false),
-    m_Text_Captured(false),
-    m_Events_Queue()
+    m_Text_Captured(false)
+    //m_Events_Queue()
 {}
 
 void Manager::mt_Push_Interface(Interface* interface)
@@ -68,7 +68,7 @@ void Manager::mt_OnUpdate(float elapsed_time)
     m_Text_Captured = io.WantTextInput;
 }
 
-bool Manager::mt_Poll_Event(GUIEvent& e)
+/*bool Manager::mt_Poll_Event(GUIEvent& e)
 {
     bool l_b_Ret = false;
 
@@ -80,12 +80,12 @@ bool Manager::mt_Poll_Event(GUIEvent& e)
     }
 
     return l_b_Ret;
-}
+}*/
 
-void Manager::mt_Push_Event(const BtnClicked& btn_clicked)
+/*void Manager::mt_Push_Event(const BtnClicked& btn_clicked)
 {
     m_Events_Queue.push(GUIEvent(btn_clicked));
-}
+}*/
 
 
 

@@ -39,6 +39,7 @@ void State::mt_OnUpdate(float elapsed_time)
         l_Event_Forward = l_Layer->mt_OnUpdate(elapsed_time);
     }
 
+    l_Event_Forward = LayerEventForward::Continue;
     for (auto l_it = m_Layers.rbegin(); l_it != m_Layers.rend() && l_Event_Forward == LayerEventForward::Continue; l_it++)
     {
         l_Layer = *l_it;

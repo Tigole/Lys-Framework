@@ -29,9 +29,9 @@ public:
 
     void mt_OnUpdate(float elapsed_time);
 
-    bool mt_Poll_Event(GUIEvent& e);
+    //bool mt_Poll_Event(GUIEvent& e);
 
-    void mt_Push_Event(const BtnClicked& btn_clicked);
+    //void mt_Push_Event(const BtnClicked& btn_clicked);
 
 private:
     Manager();
@@ -42,7 +42,7 @@ private:
     bool m_Keyboard_Captured = false;
     bool m_Text_Captured = false;
 
-    std::queue<GUIEvent> m_Events_Queue;
+    //std::queue<GUIEvent> m_Events_Queue;
 };
 
 

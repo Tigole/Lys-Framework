@@ -7,16 +7,6 @@ namespace lys
 State_Lys::State_Lys() : m_Layer()
 {}
 
-bool State_Lys::mt_OnCreate(void)
-{
-    return true;
-}
-
-bool State_Lys::mt_OnDestroy(void)
-{
-    return true;
-}
-
 bool State_Lys::mt_OnEntry(void)
 {
     mt_Push_Layer(&m_Layer);

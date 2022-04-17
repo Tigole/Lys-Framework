@@ -14,9 +14,6 @@ class State_Lys : public State
 public:
     State_Lys();
 
-    bool mt_OnCreate(void) override;
-    bool mt_OnDestroy(void) override;
-
     bool mt_OnEntry(void) override;
     bool mt_OnExit(void) override;
 
