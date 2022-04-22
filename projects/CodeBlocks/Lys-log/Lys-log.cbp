@@ -8,11 +8,11 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="../../../build/Debug/Lys-log" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Debug/" />
 				<Option type="2" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
@@ -25,11 +25,11 @@
 			</Target>
 			<Target title="Release">
 				<Option output="../../../build/Release/Lys-log" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Release/" />
 				<Option type="2" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
@@ -43,6 +43,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-pg" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
@@ -50,6 +51,7 @@
 			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
 		</Compiler>
 		<Linker>
+			<Add option="-pg -lgmon" />
 			<Add library="Lys-imgui" />
 			<Add library="sfml-system" />
 			<Add library="sfml-window" />

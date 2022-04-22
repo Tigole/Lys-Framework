@@ -1,6 +1,7 @@
 #include "Lys/StateModule/StateManager.hpp"
 
 #include "Lys/Core/Log.hpp"
+#include "Lys/Core/Profiler.hpp"
 
 namespace lys
 {
@@ -45,6 +46,7 @@ std::size_t StateManager::mt_Get_Current_State(void) const
 
 void StateManager::mt_OnUpdate(float elapsed_time)
 {
+    LYS_PROFILE_FUNCTION;
     if (m_Loading == true)
     {
         std::size_t l_New_State;
@@ -75,6 +77,7 @@ void StateManager::mt_OnUpdate(float elapsed_time)
 
 void StateManager::mt_OnEvent(const Event& event)
 {
+    LYS_PROFILE_FUNCTION;
     if (m_Loading == true)
     {
         if (m_Loading_State != nullptr)

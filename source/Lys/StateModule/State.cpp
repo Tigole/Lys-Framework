@@ -1,6 +1,7 @@
 #include "Lys/StateModule/State.hpp"
 #include "Lys/StateModule/Layer.hpp"
 #include "Lys/Application/Application.hpp"
+#include "Lys/Core/Profiler.hpp"
 
 namespace lys
 {
@@ -30,6 +31,7 @@ bool State::mt_OnExit(void)
 
 void State::mt_OnUpdate(float elapsed_time)
 {
+    LYS_PROFILE_FUNCTION;
     LayerEventForward l_Event_Forward = LayerEventForward::Continue;
     Layer* l_Layer;
 

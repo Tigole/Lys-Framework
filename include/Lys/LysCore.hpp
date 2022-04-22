@@ -7,5 +7,6 @@
 #include "Core/Log/Log_Console.hpp"
 #include "Core/Log/Log_File.hpp"
 #include "Sources/XMLFileLoader.hpp"
+#include "Core/Profiler.hpp"
 
 #endif // _LYS_CORE_MODULE_HPP
