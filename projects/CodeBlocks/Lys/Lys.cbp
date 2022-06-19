@@ -41,7 +41,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-pg" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
@@ -49,7 +48,6 @@
 			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
 		</Compiler>
 		<Linker>
-			<Add option="-pg -lgmon" />
 			<Add library="Lys-imgui" />
 			<Add library="Lys-log" />
 			<Add library="sfml-system" />
@@ -79,6 +77,7 @@
 		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Separator.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Text.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/Event/IEvent.hpp" />
+		<Unit filename="../../../include/Lys/GUIModule/GUI_Combobox.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/GUI_Element.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/GUI_Event.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/GUI_Interface.hpp" />
@@ -119,6 +118,7 @@
 		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Layout.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Separator.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/Elements/GUI_Text.cpp" />
+		<Unit filename="../../../source/Lys/GUIModule/GUI_Combobox.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Element.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Interface.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager.cpp" />
