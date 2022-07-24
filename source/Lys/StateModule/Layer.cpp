@@ -35,10 +35,10 @@ void Layer::mt_OnEvent(const Event& event)
         mt_Send_Message(event.m_SFML.mouseWheelScroll);
         break;
     case sf::Event::MouseButtonPressed:
-        mt_Send_Message(event.m_SFML.mouseButton);
+        mt_Send_Message(MouseButtonEvent{true, event.m_SFML.mouseButton});
         break;
     case sf::Event::MouseButtonReleased:
-        mt_Send_Message(event.m_SFML.mouseButton);
+        mt_Send_Message(MouseButtonEvent{false, event.m_SFML.mouseButton});
         break;
     case sf::Event::MouseMoved:
         mt_Send_Message(event.m_SFML.mouseMove);

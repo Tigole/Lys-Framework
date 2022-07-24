@@ -75,6 +75,13 @@ Logger& LoggerPool::mt_Get_Logger(const char* token)
     return *l_it->second;
 }
 
+LoggerPool& LoggerPool::smt_Get(void)
+{
+    static LoggerPool ls_Singleton;
+
+    return ls_Singleton;
+}
+
 void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_number, LogLevel level, const char* msg)
 {
     LogData l_Data;

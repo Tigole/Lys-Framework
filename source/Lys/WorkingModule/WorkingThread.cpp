@@ -5,11 +5,15 @@ namespace lys
 {
 
 
+WorkingThread& WorkingThread::smt_Get(void)
+{
+    static WorkingThread ls_Singleton;
 
+    return ls_Singleton;
+}
 
 
 WorkingThread::WorkingThread() :
-    Singleton<WorkingThread>("WorkingThread"),
     m_Mutex(),
     m_Thread(&WorkingThread::mt_Thread, this),
     m_Run(true),

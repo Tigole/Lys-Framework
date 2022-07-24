@@ -46,6 +46,7 @@
 			<Add directory="../../../submodules/imgui-sfml" />
 			<Add directory="../../../submodules/imgui" />
 			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
+			<Add directory="../../../submodules/glm" />
 		</Compiler>
 		<Linker>
 			<Add library="Lys-imgui" />
@@ -96,6 +97,7 @@
 		<Unit filename="../../../include/Lys/LysGraphics.hpp" />
 		<Unit filename="../../../include/Lys/LysMath.hpp" />
 		<Unit filename="../../../include/Lys/MathModule/CollisionHandling.hpp" />
+		<Unit filename="../../../include/Lys/MathModule/HexGrid.hpp" />
 		<Unit filename="../../../include/Lys/MathModule/MathCore.hpp" />
 		<Unit filename="../../../include/Lys/MathModule/Rand.hpp" />
 		<Unit filename="../../../include/Lys/MathModule/Rect.hpp" />

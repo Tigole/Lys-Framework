@@ -64,12 +64,7 @@ private:
 class LoggerPool
 {
 public:
-    static LoggerPool& smt_Get(void)
-    {
-        static LoggerPool ls_Singleton;
-
-        return ls_Singleton;
-    }
+    static LoggerPool& smt_Get(void);
 
     template<typename... Args>
     void mt_Log(const char* token, const char* file, int line_number, LogLevel level, const char* fmt, Args... args)

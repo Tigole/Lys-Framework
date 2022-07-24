@@ -21,6 +21,7 @@ class Window;
 struct LineSettings;
 struct RectangleSettings;
 struct CircleSettings;
+struct HexagonSettings;
 struct Sprite;
 namespace gui
 {
@@ -50,6 +51,7 @@ public:
     void mt_Draw_Line(const LineSettings& line_settings);
     void mt_Draw_Rectangle(const RectangleSettings& rectangle_settings);
     void mt_Draw_Circle(const CircleSettings& circle_settings);
+    void mt_Draw_Hexagon(const HexagonSettings& hexagon_settings);
     Rectf mt_Draw_Text(const char* text, const Vector2f& screen_pos, const gui::TextSettings& text_settings);
     void mt_Draw_VertexArray(const VertexArray& va);
 

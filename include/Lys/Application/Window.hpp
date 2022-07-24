@@ -22,10 +22,12 @@ struct WindowSettings
 };
 
 
-class Window : public Singleton<Window>
+class Window
 {
     friend Renderer;
 public:
+
+    static Window& smt_Get(void);
 
     void mt_Create(const WindowSettings& settings);
     bool mt_Poll_Event(Event& event);
@@ -35,8 +37,6 @@ public:
 private:
 
     Window();
-
-    friend Singleton<Window>;
 
     sf::RenderWindow m_Wnd;
 };

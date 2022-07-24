@@ -8,6 +8,8 @@
 
 #include "Lys/Core/Log.hpp"
 
+#include "Lys/MathModule/HexGrid.hpp"
+
 #if LYS_USE_IMGUI
 #include "imgui-SFML.h"
 #endif // LYS_USE_IMGUI
@@ -106,6 +108,50 @@ void Renderer::mt_Draw_Circle(const CircleSettings& circle_settings)
     l_Shape.setPosition(sf_To<float, float>(circle_settings.m_Center));
 
     m_Wnd->draw(l_Shape);
+}
+
+void Renderer::mt_Draw_Hexagon(const HexagonSettings& hexagon_settings)
+{
+    auto l_fn_Coord_To_Pix = [](const sf::Vector2i& coord, bool center, const sf::Vector2f& tile_size)
+    {
+        lys::hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, 0.0f, 0.0f);
+        //hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, tile_size.x / 2.0f, tile_size.y / 2.0f);
+        lys::hex::Point l_Point = lys::hex::fn_Hex_To_Pixel(l_Layout,
+                                                            lys::hex::fn_From_Offset(lys::hex::OffsetCoordMode::Odd,
+                                                                                     lys::hex::OffsetCoordType::r,
+                                                                                     {coord.x, coord.y}));
+
+        Vector2f l_Pix;
+
+        l_Pix.x = tile_size.x * (coord.x + (0.5f * (coord.y & 1)));
+        l_Pix.y = tile_size.y * coord.y * 0.75f;
+
+        if (center == true)
+        {
+            l_Pix.x += tile_size.x / 2.0f;
+            l_Pix.y += tile_size.y / 2.0f;
+        }
+
+        //return sf::Vector2f(l_Point.xx, l_Point.yy);
+        return l_Pix;
+    };
+    sf::CircleShape l_Hex;
+    Vector2f l_Pos;
+    //sf::Vector2f l_Tile_Size;
+
+    l_Hex.setRadius(hexagon_settings.m_Radius);
+    l_Hex.setPointCount(6);
+    l_Hex.setFillColor(sf_To(hexagon_settings.m_Fill_Color));
+    l_Hex.setOutlineColor(sf_To(hexagon_settings.m_Outline_Color));
+    l_Hex.setOutlineThickness(hexagon_settings.m_Outline_Thickness);
+
+    /*l_Tile_Size = Map::smt_Get().mt_Get_Cell_Size();
+    l_Hex.setRadius(l_Tile_Size.y / 2.0f);*/
+    l_Hex.setOrigin(hexagon_settings.m_Radius, hexagon_settings.m_Radius);
+
+//    l_Pos = l_fn_Coord_To_Pix(pos[ii], true, ); Map::smt_Get().mt_Coord_To_Pix(pos[ii], true);
+    l_Hex.setPosition(sf_To<float>(l_Pos));
+    Window::smt_Get().m_Wnd.draw(l_Hex);
 }
 
 Rectf Renderer::mt_Draw_Text(const char* text, const Vector2f& screen_pos, const gui::TextSettings& text_settings)

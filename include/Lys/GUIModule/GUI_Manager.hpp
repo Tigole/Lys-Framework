@@ -18,10 +18,11 @@ namespace gui
 
 class Interface;
 
-class Manager : public Singleton<Manager>
+class Manager
 {
-    friend Singleton<Manager>;
 public:
+
+    static Manager& smt_Get(void);
 
     void mt_Push_Interface(Interface* i);
 

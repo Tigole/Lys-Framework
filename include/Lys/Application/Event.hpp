@@ -6,9 +6,10 @@
 namespace lys
 {
 
-struct MouseEvent
+struct MouseButtonEvent
 {
-    //
+    bool m_Pressed;
+    sf::Event::MouseButtonEvent m_Mouse;
 };
 
 struct KeyEvent

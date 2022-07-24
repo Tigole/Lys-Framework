@@ -57,6 +57,18 @@ struct CircleSettings
     TextureData m_Texture_Data;
 };
 
+struct HexagonSettings
+{
+    Vector2i m_Center;
+    float m_Radius;
+    Color m_Fill_Color;
+
+    float m_Outline_Thickness = 0.0f;
+    Color m_Outline_Color;
+
+    TextureData m_Texture_Data;
+};
+
 struct VertexArray
 {
     sf::VertexArray m_SFML_VA;

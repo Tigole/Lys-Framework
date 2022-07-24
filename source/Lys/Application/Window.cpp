@@ -19,8 +19,15 @@ WindowSettings::WindowSettings(const char* title, const sf::VideoMode& vm, bool 
 {}
 
 
+Window& Window::smt_Get(void)
+{
+    static Window ls_Singleton;
+
+    return ls_Singleton;
+}
+
+
 Window::Window() :
-    Singleton<Window>("Window"),
     m_Wnd()
 {}
 

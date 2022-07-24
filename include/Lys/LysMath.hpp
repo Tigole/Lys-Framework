@@ -5,5 +5,6 @@
 #include "MathModule/Rand.hpp"
 #include "MathModule/Vector2.hpp"
 #include "MathModule/CollisionHandling.hpp"
+#include "MathModule/HexGrid.hpp"
 
 #endif // _LYS_MATH_MODULE_HPP

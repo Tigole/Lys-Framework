@@ -10,5 +10,6 @@
 #include "WorkingModule/WorkingTask.hpp"
 #include "Application/Map/Map.hpp"
 #include "Application/Lys_Translation.hpp"
+#include "StateModule/Layer.hpp"
 
 #endif // _LYS_APPLICATION_MODULE_HPP

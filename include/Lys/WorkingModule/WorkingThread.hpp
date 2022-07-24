@@ -13,12 +13,13 @@ namespace lys
 
 class AWorkingTask;
 
-class WorkingThread : public Singleton<WorkingThread>
+class WorkingThread
 {
-    friend Singleton<WorkingThread>;
     WorkingThread();
     ~WorkingThread();
 public:
+
+    static WorkingThread& smt_Get(void);
 
     void mt_Add_Task(AWorkingTask* task);
 
