@@ -48,7 +48,6 @@ int Application::mt_Run(void)
     std::size_t l_Next_State;
     State_Lys* l_Startup_State = new State_Lys;
 
-    //m_State_Manager.mt_Add_State(-1, l_Startup_State);
     m_State_Manager.mt_Add_State(-1, l_Startup_State);
 
     Window::smt_Get().mt_Create(WindowSettings(m_Window_Settings.m_Title, m_Window_Settings.m_VideoMode, m_Window_Settings.m_Full_Screen));
