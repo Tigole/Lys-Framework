@@ -12,7 +12,7 @@
 namespace lys
 {
 
-class AWorkingTask
+class LYS_API AWorkingTask
 {
     LYS_CLASS_NO_COPY(AWorkingTask)
 

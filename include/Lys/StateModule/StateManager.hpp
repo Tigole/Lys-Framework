@@ -12,7 +12,7 @@ namespace lys
 
 struct Event;
 
-class StateManager
+class LYS_API StateManager
 {
 public:
     StateManager();

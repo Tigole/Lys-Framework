@@ -8,7 +8,7 @@ namespace lys
 namespace gui
 {
 
-class Text : public Element
+class LYS_API Text : public Element
 {
 public:
     Text(const std::string& text = std::string());

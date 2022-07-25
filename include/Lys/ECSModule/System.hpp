@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "Lys/LysConfig.hpp"
 #include "Lys/Core/Core.hpp"
 
 namespace lys
@@ -10,7 +11,7 @@ namespace lys
 
 class EntityManager;
 
-class System
+class LYS_API System
 {
     LYS_CLASS_NO_COPY(System)
 public:
@@ -24,7 +25,7 @@ protected:
 };
 
 
-class SystemContainer
+class LYS_API SystemContainer
 {
 public:
     SystemContainer();

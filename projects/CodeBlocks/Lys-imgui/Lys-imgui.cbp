@@ -8,11 +8,12 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="../../../build/Debug/Lys-imgui" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
+				<Option working_dir="../../../build/Debug" />
 				<Option object_output="obj/Debug/" />
-				<Option type="2" />
+				<Option type="3" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
@@ -24,11 +25,12 @@
 			</Target>
 			<Target title="Release">
 				<Option output="../../../build/Release/Lys-imgui" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
+				<Option working_dir="../../../build/Release" />
 				<Option object_output="obj/Release/" />
-				<Option type="2" />
+				<Option type="3" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
@@ -42,6 +44,8 @@
 		</Build>
 		<Compiler>
 			<Add option="-DLYS_USE_IMGUI" />
+			<Add option="-DIMGUI_SFML_SHARED_LIB" />
+			<Add option="-DIMGUI_SFML_EXPORTS" />
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
 			<Add directory="../../../submodules/imgui" />

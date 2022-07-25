@@ -4,11 +4,13 @@
 #include <string>
 #include <vector>
 
+#include "Lys/LysConfig.hpp"
+
 namespace lys
 {
 
 
-class ComboBox
+class LYS_API ComboBox
 {
 public:
     ComboBox();

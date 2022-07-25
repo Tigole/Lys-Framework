@@ -9,7 +9,7 @@
 namespace lys
 {
 
-class State_Lys : public State
+class LYS_API State_Lys : public State
 {
 public:
     State_Lys();

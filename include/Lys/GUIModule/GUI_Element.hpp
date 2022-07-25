@@ -60,7 +60,7 @@ enum class Element_State
 
 using StateStyles = std::map<Element_State, Style>;
 
-class Element
+class LYS_API Element
 {
 public:
 	Element(const std::string& id, Element* owner);

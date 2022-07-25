@@ -8,13 +8,15 @@
 #include <mutex>
 #include <any>
 
+#include "Lys/LysConfig.hpp"
+
 namespace lys
 {
 
 namespace msg
 {
 
-class BaseMessageHandler
+class LYS_API BaseMessageHandler
 {
 public:
     BaseMessageHandler() : m_Active(false) {}
@@ -55,7 +57,7 @@ private:
 
 }
 
-class MessageManager
+class LYS_API MessageManager
 {
 public:
     MessageManager() :  m_Reciever(), m_Mutex(), m_Recursive_Handling_Count(0) {}

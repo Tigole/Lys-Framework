@@ -6,14 +6,14 @@
 #include <thread>
 #include <condition_variable>
 
-#include "Lys/Core/Singleton.hpp"
+#include "Lys/LysConfig.hpp"
 
 namespace lys
 {
 
 class AWorkingTask;
 
-class WorkingThread
+class LYS_API WorkingThread
 {
     WorkingThread();
     ~WorkingThread();

@@ -14,7 +14,7 @@ namespace lys
 namespace gui
 {
 
-class Interface
+class LYS_API Interface
 {
 public:
     Interface(const std::string& id);
@@ -38,7 +38,7 @@ private:
     Rectf m_Allocation;
 };
 
-class Interface_Predefined : public Interface
+class LYS_API Interface_Predefined : public Interface
 {
 public:
     Interface_Predefined(const std::string& id);

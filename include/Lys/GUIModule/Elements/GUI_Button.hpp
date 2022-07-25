@@ -28,7 +28,7 @@ private:
 
 
 #else
-class Button : public Element
+class LYS_API Button : public Element
 {
 public:
 	Button(const std::string& id, const std::string& text, Element* owner);

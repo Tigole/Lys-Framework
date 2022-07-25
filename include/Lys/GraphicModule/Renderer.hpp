@@ -1,6 +1,7 @@
 #ifndef _LYS_RENDERER_HPP
 #define _LYS_RENDERER_HPP 1
 
+#include "Lys/LysConfig.hpp"
 #include "Lys/Core/Core.hpp"
 #include "Lys/MathModule/Rect.hpp"
 
@@ -32,7 +33,7 @@ struct TextureData;
 
 
 
-class Renderer
+class LYS_API Renderer
 {
     LYS_CLASS_NO_COPY(Renderer)
 public:

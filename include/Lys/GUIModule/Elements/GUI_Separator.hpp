@@ -10,7 +10,7 @@ namespace gui
 {
 
 
-class Separator : public Element
+class LYS_API Separator : public Element
 {
 public:
     Separator();

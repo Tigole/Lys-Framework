@@ -18,7 +18,7 @@ namespace gui
 
 class Interface;
 
-class Manager
+class LYS_API Manager
 {
 public:
 

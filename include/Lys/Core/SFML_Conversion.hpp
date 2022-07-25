@@ -33,17 +33,17 @@ Rect<T> constexpr sf_From(const sf::Rect<U>& r)
     return Rect<T>(r.left, r.top, r.width, r.height);
 }
 
-inline sf::Color sf_To(const Color& c)
+inline sf::Color LYS_API sf_To(const Color& c)
 {
     return sf::Color(c.r * 255, c.g * 255, c.b * 255, c.a * 255);
 }
 
-inline Color sf_From(const sf::Color& c)
+inline Color LYS_API sf_From(const sf::Color& c)
 {
     return Color(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, c.a / 255.0f);
 }
 
-inline sf::Uint32 sf_To(gui::TextStyle style)
+inline sf::Uint32 LYS_API sf_To(gui::TextStyle style)
 {
     sf::Uint32 l_Ret;
 

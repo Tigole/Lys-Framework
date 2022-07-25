@@ -8,15 +8,15 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="../../../build/Debug/Lys" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
+				<Option working_dir="../../../build/Debug" />
 				<Option object_output="obj/Debug/" />
-				<Option type="2" />
+				<Option type="3" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-g" />
-					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
 					<Add directory="../../../build/Debug" />
@@ -24,15 +24,15 @@
 			</Target>
 			<Target title="Release">
 				<Option output="../../../build/Release/Lys" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
+				<Option working_dir="../../../build/Release" />
 				<Option object_output="obj/Release/" />
-				<Option type="2" />
+				<Option type="3" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-Wall" />
-					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -42,6 +42,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-DLYS_USE_IMGUI" />
+			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
 			<Add directory="../../../submodules/imgui" />
@@ -49,8 +50,8 @@
 			<Add directory="../../../submodules/glm" />
 		</Compiler>
 		<Linker>
-			<Add library="Lys-imgui" />
 			<Add library="Lys-log" />
+			<Add library="Lys-imgui" />
 			<Add library="sfml-system" />
 			<Add library="sfml-window" />
 			<Add library="sfml-graphics" />
@@ -58,6 +59,7 @@
 			<Add library="sfml-network" />
 			<Add library="opengl32" />
 			<Add library="user32" />
+			<Add library="Lys-core" />
 			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
@@ -70,7 +72,6 @@
 		<Unit filename="../../../include/Lys/Core/Core.hpp" />
 		<Unit filename="../../../include/Lys/Core/FormatHelpers.hpp" />
 		<Unit filename="../../../include/Lys/Core/SFML_Conversion.hpp" />
-		<Unit filename="../../../include/Lys/Core/Singleton.hpp" />
 		<Unit filename="../../../include/Lys/ECSModule/Entity.hpp" />
 		<Unit filename="../../../include/Lys/ECSModule/System.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/Elements/GUI_Button.hpp" />
@@ -125,8 +126,10 @@
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Interface.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager_Loader.cpp" />
+		<Unit filename="../../../source/Lys/GraphicModule/EmbeddedFonts/JackInput.cpp" />
 		<Unit filename="../../../source/Lys/GraphicModule/Renderer.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/CollisionHandling.cpp" />
+		<Unit filename="../../../source/Lys/MathModule/HexGrid.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/Layer.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/LayerLys.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/State.cpp" />

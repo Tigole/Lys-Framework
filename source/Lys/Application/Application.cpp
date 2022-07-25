@@ -82,6 +82,8 @@ int Application::mt_Run(void)
     }
 
     Renderer::smt_Destroy();
+    Window::smt_Get().mt_Destroy();
+    WorkingThread::smt_Get().mt_Stop_Thread();
 
     return l_Return_Code;
 }

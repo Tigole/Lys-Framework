@@ -9,7 +9,7 @@
 namespace lys
 {
 
-class StringHandlerHelper
+class LYS_API StringHandlerHelper
 {
 public:
     virtual ~StringHandlerHelper(){}
@@ -20,7 +20,7 @@ public:
 };
 
 template<typename IndexType>
-class StringHandlerHelperT : public StringHandlerHelper
+class LYS_API StringHandlerHelperT : public StringHandlerHelper
 {
 public:
 
@@ -47,7 +47,7 @@ private:
     std::unordered_map<IndexType, std::string> m_Strings;
 };
 
-class StringHandler
+class LYS_API StringHandler
 {
 public:
     StringHandler()
@@ -84,7 +84,7 @@ private:
     std::unordered_map<std::string, std::unique_ptr<StringHandlerHelper>> m_String_Handlers;
 };
 
-class Translator
+class LYS_API Translator
 {
 public:
 

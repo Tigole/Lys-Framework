@@ -5,13 +5,14 @@
 #include <cassert>
 #include <limits>
 
+#include "Lys/LysConfig.hpp"
 #include "Lys/Core/Core.hpp"
 
 namespace lys
 {
 
 
-class Rand
+class LYS_API Rand
 {
 public:
 

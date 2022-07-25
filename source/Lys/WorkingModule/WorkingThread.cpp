@@ -1,5 +1,6 @@
 #include "Lys/WorkingModule/WorkingThread.hpp"
 #include "Lys/WorkingModule/WorkingTask.hpp"
+#include "Lys/Core/Log.hpp"
 
 namespace lys
 {
@@ -23,9 +24,7 @@ WorkingThread::WorkingThread() :
 {}
 
 WorkingThread::~WorkingThread()
-{
-    mt_Stop_Thread();
-}
+{}
 
 void WorkingThread::mt_Add_Task(AWorkingTask* task)
 {
@@ -40,12 +39,14 @@ void WorkingThread::mt_Add_Task(AWorkingTask* task)
 
 void WorkingThread::mt_Stop_Thread(void)
 {
+    LYS_LOG_CORE_DEBUG("Stopping WorkingThread: %p", this);
     m_Mutex.lock();
     m_Run = false;
     m_Condition_Variable.notify_one();
     m_Mutex.unlock();
 
     m_Thread.join();
+    LYS_LOG_CORE_DEBUG("Stopped WorkingThread");
 }
 
 void WorkingThread::mt_Thread(void)

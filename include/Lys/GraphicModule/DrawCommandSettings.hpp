@@ -12,18 +12,18 @@
 namespace lys
 {
 
-struct Texture
+struct LYS_API Texture
 {
     sf::Texture m_SFML_Texture;
 };
 
-struct TextureData
+struct LYS_API TextureData
 {
     Rectf m_Normalized_Texture_Area;
     const Texture* m_Texture;
 };
 
-struct LineSettings
+struct LYS_API LineSettings
 {
     Vector2f m_Start_Pos;
     Vector2f m_End_Pos;
@@ -32,7 +32,7 @@ struct LineSettings
     Color m_End_Color;
 };
 
-struct RectangleSettings
+struct LYS_API RectangleSettings
 {
     Vector2f m_Position;
     Vector2f m_Size;
@@ -44,7 +44,7 @@ struct RectangleSettings
     TextureData m_Texture_Data;
 };
 
-struct CircleSettings
+struct LYS_API CircleSettings
 {
     Vector2f m_Center;
     float m_Radius = 0.0f;
@@ -57,7 +57,7 @@ struct CircleSettings
     TextureData m_Texture_Data;
 };
 
-struct HexagonSettings
+struct LYS_API HexagonSettings
 {
     Vector2i m_Center;
     float m_Radius;
@@ -69,7 +69,7 @@ struct HexagonSettings
     TextureData m_Texture_Data;
 };
 
-struct VertexArray
+struct LYS_API VertexArray
 {
     sf::VertexArray m_SFML_VA;
 };

@@ -48,6 +48,12 @@ void Window::mt_Create(const WindowSettings& settings)
     m_Wnd.setKeyRepeatEnabled(false);
 }
 
+void Window::mt_Destroy(void)
+{
+    LYS_LOG_CORE_DEBUG("Closing window");
+    m_Wnd.close();
+}
+
 bool Window::mt_Poll_Event(Event& event)
 {
     bool l_b_Ret = m_Wnd.pollEvent(event.m_SFML);

@@ -1,6 +1,8 @@
 #ifndef _LYS_PROFILER_HPP
 #define _LYS_PROFILER_HPP 1
 
+#include "Lys/LysConfig.hpp"
+
 #include <mutex>
 #include <fstream>
 
@@ -14,9 +16,9 @@ namespace lys
 namespace profiler
 {
 
-void fn_Initialize_Profiler(const char* file_name);
+void LYS_API fn_Initialize_Profiler(const char* file_name);
 
-class ProfilerHelper
+class LYS_API ProfilerHelper
 {
 public:
     ProfilerHelper(const char* function_name);
@@ -26,7 +28,7 @@ private:
     const char* m_Function_Name;
 };
 
-class Profiler
+class LYS_API Profiler
 {
 public:
 

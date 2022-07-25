@@ -10,7 +10,7 @@ namespace lys
 {
 
 
-struct Message_ChangeState
+struct LYS_API Message_ChangeState
 {
     Message_ChangeState(std::size_t next_state) : m_Next_State(next_state) {}
 
@@ -18,7 +18,7 @@ struct Message_ChangeState
 };
 
 
-class CommandLineArguments
+class LYS_API CommandLineArguments
 {
 public:
     CommandLineArguments(int argc, char** argv);
@@ -31,7 +31,7 @@ private:
 };
 
 
-class Application
+class LYS_API Application
 {
 public:
     Application(const char* title, const CommandLineArguments& cla);

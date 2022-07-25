@@ -12,7 +12,7 @@ namespace lys
 
 class Renderer;
 
-struct WindowSettings
+struct LYS_API WindowSettings
 {
     WindowSettings(const char* title, const sf::VideoMode& vm, bool full_screen);
 
@@ -22,7 +22,7 @@ struct WindowSettings
 };
 
 
-class Window
+class LYS_API Window
 {
     friend Renderer;
 public:
@@ -30,6 +30,8 @@ public:
     static Window& smt_Get(void);
 
     void mt_Create(const WindowSettings& settings);
+    void mt_Destroy(void);
+
     bool mt_Poll_Event(Event& event);
 
     Vector2u mt_Get_Size(void) const;

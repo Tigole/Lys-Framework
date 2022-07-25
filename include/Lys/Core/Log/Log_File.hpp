@@ -10,7 +10,7 @@ namespace lys
 namespace log
 {
 
-class File : public Sink
+class LYS_API File : public Sink
 {
 public:
     File(const std::string& file);

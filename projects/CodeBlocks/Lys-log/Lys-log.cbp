@@ -8,11 +8,12 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="../../../build/Debug/Lys-log" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
+				<Option working_dir="../../../build/Debug" />
 				<Option object_output="obj/Debug/" />
-				<Option type="2" />
+				<Option type="3" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
@@ -25,11 +26,12 @@
 			</Target>
 			<Target title="Release">
 				<Option output="../../../build/Release/Lys-log" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
+				<Option working_dir="../../../build/Release" />
 				<Option object_output="obj/Release/" />
-				<Option type="2" />
+				<Option type="3" />
 				<Option compiler="msys2" />
 				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
@@ -44,6 +46,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-DLYS_USE_IMGUI" />
+			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
 			<Add directory="../../../submodules/imgui" />
@@ -65,7 +68,6 @@
 		<Unit filename="../../../include/Lys/Core/Log/Log_Console.hpp" />
 		<Unit filename="../../../include/Lys/Core/Log/Log_File.hpp" />
 		<Unit filename="../../../include/Lys/Core/Log/Log_Sink.hpp" />
-		<Unit filename="../../../include/Lys/Core/Singleton.hpp" />
 		<Unit filename="../../../source/Lys/Core/Color.cpp" />
 		<Unit filename="../../../source/Lys/Core/Log.cpp" />
 		<Unit filename="../../../source/Lys/Core/Log/Log_Console.cpp" />

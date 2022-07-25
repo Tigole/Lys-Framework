@@ -9,7 +9,7 @@ namespace lys
 
 
 
-class GeneratedTilesetTexture
+class LYS_API GeneratedTilesetTexture
 {
 public:
 

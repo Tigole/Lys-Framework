@@ -1,6 +1,7 @@
 #ifndef _LYS_LOG_HPP
 #define _LYS_LOG_HPP 1
 
+#include "Lys/LysConfig.hpp"
 #include "Log/Log_Sink.hpp"
 
 #include <string>
@@ -37,7 +38,7 @@ enum class LogLevel
     COUNT
 };
 
-struct LogData
+struct LYS_API LogData
 {
     LogData() : m_Level(LogLevel::Trace), m_Header(), m_Message(){}
     LogLevel m_Level;
@@ -45,7 +46,7 @@ struct LogData
     std::string m_Message;
 };
 
-class Logger
+class LYS_API Logger
 {
 public:
     Logger();
@@ -61,7 +62,7 @@ private:
 	std::mutex m_Mutex;
 };
 
-class LoggerPool
+class LYS_API LoggerPool
 {
 public:
     static LoggerPool& smt_Get(void);

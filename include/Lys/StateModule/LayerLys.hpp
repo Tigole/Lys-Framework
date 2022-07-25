@@ -10,7 +10,7 @@ namespace lys
 
 struct KeyEvent;
 
-class LayerLys : public Layer
+class LYS_API LayerLys : public Layer
 {
 public:
     LayerLys();

@@ -5,7 +5,7 @@
 
 // class
 
-class GUI_InterfaceLoader
+class LYS_API GUI_InterfaceLoader
 {
 public:
 	//

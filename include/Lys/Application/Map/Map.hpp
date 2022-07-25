@@ -15,7 +15,7 @@ namespace lys
 
 
 
-class GridSettings
+class LYS_API GridSettings
 {
 public:
     GridSettings(const Vector2f& cell_size);
@@ -31,7 +31,7 @@ protected:
     Vector2f m_Cell_Size_Pix;
 };
 
-class GridSettings_Square : public GridSettings
+class LYS_API GridSettings_Square : public GridSettings
 {
 public:
     GridSettings_Square(const Vector2f& cell_size);
@@ -42,7 +42,7 @@ public:
 };
 
 
-class MapGrid2D
+class LYS_API MapGrid2D
 {
 public:
 

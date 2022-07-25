@@ -12,7 +12,7 @@ namespace log
 {
 
 
-class Console : public Sink
+class LYS_API Console : public Sink
 {
 public:
     Console();

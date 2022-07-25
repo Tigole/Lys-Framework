@@ -41,7 +41,7 @@ struct ComponentChecker<>
 
 class EntityManager;
 
-class Entity
+class LYS_API Entity
 {
     friend EntityManager;
 
@@ -98,7 +98,7 @@ private:
 };
 
 
-class EntityManager
+class LYS_API EntityManager
 {
 public:
 

@@ -5,6 +5,8 @@
 #include <memory>
 #include <mutex>
 
+#include "Lys/LysConfig.hpp"
+
 namespace lys
 {
 
@@ -15,7 +17,7 @@ struct Event;
 
 struct Message_ChangeState;
 
-class State
+class LYS_API State
 {
 public:
     virtual ~State();

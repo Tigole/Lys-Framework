@@ -24,14 +24,14 @@ enum class TextStyle
     Regular
 };
 
-struct BackgroundSettings
+struct LYS_API BackgroundSettings
 {
     Color m_Fill_Color;
     Color m_Outline_Color;
     float m_Outline_Thickness = 0.0f;
 };
 
-struct TextSettings
+struct LYS_API TextSettings
 {
     TextStyle m_Style;
     TextOriginMode m_Vertical_Align = TextOriginMode::Near;
@@ -43,14 +43,14 @@ struct TextSettings
     float m_Outline_Thickness = 0.0f;
 };
 
-struct Style
+struct LYS_API Style
 {
 	BackgroundSettings m_Background;
 	TextSettings m_Text;
 };
 
-std::string fn_GUIStyleTextHAlign_ToString(const TextOriginMode& align);
-TextOriginMode fn_GUIStyleTextHAlign_ToEnum(const std::string& align);
+std::string LYS_API fn_GUIStyleTextHAlign_ToString(const TextOriginMode& align);
+TextOriginMode LYS_API fn_GUIStyleTextHAlign_ToEnum(const std::string& align);
 
 }
 

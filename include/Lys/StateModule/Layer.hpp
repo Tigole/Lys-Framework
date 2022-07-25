@@ -14,7 +14,7 @@ enum class LayerEventForward
     Continue
 };
 
-class Layer
+class LYS_API Layer
 {
 public:
     Layer(){}

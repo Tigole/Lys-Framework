@@ -16,7 +16,7 @@ namespace gui
 #else
 class Interface;
 
-class Layout : public Element
+class LYS_API Layout : public Element
 {
 public:
 	Layout(const std::string& id, Interface* owner);
