@@ -4,6 +4,7 @@
 #include "GUIModule/GUI_Element.hpp"
 #include "GUIModule/GUI_Manager.hpp"
 #include "GUIModule/GUI_Styles.hpp"
+#include "GUIModule/GUI_Combobox.hpp"
 #include "GUIModule/Elements/GUI_Button.hpp"
 #include "GUIModule/Elements/GUI_Layout.hpp"
 #include "GUIModule/Elements/GUI_Text.hpp"

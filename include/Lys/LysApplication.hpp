@@ -9,6 +9,8 @@
 #include "MessageModule/MessageManager.hpp"
 #include "WorkingModule/WorkingTask.hpp"
 #include "Application/Map/Map.hpp"
+#include "Application/Map/MapLoader.hpp"
+#include "Application/Map/Tileset.hpp"
 #include "Application/Lys_Translation.hpp"
 #include "StateModule/Layer.hpp"
 

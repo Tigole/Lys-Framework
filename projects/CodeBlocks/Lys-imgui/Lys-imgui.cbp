@@ -75,6 +75,8 @@
 		<Unit filename="../../../submodules/imgui/imstb_rectpack.h" />
 		<Unit filename="../../../submodules/imgui/imstb_textedit.h" />
 		<Unit filename="../../../submodules/imgui/imstb_truetype.h" />
+		<Unit filename="../../../submodules/imgui/misc/cpp/imgui_stdlib.cpp" />
+		<Unit filename="../../../submodules/imgui/misc/cpp/imgui_stdlib.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

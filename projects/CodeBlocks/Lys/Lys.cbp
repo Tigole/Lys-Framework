@@ -60,16 +60,21 @@
 			<Add library="opengl32" />
 			<Add library="user32" />
 			<Add library="Lys-core" />
+			<Add library="Lys-xml" />
 			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
 		<Unit filename="../../../include/Lys/Application/Event.hpp" />
 		<Unit filename="../../../include/Lys/Application/Lys_Translation.hpp" />
 		<Unit filename="../../../include/Lys/Application/Map/Map.hpp" />
+		<Unit filename="../../../include/Lys/Application/Map/MapLoader.hpp" />
 		<Unit filename="../../../include/Lys/Application/Map/Tileset.hpp" />
 		<Unit filename="../../../include/Lys/Application/Window.hpp" />
+		<Unit filename="../../../include/Lys/Core/Array2D.hpp" />
+		<Unit filename="../../../include/Lys/Core/Array2D.inl" />
 		<Unit filename="../../../include/Lys/Core/Color.hpp" />
 		<Unit filename="../../../include/Lys/Core/Core.hpp" />
+		<Unit filename="../../../include/Lys/Core/FileManagement.hpp" />
 		<Unit filename="../../../include/Lys/Core/FormatHelpers.hpp" />
 		<Unit filename="../../../include/Lys/Core/SFML_Conversion.hpp" />
 		<Unit filename="../../../include/Lys/ECSModule/Entity.hpp" />
@@ -113,7 +118,11 @@
 		<Unit filename="../../../include/Lys/WorkingModule/WorkingThread.hpp" />
 		<Unit filename="../../../source/Lys/Application/Application.cpp" />
 		<Unit filename="../../../source/Lys/Application/Map/Map.cpp" />
+		<Unit filename="../../../source/Lys/Application/Map/MapLoader.cpp" />
+		<Unit filename="../../../source/Lys/Application/Map/Tileset.cpp" />
 		<Unit filename="../../../source/Lys/Application/Window.cpp" />
+		<Unit filename="../../../source/Lys/Core/Array2D.cpp" />
+		<Unit filename="../../../source/Lys/Core/FileManagement.cpp" />
 		<Unit filename="../../../source/Lys/Core/Singleton_Private.cpp" />
 		<Unit filename="../../../source/Lys/ECSModule/Entity.cpp" />
 		<Unit filename="../../../source/Lys/ECSModule/System.cpp" />

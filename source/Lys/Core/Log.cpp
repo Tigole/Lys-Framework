@@ -139,7 +139,7 @@ int LoggerPool::mt_Get_Thread_Id(void)
         it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(GetCurrentThreadId()));
     }
 
-    return *it;
+    return std::distance(m_Threads.begin(), it);
 }
 
 }
