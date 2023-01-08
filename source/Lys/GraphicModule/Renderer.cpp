@@ -197,9 +197,18 @@ Rectf Renderer::mt_Draw_Text(const char* text, const Vector2f& screen_pos, const
     return Rectf(l_Bound.left, l_Bound.top, l_Bound.width, l_Bound.height);
 }
 
-void Renderer::mt_Draw_VertexArray(const VertexArray& va)
+void Renderer::mt_Draw_VertexArray(const VertexArray& va, const Texture* texture)
 {
-    m_Wnd->draw(va.m_SFML_VA);
+    if (texture != nullptr)
+    {
+        sf::RenderStates l_State = sf::RenderStates::Default;
+        l_State.texture = &texture->m_SFML_Texture;
+        m_Wnd->draw(va.m_SFML_VA, l_State);
+    }
+    else
+    {
+        m_Wnd->draw(va.m_SFML_VA);
+    }
 }
 
 const sf::Font& Renderer::mt_Get_Default_Font(void) const

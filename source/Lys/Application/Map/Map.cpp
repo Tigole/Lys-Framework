@@ -97,7 +97,7 @@ void MapGrid2D::mt_Draw_Layer(std::size_t layer_id)
 
     if (l_it != m_Layers.end())
     {
-        Renderer::smt_Get().mt_Draw_VertexArray(l_it->second->m_VA);
+        Renderer::smt_Get().mt_Draw_VertexArray(l_it->second->m_VA, l_it->second->m_Texture);
     }
 }
 

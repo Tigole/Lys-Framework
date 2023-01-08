@@ -30,6 +30,7 @@ struct TextSettings;
 }
 struct VertexArray;
 struct TextureData;
+struct Texture;
 
 
 
@@ -54,7 +55,7 @@ public:
     void mt_Draw_Circle(const CircleSettings& circle_settings);
     void mt_Draw_Hexagon(const HexagonSettings& hexagon_settings);
     Rectf mt_Draw_Text(const char* text, const Vector2f& screen_pos, const gui::TextSettings& text_settings);
-    void mt_Draw_VertexArray(const VertexArray& va);
+    void mt_Draw_VertexArray(const VertexArray& va, const Texture* texture);
 
     const sf::Font& mt_Get_Default_Font(void) const;
 
