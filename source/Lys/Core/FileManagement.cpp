@@ -1,13 +1,16 @@
 #include "Lys/Core/FileManagement.hpp"
 
 #include <unistd.h>
-#include <dir.h>
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #include <dir.h>
+    #include <windows.h>
+#endif
 #include <dirent.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include <fstream>
 
-#include <windows.h>
 
 #include "Lys/Core/Log.hpp"
 
@@ -63,23 +66,6 @@ bool File::mt_Create_Path_To_File(void) const
     for (std::size_t ii = 0; (ii < l_Sub_Seq.size()) && (l_b_Ret == true); ii++)
     {
         l_b_Ret = fn_Create_Directory(l_Sub_Seq[ii]);
-
-        if (l_b_Ret == true)
-        {
-            LYS_LOG_CORE_DEBUG("Directory created: '%s'", l_Sub_Seq[ii].c_str());
-        }
-        else
-        {
-            if (GetLastError() == ERROR_ALREADY_EXISTS)
-            {
-                LYS_LOG_CORE_TRACE("Directory already exists: '%s'", l_Sub_Seq[ii].c_str());
-                l_b_Ret = true;
-            }
-            else
-            {
-                LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", l_Sub_Seq[ii].c_str());
-            }
-        }
     }
 
     return l_b_Ret;
@@ -261,7 +247,34 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
 
 bool fn_Create_Directory(const std::string& path)
 {
-    return CreateDirectory(path.c_str(), nullptr);
+#if (PLATFORM == PLATFORM_WINDOWS)
+    bool l_Creation_Succeded = CreateDirectory(path.c_str(), nullptr);
+
+    if (l_Creation_Succeded == true)
+    {
+        LYS_LOG_CORE_DEBUG("Directory created: '%s'", l_Sub_Seq[ii].c_str());
+    }
+    else
+    {
+        if (GetLastError() == ERROR_ALREADY_EXISTS)
+        {
+            LYS_LOG_CORE_TRACE("Directory already exists: '%s'", l_Sub_Seq[ii].c_str());
+            l_Creation_Succeded = true;
+        }
+        else
+        {
+            LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", l_Sub_Seq[ii].c_str());
+        }
+    }
+    return l_Creation_Succeded;
+#else
+    struct stat st = {0};
+    if (stat(path.c_str(), &st) == -1)
+    {
+        return mkdir(path.c_str(), 0700) == 0;
+    }
+    return true;
+#endif
 }
 
 bool fn_File_Exists(const std::string& file_name)

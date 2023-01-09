@@ -27,7 +27,7 @@ bool fn_Check_Collision_Point_Rect(const Vector2<T>& point, const Rect<T>& rect)
 template<typename T>
 bool fn_Check_Collision_Point_Rect(const Vector2<T>& point, const Vector2<T>& top_left, const Vector2<T>& width_height)
 {
-    return fn_Check_Collision_Point_Rect(point, Rect(top_left, width_height));
+    return fn_Check_Collision_Point_Rect(point, Rect<T>(top_left, width_height));
 }
 
 template<typename T>

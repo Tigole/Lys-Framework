@@ -109,7 +109,7 @@ Vector2<T> operator+(const Vector2<T>& a, const Vector2<T>& b)
 template<typename T>
 Vector2<T> operator+(const Vector2<T>& a, T b)
 {
-    return Vector2(a.x + b, a.y + b);
+    return Vector2<T>(a.x + b, a.y + b);
 }
 
 template<typename T>
