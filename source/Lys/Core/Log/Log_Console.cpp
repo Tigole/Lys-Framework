@@ -7,8 +7,9 @@ namespace lys
 namespace log
 {
 
+#if (PLATFORM == PLATFORM_WINDOWS)
 
-Console::Console() :
+ConsoleWindows::ConsoleWindows() :
     m_Handle(nullptr),
     m_Default_Attrib(0)
 {
@@ -21,10 +22,10 @@ Console::Console() :
     m_Default_Attrib = infos.wAttributes;
 }
 
-Console::~Console()
+ConsoleWindows::~ConsoleWindows()
 {}
 
-void Console::mt_Log(const LogData& data)
+void ConsoleWindows::mt_Log(const LogData& data)
 {
     mt_Set_Attribute(data.m_Level);
 
@@ -34,7 +35,7 @@ void Console::mt_Log(const LogData& data)
 
 }
 
-void Console::mt_Set_Attribute(LogLevel level)
+void ConsoleWindows::mt_Set_Attribute(LogLevel level)
 {
     WORD attribute;
 
@@ -66,11 +67,55 @@ void Console::mt_Set_Attribute(LogLevel level)
     mt_Set_Attribute(attribute);
 }
 
-void Console::mt_Set_Attribute(WORD attribute)
+void ConsoleWindows::mt_Set_Attribute(WORD attribute)
 {
     SetConsoleTextAttribute(m_Handle, attribute);
 }
 
+
+
+#else
+
+
+
+
+ConsoleLinux::ConsoleLinux()
+{}
+
+ConsoleLinux::~ConsoleLinux()
+{}
+
+void ConsoleLinux::mt_Log(const LogData& data)
+{
+    std::cout << mt_Get_Level_String(data.m_Level);
+    std::cout << data.m_Header;
+    std::cout << mt_Get_Reset_String();
+    std::cout << data.m_Message << std::endl;
+
+}
+
+const char* ConsoleLinux::mt_Get_Level_String(LogLevel level)
+{
+    switch(level)
+    {
+    case LogLevel::Trace: return "\033[39m";
+    case LogLevel::Debug: return "\033[34m";
+    case LogLevel::Info: return "\033[32m";
+    case LogLevel::Warning: return "\033[33m";
+    case LogLevel::Error: return "\033[31m";
+    case LogLevel::Fatal: return "\033[31m";
+    case LogLevel::COUNT: return "";
+    default: return "";
+    }
+    return "";
+}
+
+const char* ConsoleLinux::mt_Get_Reset_String(void)
+{
+    return "\033[0m";
+}
+
+#endif
 
 }
 }

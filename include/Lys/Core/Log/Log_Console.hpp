@@ -4,7 +4,9 @@
 #include "Log_Sink.hpp"
 #include "Lys/Core/Log.hpp"
 
-#include <windows.h>
+#if PLATFORM == PLATFORM_WINDOWS
+    #include <windows.h>
+#endif // PLATFORM
 
 namespace lys
 {
@@ -12,13 +14,15 @@ namespace log
 {
 
 
-class LYS_API Console : public Sink
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #define CONSOLE_TYPE ConsoleWindows
+class LYS_API ConsoleWindows : public Sink
 {
 public:
-    Console();
-    ~Console();
-    Console(const Console& rhs) = delete;
-    Console& operator=(const Console& rhs) = delete;
+    ConsoleWindows();
+    ~ConsoleWindows();
+    ConsoleWindows(const ConsoleWindows& rhs) = delete;
+    ConsoleWindows& operator=(const ConsoleWindows& rhs) = delete;
 
     void mt_Log(const LogData& data) override;
 
@@ -31,6 +35,28 @@ private:
     WORD m_Default_Attrib;
 
 };
+
+#else
+    #define CONSOLE_TYPE ConsoleLinux
+class LYS_API ConsoleLinux : public Sink
+{
+public:
+    ConsoleLinux();
+    ~ConsoleLinux();
+    ConsoleLinux(const ConsoleLinux& rhs) = delete;
+    ConsoleLinux& operator=(const ConsoleLinux& rhs) = delete;
+
+    void mt_Log(const LogData& data) override;
+
+private:
+
+    const char* mt_Get_Level_String(LogLevel level);
+    const char* mt_Get_Reset_String(void);
+
+};
+#endif
+
+using Console = CONSOLE_TYPE;
 
 
 }

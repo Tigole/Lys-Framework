@@ -7,7 +7,9 @@
 #include <array>
 #include <iostream>
 #include <algorithm>
-#include <windows.h>
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #include <windows.h>
+#endif
 
 namespace lys
 {
@@ -91,7 +93,7 @@ void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_n
     const char* l_Short_File_Name;
     time_t t;
 
-    gettimeofday(&l_Time_Val, NULL);
+    gettimeofday(&l_Time_Val, nullptr);
     t = l_Time_Val.tv_sec;
     l_TM = localtime(&t);
 
@@ -109,6 +111,7 @@ void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_n
     }
 
     ///"[date - level - thread - file:line]:"
+#if (PLATFORM == PLATFORM_WINDOWS)
     sprintf_s(l_Data.m_Header,
               sizeof(l_Data.m_Header),
               "[%s:%03d - %s - %02d - %s:%d] ",
@@ -118,7 +121,17 @@ void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_n
               mt_Get_Thread_Id(),
               l_Short_File_Name,
               line_number);
-
+#else
+    std::snprintf(l_Data.m_Header,
+              sizeof(l_Data.m_Header),
+              "[%s:%03d - %s - %02d - %s:%d] ",
+              l_Time,
+              static_cast<int>(l_Time_Val.tv_usec / 1000),
+              sg_Levels[static_cast<std::size_t>(level)],
+              mt_Get_Thread_Id(),
+              l_Short_File_Name,
+              line_number);
+#endif
     l_Data.m_Level = level;
     l_Data.m_Message = msg;
     mt_Log(token, l_Data);
@@ -129,14 +142,20 @@ void LoggerPool::mt_Log(const char* token, const LogData& data)
     mt_Get_Logger(token).mt_Log(data);
 }
 
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #define FUNC_GET_CURRENT_THREAD_IS GetCurrentThreadId
+#else
+    #define FUNC_GET_CURRENT_THREAD_IS pthread_self
+#endif
+
 int LoggerPool::mt_Get_Thread_Id(void)
 {
-    auto it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(GetCurrentThreadId()));
+    auto it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(FUNC_GET_CURRENT_THREAD_IS()));
 
     if (it == m_Threads.end())
     {
-        m_Threads.push_back(GetCurrentThreadId());
-        it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(GetCurrentThreadId()));
+        m_Threads.push_back(FUNC_GET_CURRENT_THREAD_IS());
+        it = std::find(m_Threads.begin(), m_Threads.end(), static_cast<int>(FUNC_GET_CURRENT_THREAD_IS()));
     }
 
     return std::distance(m_Threads.begin(), it);
