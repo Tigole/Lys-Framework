@@ -99,7 +99,7 @@ const char* ConsoleLinux::mt_Get_Level_String(LogLevel level)
     switch(level)
     {
     case LogLevel::Trace: return "\033[39m";
-    case LogLevel::Debug: return "\033[34m";
+    case LogLevel::Debug: return "\033[36m";
     case LogLevel::Info: return "\033[32m";
     case LogLevel::Warning: return "\033[33m";
     case LogLevel::Error: return "\033[31m";
