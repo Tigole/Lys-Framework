@@ -35,6 +35,7 @@ struct LYS_API File
     static bool smt_Cut_Path(const std::string& full_path, File& file);
 };
 
+LYS_API bool fn_Is_File(const std::string& path);
 
 LYS_API std::vector<File> fn_Get_Files(const std::string& path, int depth = -1);
 LYS_API std::vector<std::string> fn_Get_Directories(const std::string& path, int depth = -1);

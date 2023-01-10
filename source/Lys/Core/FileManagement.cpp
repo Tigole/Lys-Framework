@@ -153,6 +153,23 @@ bool File::smt_Cut_Path(const std::string& full_path, File& file)
 
 
 
+bool fn_Is_File(const std::string& path)
+{
+#if (PLATFORM == PLATFORM_WINDOWS)
+	std::ifstream l_Stream;
+	l_Stream.open(path);
+	return l_Stream.is_open();
+#else
+    struct stat l_Stat;
+    if (stat(path.c_str(), &l_Stat) == 0)
+    {
+        return S_ISREG(l_Stat.st_mode) != 0;
+    }
+    return false;
+#endif
+}
+
+
 
 
 std::vector<File> fn_Get_Files(const std::string& path, int depth)
@@ -160,7 +177,6 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
     std::vector<File> l_Ret;
     DIR *dir;
     struct dirent *ent;
-    std::ifstream l_Stream;
     std::string l_str;
     File l_File;
 
@@ -172,14 +188,12 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
             l_str = ent->d_name;
             if ((l_str != ".") && (l_str != ".."))
             {
-                l_Stream.open(path + l_str);
-                if (l_Stream.is_open())
+                if (fn_Is_File(path + l_str) == true)
                 {
                     l_File.m_Name = l_str.substr(0, l_str.find_last_of('.'));
                     l_File.m_Extension = l_str.substr(l_str.find_last_of('.') + 1);
                     l_File.m_Path = path;
                     l_Ret.push_back(l_File);
-                    l_Stream.close();
                 }
                 else if (depth != 0)
                 {
@@ -205,7 +219,6 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
     std::vector<std::string> l_Ret;
     DIR *dir;
     struct dirent *ent;
-    std::ifstream l_Stream;
     std::string l_str;
 
     if ((dir = opendir(path.c_str())) != NULL)
@@ -216,8 +229,7 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
             l_str = ent->d_name;
             if ((l_str != ".") && (l_str != ".."))
             {
-                l_Stream.open(path + l_str);
-                if (l_Stream.is_open() == false)
+                if (fn_Is_File(path + l_str) == false)
                 {
                     l_Ret.push_back(path + l_str + '/');
 
@@ -232,10 +244,6 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
                             l_Ret.push_back(l_Sub[ii]);
                         }
                     }
-                }
-                else
-                {
-                    l_Stream.close();
                 }
             }
         }
