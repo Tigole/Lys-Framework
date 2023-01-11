@@ -275,18 +275,18 @@ bool fn_Create_Directory(const std::string& path)
 
     if (l_Creation_Succeded == true)
     {
-        LYS_LOG_CORE_DEBUG("Directory created: '%s'", l_Sub_Seq[ii].c_str());
+        LYS_LOG_CORE_DEBUG("Directory created: '%s'", path.c_str());
     }
     else
     {
         if (GetLastError() == ERROR_ALREADY_EXISTS)
         {
-            LYS_LOG_CORE_TRACE("Directory already exists: '%s'", l_Sub_Seq[ii].c_str());
+            LYS_LOG_CORE_TRACE("Directory already exists: '%s'", path.c_str());
             l_Creation_Succeded = true;
         }
         else
         {
-            LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", l_Sub_Seq[ii].c_str());
+            LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", path.c_str());
         }
     }
     return l_Creation_Succeded;
