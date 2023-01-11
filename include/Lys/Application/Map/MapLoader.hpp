@@ -11,7 +11,7 @@
 #include "Lys/Core/Array2D.hpp"
 #include "Lys/Core/FileManagement.hpp"
 
-class TiXmlElement;
+class XML_Element;
 
 
 template<typename ElementType>
@@ -126,7 +126,6 @@ struct LYS_API MapData
     struct TilesetData
     {
         uint32_t m_First_Gid;
-        std::string m_Source_File;
         TilesetInfo m_Tileset_Info;
     };
 
@@ -160,20 +159,25 @@ private:
 class LYS_API MapLoader_Tiled_1_9
 {
 public:
-    MapLoader_Tiled_1_9(const std::string& file_directory);
 
-    bool mt_Load(const TiXmlElement& root, MapData& map_data);
+    bool mt_Load(const File& file_path, MapData& map_data);
 
 private:
 
-    bool mt_Load_Layer(const TiXmlElement& layer, MapData::TileLayer& tile_layer);
-    bool mt_Load_Layer_Data_CSV(const char* csv_encoded_data, MapData::TileLayer& tile_layer);
+    bool mt_Load_Layer(const XML_Element& layer);
+    bool mt_Load_Layer_Data(const XML_Element& data);
+    bool mt_Load_Layer_Data_CSV(const char* csv_encoded_data);
 
-    bool mt_Load_Object(const TiXmlElement& object, MapData::ObjectLayer& object_layer);
-    bool mt_Load_Object_Property(const TiXmlElement& property, MapData::Object& object);
+    bool mt_Load_Object(const XML_Element& object);
+    bool mt_Load_Object_Property(const XML_Element& property);
 
-    std::string m_File_Directory;
+    bool mt_Load_Tileset(const File& file_path, MapData::TilesetData& tileset_data);
+
+    MapData::TileLayer m_Tile_Layer;
+    MapData::ObjectLayer m_Object_Layer;
+    MapData::Object m_Object;
 };
+
 
 }
 

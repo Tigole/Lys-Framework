@@ -48,7 +48,7 @@
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
 			<Add directory="../../../submodules/imgui" />
-			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Include" />
 			<Add directory="../../../submodules/glm" />
 		</Compiler>
 		<Linker>
@@ -56,7 +56,7 @@
 			<Add option='print(&quot;-lLys-log &quot;);' />
 			<Add option='print(&quot;-lLys-imgui &quot;);' />
 			<Add option='print(&quot;-lLys-core &quot;);' />
-			<Add option='print(&quot;-lLys-xml &quot;);' />
+			<Add option='print(&quot;-lTinyXML_Boosted &quot;);' />
 			<Add option='print(&quot;-lsfml-system &quot;);' />
 			<Add option='print(&quot;-lsfml-window &quot;);' />
 			<Add option='print(&quot;-lsfml-graphics &quot;);' />
@@ -71,17 +71,7 @@
 			<Add option='print(&quot;-lGL &quot;);' />
 			<Add option="};" />
 			<Add option="]]" />
-			<Add library="Lys-log" />
-			<Add library="Lys-imgui" />
-			<Add library="sfml-system" />
-			<Add library="sfml-window" />
-			<Add library="sfml-graphics" />
-			<Add library="sfml-audio" />
-			<Add library="sfml-network" />
-			<Add library="GL" />
-			<Add library="Lys-core" />
-			<Add library="Lys-xml" />
-			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Build" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
 		<Unit filename="../../../include/Lys/Application/Event.hpp" />

@@ -1,7 +1,6 @@
 #include "Lys/GUIModule/GUI_Manager.hpp"
 
 
-#include "XMLFileLoader.hpp"
 #include "Lys/GUIModule/GUI_Manager_Loader.hpp"
 #include "Lys/GUIModule/GUI_Interface.hpp"
 

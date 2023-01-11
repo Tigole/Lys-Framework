@@ -5,13 +5,11 @@
 			<Depends filename="Lys-imgui/Lys-imgui.cbp" />
 			<Depends filename="Lys-log/Lys-log.cbp" />
 			<Depends filename="Lys-core/Lys-core.cbp" />
-			<Depends filename="Lys-xml/Lys-xml.cbp" />
 		</Project>
 		<Project filename="Lys-imgui/Lys-imgui.cbp" />
 		<Project filename="Lys-log/Lys-log.cbp" />
 		<Project filename="Lys-core/Lys-core.cbp">
 			<Depends filename="Lys-log/Lys-log.cbp" />
 		</Project>
-		<Project filename="Lys-xml/Lys-xml.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
