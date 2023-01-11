@@ -54,6 +54,19 @@ std::string File::mt_Get_Path_Name_Ext(void) const
     return m_Path + m_Name + '.' + m_Extension;
 }
 
+std::string File::mt_Get_Parent_Path(void) const
+{
+    std::string l_Parent_Path;
+
+    LYS_LOG_CORE_DEBUG("m_Path: '%s'", m_Path.c_str());
+    l_Parent_Path = m_Path.substr(0, m_Path.find_last_of('/'));
+    LYS_LOG_CORE_DEBUG("l_Parent_Path: '%s'", l_Parent_Path.c_str());
+    l_Parent_Path = l_Parent_Path.substr(0, l_Parent_Path.find_last_of('/') + 1);
+    LYS_LOG_CORE_DEBUG("l_Parent_Path: '%s'", l_Parent_Path.c_str());
+
+    return l_Parent_Path;
+}
+
 bool File::mt_Create_Path_To_File(void) const
 {
     std::vector<std::string> l_Sub_Seq;
@@ -178,7 +191,9 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
     DIR *dir;
     struct dirent *ent;
     std::string l_str;
-    File l_File;
+    std::string l_File_Name;
+    std::string l_File_Ext;
+    std::string l_File_Path;
 
     if ((dir = opendir(path.c_str())) != NULL)
     {
@@ -190,10 +205,10 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
             {
                 if (fn_Is_File(path + l_str) == true)
                 {
-                    l_File.m_Name = l_str.substr(0, l_str.find_last_of('.'));
-                    l_File.m_Extension = l_str.substr(l_str.find_last_of('.') + 1);
-                    l_File.m_Path = path;
-                    l_Ret.push_back(l_File);
+                    l_File_Name = l_str.substr(0, l_str.find_last_of('.'));
+                    l_File_Ext = l_str.substr(l_str.find_last_of('.') + 1);
+                    l_File_Path = path;
+                    l_Ret.push_back(File(l_File_Path, l_File_Name, l_File_Ext));
                 }
                 else if (depth != 0)
                 {
