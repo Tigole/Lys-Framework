@@ -16,11 +16,10 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-Wall" />
-					<Add option="-DBUILD_DLL" />
 					<Add option="-g" />
+					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
-					<Add library="user32" />
 					<Add directory="../../../build/Debug" />
 				</Linker>
 			</Target>
@@ -33,18 +32,18 @@
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
+					<Add option="-O2" />
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
-					<Add option="-O2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="user32" />
 					<Add directory="../../../build/Release" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-fPIC" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />

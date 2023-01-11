@@ -43,6 +43,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-fPIC" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
@@ -51,20 +52,37 @@
 			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
 		</Compiler>
 		<Linker>
+			<Add option="[[" />
+			<Add option='print(&quot;-lLys-log &quot;);' />
+			<Add option='print(&quot;-lsfml-system &quot;);' />
+			<Add option='print(&quot;-lsfml-window &quot;);' />
+			<Add option='print(&quot;-lsfml-graphics &quot;);' />
+			<Add option='print(&quot;-lsfml-audio &quot;);' />
+			<Add option='print(&quot;-lsfml-network &quot;);' />
+			<Add option="if(PLATFORM == PLATFORM_MSW) {" />
+			<Add option='print(&quot;-lopengl32 &quot;);' />
+			<Add option='print(&quot;-lglu32 &quot;);' />
+			<Add option='print(&quot;-luser32 &quot;);' />
+			<Add option="}" />
+			<Add option="else if(PLATFORM == PLATFORM_GTK) {" />
+			<Add option='print(&quot;-lGL &quot;);' />
+			<Add option="};" />
+			<Add option="]]" />
 			<Add library="Lys-log" />
 			<Add library="sfml-system" />
 			<Add library="sfml-window" />
 			<Add library="sfml-graphics" />
 			<Add library="sfml-audio" />
 			<Add library="sfml-network" />
-			<Add library="opengl32" />
-			<Add library="user32" />
+			<Add library="GL" />
 			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Core/Core.hpp" />
+		<Unit filename="../../../include/Lys/Core/FileManagement.hpp" />
 		<Unit filename="../../../include/Lys/Core/FormatHelpers.hpp" />
 		<Unit filename="../../../include/Lys/Core/Profiler.hpp" />
 		<Unit filename="../../../include/Lys/LysConfig.hpp" />
+		<Unit filename="../../../source/Lys/Core/FileManagement.cpp" />
 		<Unit filename="../../../source/Lys/Core/Profiler.cpp" />
 		<Unit filename="../../../source/Lys/Core/Singleton_Private.cpp" />
 		<Extensions>
