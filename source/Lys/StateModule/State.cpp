@@ -76,6 +76,11 @@ void State::mt_Render_Active_Layers(void)
 {
     std::size_t l_First_Rendering_Layer_Id;
 
+    if (m_Active_Layers.empty() == true)
+    {
+        return;
+    }
+
     for (l_First_Rendering_Layer_Id = m_Active_Layers.size() - 1; true; l_First_Rendering_Layer_Id--)
     {
         if (m_Active_Layers[l_First_Rendering_Layer_Id]->mt_Get_Rendering_Forward_Strategy() == lys::LayerForward::Stop)
