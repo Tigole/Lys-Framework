@@ -18,7 +18,7 @@ void StateManager::mt_Add_State(std::size_t state_id, State* s)
 {
     s->m_State_Manager = this;
     m_States.emplace(state_id, s);
-    s->mt_OnCreate();
+    s->mt_On_Create();
 }
 
 void StateManager::mt_Set_Loading_State(State* s)
@@ -35,7 +35,7 @@ void StateManager::mt_Change_State(std::size_t new_state_id)
 
     if (m_Loading_State != nullptr)
     {
-        m_Loading_State->mt_OnEntry();
+        m_Loading_State->mt_On_Entry();
     }
 }
 
@@ -53,7 +53,7 @@ void StateManager::mt_OnUpdate(float elapsed_time)
 
         if (m_Loading_State != nullptr)
         {
-            m_Loading_State->mt_OnUpdate(elapsed_time);
+            m_Loading_State->mt_On_Update(elapsed_time);
         }
 
         if (m_Loading_Task.mt_Pop_Result(l_New_State))
@@ -62,7 +62,7 @@ void StateManager::mt_OnUpdate(float elapsed_time)
 
             if (m_Loading_State != nullptr)
             {
-                m_Loading_State->mt_OnExit();
+                m_Loading_State->mt_On_Exit();
             }
 
             m_Loading = false;
@@ -71,7 +71,7 @@ void StateManager::mt_OnUpdate(float elapsed_time)
     else
     {
         auto l_Current_State = m_States.find(m_Current_State)->second.get();
-        l_Current_State->mt_OnUpdate(elapsed_time);
+        l_Current_State->mt_On_Update(elapsed_time);
     }
 }
 
@@ -82,12 +82,12 @@ void StateManager::mt_OnEvent(const Event& event)
     {
         if (m_Loading_State != nullptr)
         {
-            m_Loading_State->mt_OnEvent(event);
+            m_Loading_State->mt_On_Event(event);
         }
     }
     else
     {
-        m_States[m_Current_State]->mt_OnEvent(event);
+        m_States[m_Current_State]->mt_On_Event(event);
     }
 }
 
@@ -100,12 +100,12 @@ bool StateManager::mt_Loading_Task(std::size_t& next_state)
 
     if (l_Current_State != m_States.end())
     {
-        l_b_Ret = l_Current_State->second->mt_OnExit();
+        l_b_Ret = l_Current_State->second->mt_On_Exit();
     }
 
     if ((l_b_Ret == true) && (l_Next_State != m_States.end()))
     {
-        l_b_Ret = l_Next_State->second->mt_OnEntry();
+        l_b_Ret = l_Next_State->second->mt_On_Entry();
     }
 
     return l_b_Ret;

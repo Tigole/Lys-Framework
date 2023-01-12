@@ -15,10 +15,10 @@ class LYS_API LayerLys : public Layer
 public:
     LayerLys();
 
-    LayerEventForward mt_OnUpdate([[maybe_unused]] float elapsed_time) override;
-    LayerEventForward mt_OnRender(void) override;
+    LayerForward mt_On_Update([[maybe_unused]] float elapsed_time) override;
+    void mt_On_Render(void) override;
 
-    void mt_OnKeyEvent(const KeyEvent& key_event);
+    LayerForward mt_On_Event_Key_Released(const KeyEvent& event) override;
 
     std::size_t m_Next_State;
 

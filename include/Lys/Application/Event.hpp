@@ -9,21 +9,46 @@ namespace lys
 
 struct LYS_API MouseButtonEvent
 {
-    bool m_Pressed;
     sf::Event::MouseButtonEvent m_Mouse;
 };
 
+struct LYS_API MouseMoveEvent
+{
+    sf::Event::MouseMoveEvent m_Mouse;
+};
+
+struct LYS_API MouseWheelScrollEvent
+{
+    sf::Event::MouseWheelScrollEvent m_Scroll;
+};
+
+
+
 struct LYS_API KeyEvent
 {
-    bool m_Pressed;
     sf::Event::KeyEvent m_Key;
 };
 
+
+
 struct LYS_API JoystickButtonEvent
 {
-    bool m_Pressed;
     sf::Event::JoystickButtonEvent m_Button;
 };
+
+struct LYS_API JoystickMoveEvent
+{
+    sf::Event::JoystickMoveEvent m_Joystick;
+};
+
+
+
+struct LYS_API TextEvent
+{
+    sf::Event::TextEvent m_Text;
+};
+
+
 
 struct LYS_API Event
 {

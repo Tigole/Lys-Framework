@@ -6,7 +6,7 @@ namespace lys
 {
 
 
-void Layer::mt_OnEvent(const Event& event)
+LayerForward Layer::mt_On_Event(const Event& event)
 {
     switch(event.m_SFML.type)
     {
@@ -19,44 +19,24 @@ void Layer::mt_OnEvent(const Event& event)
     case sf::Event::GainedFocus:            /// Ignored
         break;
 
-    case sf::Event::TextEntered:
-        mt_Send_Message(event.m_SFML.text);
-        break;
-    case sf::Event::KeyPressed:
-        mt_Send_Message(KeyEvent{true, event.m_SFML.key});
-        break;
-    case sf::Event::KeyReleased:
-        mt_Send_Message(KeyEvent{false, event.m_SFML.key});
-        break;
+    case sf::Event::TextEntered: return mt_On_Event_Text_Entered(TextEvent{event.m_SFML.text});
+    case sf::Event::KeyPressed: return mt_On_Event_Key_Pressed(KeyEvent{event.m_SFML.key});
+    case sf::Event::KeyReleased: return mt_On_Event_Key_Released(KeyEvent{event.m_SFML.key});
 
     case sf::Event::MouseWheelMoved:        /// Ignored (deprecated)
         break;
-    case sf::Event::MouseWheelScrolled:
-        mt_Send_Message(event.m_SFML.mouseWheelScroll);
-        break;
-    case sf::Event::MouseButtonPressed:
-        mt_Send_Message(MouseButtonEvent{true, event.m_SFML.mouseButton});
-        break;
-    case sf::Event::MouseButtonReleased:
-        mt_Send_Message(MouseButtonEvent{false, event.m_SFML.mouseButton});
-        break;
-    case sf::Event::MouseMoved:
-        mt_Send_Message(event.m_SFML.mouseMove);
-        break;
+    case sf::Event::MouseWheelScrolled: return mt_On_Event_Mouse_Wheel_Scroll(MouseWheelScrollEvent{event.m_SFML.mouseWheelScroll});
+    case sf::Event::MouseButtonPressed: return mt_On_Event_Mouse_Button_Released(MouseButtonEvent{event.m_SFML.mouseButton});
+    case sf::Event::MouseButtonReleased: return mt_On_Event_Mouse_Button_Released(MouseButtonEvent{event.m_SFML.mouseButton});
+    case sf::Event::MouseMoved: return mt_On_Event_Mouse_Move(MouseMoveEvent{event.m_SFML.mouseMove});
     case sf::Event::MouseEntered:           /// Ignored
         break;
     case sf::Event::MouseLeft:              /// Ignored
         break;
 
-    case sf::Event::JoystickButtonPressed:
-        mt_Send_Message(JoystickButtonEvent{true, event.m_SFML.joystickButton});
-        break;
-    case sf::Event::JoystickButtonReleased:
-        mt_Send_Message(JoystickButtonEvent{false, event.m_SFML.joystickButton});
-        break;
-    case sf::Event::JoystickMoved:
-        mt_Send_Message(event.m_SFML.joystickMove);
-        break;
+    case sf::Event::JoystickButtonPressed: return mt_On_Event_Joystick_Button_Pressed(JoystickButtonEvent{event.m_SFML.joystickButton});
+    case sf::Event::JoystickButtonReleased: return mt_On_Event_Joystick_Button_Released(JoystickButtonEvent{event.m_SFML.joystickButton});
+    case sf::Event::JoystickMoved: return mt_On_Event_Joystick_Move_Released(JoystickMoveEvent{event.m_SFML.joystickMove});
     case sf::Event::JoystickConnected:      /// Ignored
         break;
     case sf::Event::JoystickDisconnected:   /// Ignored
@@ -71,6 +51,8 @@ void Layer::mt_OnEvent(const Event& event)
     case sf::Event::SensorChanged:          /// Ignored
         break;
     }
+
+    return LayerForward::Stop;
 }
 
 

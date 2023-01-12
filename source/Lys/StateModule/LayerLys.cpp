@@ -11,21 +11,19 @@ namespace lys
 LayerLys::LayerLys() :
     m_Next_State(-1),
     m_Condition_Change_State(false)
-{
-    mt_Add_Receiver(&LayerLys::mt_OnKeyEvent, this);
-}
+{}
 
-LayerEventForward LayerLys::mt_OnUpdate([[maybe_unused]] float elapsed_time)
+LayerForward LayerLys::mt_On_Update([[maybe_unused]] float elapsed_time)
 {
     if (m_Condition_Change_State == true)
     {
         mt_Send_Message(Message_ChangeState(m_Next_State));
     }
 
-    return LayerEventForward::Stop;
+    return LayerForward::Stop;
 }
 
-LayerEventForward LayerLys::mt_OnRender(void)
+void LayerLys::mt_On_Render(void)
 {
     gui::TextSettings l_Text_Settings;
 
@@ -37,16 +35,16 @@ LayerEventForward LayerLys::mt_OnRender(void)
     l_Text_Settings.m_Outline_Thickness = 0.0f;
 
     Renderer::smt_Get().mt_Draw_Text("Lys", Vector2f(Window::smt_Get().mt_Get_Size().x * 0.5f, Window::smt_Get().mt_Get_Size().y * 0.66f), l_Text_Settings);
-
-    return LayerEventForward::Stop;
 }
 
-void LayerLys::mt_OnKeyEvent(const KeyEvent& key_event)
+LayerForward LayerLys::mt_On_Event_Key_Released(const KeyEvent& key_event)
 {
-    if (key_event.m_Pressed == false && key_event.m_Key.code == sf::Keyboard::Space)
+    if (key_event.m_Key.code == sf::Keyboard::Space)
     {
         m_Condition_Change_State = true;
     }
+
+    return LayerForward::Stop;
 }
 
 }

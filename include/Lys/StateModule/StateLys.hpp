@@ -14,8 +14,8 @@ class LYS_API State_Lys : public State
 public:
     State_Lys();
 
-    bool mt_OnEntry(void) override;
-    bool mt_OnExit(void) override;
+    bool mt_On_Entry(void) override;
+    bool mt_On_Exit(void) override;
 
     void mt_Set_Next_State(std::size_t next_state);
 

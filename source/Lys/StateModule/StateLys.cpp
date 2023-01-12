@@ -8,7 +8,7 @@ namespace lys
 State_Lys::State_Lys() : m_Layer()
 {}
 
-bool State_Lys::mt_OnEntry(void)
+bool State_Lys::mt_On_Entry(void)
 {
     LYS_LOG_CORE_DEBUG("Lys State");
 
@@ -17,9 +17,9 @@ bool State_Lys::mt_OnEntry(void)
     return true;
 }
 
-bool State_Lys::mt_OnExit(void)
+bool State_Lys::mt_On_Exit(void)
 {
-    mt_Pop_Layer();
+    mt_Pop_Layer(&m_Layer);
 
     return true;
 }
