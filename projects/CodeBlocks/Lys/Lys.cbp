@@ -41,27 +41,37 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++17" />
+			<Add option="-fPIC" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
 			<Add directory="../../../submodules/imgui-sfml" />
 			<Add directory="../../../submodules/imgui" />
-			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Include" />
 			<Add directory="../../../submodules/glm" />
 		</Compiler>
 		<Linker>
-			<Add library="Lys-log" />
-			<Add library="Lys-imgui" />
-			<Add library="sfml-system" />
-			<Add library="sfml-window" />
-			<Add library="sfml-graphics" />
-			<Add library="sfml-audio" />
-			<Add library="sfml-network" />
-			<Add library="opengl32" />
-			<Add library="user32" />
-			<Add library="Lys-core" />
-			<Add library="Lys-xml" />
-			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
+			<Add option="[[" />
+			<Add option='print(&quot;-lLys-log &quot;);' />
+			<Add option='print(&quot;-lLys-imgui &quot;);' />
+			<Add option='print(&quot;-lLys-core &quot;);' />
+			<Add option='print(&quot;-lTinyXML_Boosted &quot;);' />
+			<Add option='print(&quot;-lsfml-system &quot;);' />
+			<Add option='print(&quot;-lsfml-window &quot;);' />
+			<Add option='print(&quot;-lsfml-graphics &quot;);' />
+			<Add option='print(&quot;-lsfml-audio &quot;);' />
+			<Add option='print(&quot;-lsfml-network &quot;);' />
+			<Add option="if(PLATFORM == PLATFORM_MSW) {" />
+			<Add option='print(&quot;-lopengl32 &quot;);' />
+			<Add option='print(&quot;-lglu32 &quot;);' />
+			<Add option='print(&quot;-luser32 &quot;);' />
+			<Add option="}" />
+			<Add option="else if(PLATFORM == PLATFORM_GTK) {" />
+			<Add option='print(&quot;-lGL &quot;);' />
+			<Add option="};" />
+			<Add option="]]" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Build" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
 		<Unit filename="../../../include/Lys/Application/Event.hpp" />
@@ -74,7 +84,6 @@
 		<Unit filename="../../../include/Lys/Core/Array2D.inl" />
 		<Unit filename="../../../include/Lys/Core/Color.hpp" />
 		<Unit filename="../../../include/Lys/Core/Core.hpp" />
-		<Unit filename="../../../include/Lys/Core/FileManagement.hpp" />
 		<Unit filename="../../../include/Lys/Core/FormatHelpers.hpp" />
 		<Unit filename="../../../include/Lys/Core/SFML_Conversion.hpp" />
 		<Unit filename="../../../include/Lys/ECSModule/Entity.hpp" />
@@ -122,7 +131,6 @@
 		<Unit filename="../../../source/Lys/Application/Map/Tileset.cpp" />
 		<Unit filename="../../../source/Lys/Application/Window.cpp" />
 		<Unit filename="../../../source/Lys/Core/Array2D.cpp" />
-		<Unit filename="../../../source/Lys/Core/FileManagement.cpp" />
 		<Unit filename="../../../source/Lys/Core/Singleton_Private.cpp" />
 		<Unit filename="../../../source/Lys/ECSModule/Entity.cpp" />
 		<Unit filename="../../../source/Lys/ECSModule/System.cpp" />

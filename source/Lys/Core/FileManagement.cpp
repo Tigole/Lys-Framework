@@ -1,13 +1,16 @@
 #include "Lys/Core/FileManagement.hpp"
 
 #include <unistd.h>
-#include <dir.h>
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #include <dir.h>
+    #include <windows.h>
+#endif
 #include <dirent.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include <fstream>
 
-#include <windows.h>
 
 #include "Lys/Core/Log.hpp"
 
@@ -51,6 +54,19 @@ std::string File::mt_Get_Path_Name_Ext(void) const
     return m_Path + m_Name + '.' + m_Extension;
 }
 
+std::string File::mt_Get_Parent_Path(void) const
+{
+    std::string l_Parent_Path;
+
+    LYS_LOG_CORE_DEBUG("m_Path: '%s'", m_Path.c_str());
+    l_Parent_Path = m_Path.substr(0, m_Path.find_last_of('/'));
+    LYS_LOG_CORE_DEBUG("l_Parent_Path: '%s'", l_Parent_Path.c_str());
+    l_Parent_Path = l_Parent_Path.substr(0, l_Parent_Path.find_last_of('/') + 1);
+    LYS_LOG_CORE_DEBUG("l_Parent_Path: '%s'", l_Parent_Path.c_str());
+
+    return l_Parent_Path;
+}
+
 bool File::mt_Create_Path_To_File(void) const
 {
     std::vector<std::string> l_Sub_Seq;
@@ -63,23 +79,6 @@ bool File::mt_Create_Path_To_File(void) const
     for (std::size_t ii = 0; (ii < l_Sub_Seq.size()) && (l_b_Ret == true); ii++)
     {
         l_b_Ret = fn_Create_Directory(l_Sub_Seq[ii]);
-
-        if (l_b_Ret == true)
-        {
-            LYS_LOG_CORE_DEBUG("Directory created: '%s'", l_Sub_Seq[ii].c_str());
-        }
-        else
-        {
-            if (GetLastError() == ERROR_ALREADY_EXISTS)
-            {
-                LYS_LOG_CORE_TRACE("Directory already exists: '%s'", l_Sub_Seq[ii].c_str());
-                l_b_Ret = true;
-            }
-            else
-            {
-                LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", l_Sub_Seq[ii].c_str());
-            }
-        }
     }
 
     return l_b_Ret;
@@ -167,6 +166,23 @@ bool File::smt_Cut_Path(const std::string& full_path, File& file)
 
 
 
+bool fn_Is_File(const std::string& path)
+{
+#if (PLATFORM == PLATFORM_WINDOWS)
+	std::ifstream l_Stream;
+	l_Stream.open(path);
+	return l_Stream.is_open();
+#else
+    struct stat l_Stat;
+    if (stat(path.c_str(), &l_Stat) == 0)
+    {
+        return S_ISREG(l_Stat.st_mode) != 0;
+    }
+    return false;
+#endif
+}
+
+
 
 
 std::vector<File> fn_Get_Files(const std::string& path, int depth)
@@ -174,9 +190,10 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
     std::vector<File> l_Ret;
     DIR *dir;
     struct dirent *ent;
-    std::ifstream l_Stream;
     std::string l_str;
-    File l_File;
+    std::string l_File_Name;
+    std::string l_File_Ext;
+    std::string l_File_Path;
 
     if ((dir = opendir(path.c_str())) != NULL)
     {
@@ -186,14 +203,12 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
             l_str = ent->d_name;
             if ((l_str != ".") && (l_str != ".."))
             {
-                l_Stream.open(path + l_str);
-                if (l_Stream.is_open())
+                if (fn_Is_File(path + l_str) == true)
                 {
-                    l_File.m_Name = l_str.substr(0, l_str.find_last_of('.'));
-                    l_File.m_Extension = l_str.substr(l_str.find_last_of('.') + 1);
-                    l_File.m_Path = path;
-                    l_Ret.push_back(l_File);
-                    l_Stream.close();
+                    l_File_Name = l_str.substr(0, l_str.find_last_of('.'));
+                    l_File_Ext = l_str.substr(l_str.find_last_of('.') + 1);
+                    l_File_Path = path;
+                    l_Ret.push_back(File(l_File_Path, l_File_Name, l_File_Ext));
                 }
                 else if (depth != 0)
                 {
@@ -219,7 +234,6 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
     std::vector<std::string> l_Ret;
     DIR *dir;
     struct dirent *ent;
-    std::ifstream l_Stream;
     std::string l_str;
 
     if ((dir = opendir(path.c_str())) != NULL)
@@ -230,8 +244,7 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
             l_str = ent->d_name;
             if ((l_str != ".") && (l_str != ".."))
             {
-                l_Stream.open(path + l_str);
-                if (l_Stream.is_open() == false)
+                if (fn_Is_File(path + l_str) == false)
                 {
                     l_Ret.push_back(path + l_str + '/');
 
@@ -247,10 +260,6 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
                         }
                     }
                 }
-                else
-                {
-                    l_Stream.close();
-                }
             }
         }
         closedir (dir);
@@ -261,7 +270,34 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
 
 bool fn_Create_Directory(const std::string& path)
 {
-    return CreateDirectory(path.c_str(), nullptr);
+#if (PLATFORM == PLATFORM_WINDOWS)
+    bool l_Creation_Succeded = CreateDirectory(path.c_str(), nullptr);
+
+    if (l_Creation_Succeded == true)
+    {
+        LYS_LOG_CORE_DEBUG("Directory created: '%s'", path.c_str());
+    }
+    else
+    {
+        if (GetLastError() == ERROR_ALREADY_EXISTS)
+        {
+            LYS_LOG_CORE_TRACE("Directory already exists: '%s'", path.c_str());
+            l_Creation_Succeded = true;
+        }
+        else
+        {
+            LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", path.c_str());
+        }
+    }
+    return l_Creation_Succeded;
+#else
+    struct stat st = {0};
+    if (stat(path.c_str(), &st) == -1)
+    {
+        return mkdir(path.c_str(), 0700) == 0;
+    }
+    return true;
+#endif
 }
 
 bool fn_File_Exists(const std::string& file_name)

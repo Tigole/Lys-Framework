@@ -3,7 +3,9 @@
 #include "Lys/Core/SFML_Conversion.hpp"
 #include "Lys/Core/Log.hpp"
 
-#include <windows.h>
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #include <windows.h>
+#endif
 
 #if LYS_USE_IMGUI
 #include "imgui-SFML.h"
@@ -35,10 +37,12 @@ void Window::mt_Create(const WindowSettings& settings)
 {
     m_Wnd.create(settings.m_VideoMode, settings.m_Title, (settings.m_Full_Screen == true) ? sf::Style::Fullscreen : sf::Style::Default);
 
+#if (PLATFORM == PLATFORM_WINDOWS)
     if (settings.m_VideoMode == sf::VideoMode::getDesktopMode())
     {
         ShowWindow(m_Wnd.getSystemHandle(), SW_MAXIMIZE);
     }
+#endif
 
 #if LYS_USE_IMGUI
     ImGui::SFML::Init(m_Wnd, true);

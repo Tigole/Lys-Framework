@@ -1,6 +1,8 @@
 #include "Lys/Core/Profiler.hpp"
 
-#include <windows.h>
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #include <windows.h>
+#endif
 
 namespace lys
 {
@@ -69,9 +71,15 @@ void Profiler::mt_End_File(void)
     }
 }
 
+#if (PLATFORM == PLATFORM_WINDOWS)
+    #define GET_CURRENT_THREAD_ID GetCurrentThreadId
+#else
+    #define GET_CURRENT_THREAD_ID pthread_self
+#endif
+
 void Profiler::mt_Write_Function(const char* function_name, const char* phase)
 {
-    int l_PID = GetCurrentThreadId();
+    int l_PID = GET_CURRENT_THREAD_ID();
     int l_Milliseconds;
 
     m_Mutex.lock();

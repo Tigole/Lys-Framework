@@ -26,8 +26,8 @@
 #else
     #if (PLATFORM == PLATFORM_WINDOWS)
         #define LYS_API __declspec(dllimport)
-    #elif (PLATFORM == PLATFORM_UNIX)
-        #define LYS_API
+    #elif (PLATFORM == PLATFORM_LINUX)
+        #define LYS_API __attribute__ ((__visibility__ ("default")))
     #endif
 #endif // LYS_BUILD_DLL
 
