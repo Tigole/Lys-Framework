@@ -36,7 +36,7 @@ LayerForward Layer::mt_On_Event(const Event& event)
 
     case sf::Event::JoystickButtonPressed: return mt_On_Event_Joystick_Button_Pressed(JoystickButtonEvent{event.m_SFML.joystickButton});
     case sf::Event::JoystickButtonReleased: return mt_On_Event_Joystick_Button_Released(JoystickButtonEvent{event.m_SFML.joystickButton});
-    case sf::Event::JoystickMoved: return mt_On_Event_Joystick_Move_Released(JoystickMoveEvent{event.m_SFML.joystickMove});
+    case sf::Event::JoystickMoved: return mt_On_Event_Joystick_Move(JoystickMoveEvent{event.m_SFML.joystickMove});
     case sf::Event::JoystickConnected:      /// Ignored
         break;
     case sf::Event::JoystickDisconnected:   /// Ignored

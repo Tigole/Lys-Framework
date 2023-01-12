@@ -37,11 +37,13 @@ public:
     Application(const char* title, const CommandLineArguments& cla);
     virtual ~Application(){}
 
-    virtual std::size_t mt_Initialize(void) = 0;
-
     int mt_Run(void);
 
 protected:
+
+    virtual std::size_t mt_Initialize(void) = 0;
+
+    virtual void mt_On_Shutdown(void){}
 
     CommandLineArguments m_CLA;
     WindowSettings m_Window_Settings;

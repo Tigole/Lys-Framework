@@ -38,6 +38,10 @@ protected:
 
 private:
 
+    void mt_Update_Active_Layers(float elapsed_time);
+    void mt_Render_Active_Layers(void);
+    void mt_Pop_Pending_Layers(void);
+    void mt_Push_Pending_Layers(void);
 
     std::vector<lys::Layer*> m_Active_Layers;
     std::vector<lys::Layer*> m_Pop_Layers;

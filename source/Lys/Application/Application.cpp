@@ -81,6 +81,8 @@ int Application::mt_Run(void)
         l_Elapsed_Time = l_Clk.restart().asSeconds();
     }
 
+    mt_On_Shutdown();
+
     Renderer::smt_Destroy();
     Window::smt_Get().mt_Destroy();
     WorkingThread::smt_Get().mt_Stop_Thread();

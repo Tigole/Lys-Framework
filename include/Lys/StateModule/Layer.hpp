@@ -59,7 +59,7 @@ protected:
 
     virtual LayerForward mt_On_Event_Joystick_Button_Pressed([[maybe_unused]]const JoystickButtonEvent& event){return LayerForward::Stop;}
     virtual LayerForward mt_On_Event_Joystick_Button_Released([[maybe_unused]]const JoystickButtonEvent& event){return LayerForward::Stop;}
-    virtual LayerForward mt_On_Event_Joystick_Move_Released([[maybe_unused]]const JoystickMoveEvent& event){return LayerForward::Stop;}
+    virtual LayerForward mt_On_Event_Joystick_Move([[maybe_unused]]const JoystickMoveEvent& event){return LayerForward::Stop;}
 
 protected:
 

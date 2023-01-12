@@ -29,17 +29,52 @@ bool State::mt_On_Exit(void)
     return true;
 }
 
+void State::mt_On_Event([[maybe_unused]] const Event& event)
+{
+    lys::LayerForward l_Forward;
+
+    l_Forward = lys::LayerForward::Continue;
+    for (auto it = m_Active_Layers.rbegin(); (it != m_Active_Layers.rend()) && (l_Forward == lys::LayerForward::Continue); it++)
+    {
+        l_Forward = (*it)->mt_On_Event(event);
+    }
+}
+
 void State::mt_On_Update(float elapsed_time)
 {
     LYS_PROFILE_FUNCTION;
+
+    mt_Update_Active_Layers(elapsed_time);
+    mt_Render_Active_Layers();
+    mt_Pop_Pending_Layers();
+    mt_Push_Pending_Layers();
+}
+
+void State::mt_Push_Layer(Layer* layer)
+{
+    layer->mt_Add_Receiver(&State::mt_On_Change_State, this);
+    m_Push_Layers.push_back(layer);
+}
+
+void State::mt_Pop_Layer(Layer* layer)
+{
+    m_Pop_Layers.push_back(layer);
+}
+
+void State::mt_Update_Active_Layers(float elapsed_time)
+{
     lys::LayerForward l_Forward;
-    std::size_t l_First_Rendering_Layer_Id;
 
     l_Forward = lys::LayerForward::Continue;
     for (auto it = m_Active_Layers.rbegin(); (it != m_Active_Layers.rend()) && (l_Forward == lys::LayerForward::Continue); it++)
     {
         l_Forward = (*it)->mt_On_Update(elapsed_time);
     }
+}
+
+void State::mt_Render_Active_Layers(void)
+{
+    std::size_t l_First_Rendering_Layer_Id;
 
     for (l_First_Rendering_Layer_Id = m_Active_Layers.size() - 1; true; l_First_Rendering_Layer_Id--)
     {
@@ -57,7 +92,10 @@ void State::mt_On_Update(float elapsed_time)
     {
         m_Active_Layers[l_First_Rendering_Layer_Id]->mt_On_Render();
     }
+}
 
+void State::mt_Pop_Pending_Layers(void)
+{
     for (std::size_t ii = 0; ii < m_Pop_Layers.size(); ii++)
     {
         auto it = std::find(m_Active_Layers.begin(), m_Active_Layers.end(), m_Pop_Layers[ii]);
@@ -67,34 +105,15 @@ void State::mt_On_Update(float elapsed_time)
         }
     }
     m_Pop_Layers.clear();
+}
 
+void State::mt_Push_Pending_Layers(void)
+{
     for (std::size_t ii = 0; ii < m_Push_Layers.size(); ii++)
     {
         m_Active_Layers.push_back(m_Push_Layers[ii]);
     }
     m_Push_Layers.clear();
-}
-
-void State::mt_On_Event([[maybe_unused]] const Event& event)
-{
-    lys::LayerForward l_Forward;
-
-    l_Forward = lys::LayerForward::Continue;
-    for (auto it = m_Active_Layers.rbegin(); (it != m_Active_Layers.rend()) && (l_Forward == lys::LayerForward::Continue); it++)
-    {
-        l_Forward = (*it)->mt_On_Event(event);
-    }
-}
-
-void State::mt_Push_Layer(Layer* layer)
-{
-    layer->mt_Add_Receiver(&State::mt_On_Change_State, this);
-    m_Push_Layers.push_back(layer);
-}
-
-void State::mt_Pop_Layer(Layer* layer)
-{
-    m_Pop_Layers.push_back(layer);
 }
 
 void State::mt_On_Change_State(const Message_ChangeState& msg)
