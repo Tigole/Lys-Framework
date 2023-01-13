@@ -42,7 +42,7 @@ struct LYS_API LogData
 {
     LogData() : m_Level(LogLevel::Trace), m_Header(), m_Message(){}
     LogLevel m_Level;
-    char m_Header[64];
+    char m_Header[128];
     std::string m_Message;
 };
 
