@@ -20,6 +20,7 @@
 				</Compiler>
 				<Linker>
 					<Add directory="../../../build/Debug" />
+					<Add directory="../../../submodules/TinyXML_Boosted/Build/Debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -37,6 +38,7 @@
 				<Linker>
 					<Add option="-s" />
 					<Add directory="../../../build/Release" />
+					<Add directory="../../../submodules/TinyXML_Boosted/Build/Release" />
 				</Linker>
 			</Target>
 		</Build>
@@ -71,7 +73,6 @@
 			<Add option='print(&quot;-lGL &quot;);' />
 			<Add option="};" />
 			<Add option="]]" />
-			<Add directory="../../../submodules/TinyXML_Boosted/Build" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
 		<Unit filename="../../../include/Lys/Application/Event.hpp" />

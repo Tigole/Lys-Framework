@@ -64,13 +64,6 @@
 			<Add option='print(&quot;-lGL &quot;);' />
 			<Add option="};" />
 			<Add option="]]" />
-			<Add library="sfml-system" />
-			<Add library="sfml-window" />
-			<Add library="sfml-graphics" />
-			<Add library="sfml-audio" />
-			<Add library="sfml-network" />
-			<Add library="GL" />
-			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../submodules/imgui-sfml/imconfig-SFML.h" />
 		<Unit filename="../../../submodules/imgui-sfml/imgui-SFML.cpp" />

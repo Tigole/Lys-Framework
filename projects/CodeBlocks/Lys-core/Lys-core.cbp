@@ -68,7 +68,6 @@
 			<Add option='print(&quot;-lGL &quot;);' />
 			<Add option="};" />
 			<Add option="]]" />
-			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Core/Core.hpp" />
 		<Unit filename="../../../include/Lys/Core/FileManagement.hpp" />
