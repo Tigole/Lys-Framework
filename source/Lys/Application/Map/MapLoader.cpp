@@ -85,6 +85,8 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     });
     l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup", [&](const XML_Element& objectgroup)
     {
+        m_Object_Layer = MapData::ObjectLayer();
+
         if (objectgroup.mt_Get_Attribute("name", m_Object_Layer.m_Object_Layer_Name) == false) return false;
         if (objectgroup.mt_Get_Attribute("id", m_Object_Layer.m_Object_Layer_Id) == false) return false;
 
