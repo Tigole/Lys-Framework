@@ -27,8 +27,12 @@ public:
 
     void mt_Resize(std::size_t xx, std::size_t yy, const T& default_value = T());
 
+    const T& operator()(std::size_t xx, std::size_t yy) const;
     const T& mt_Get(std::size_t xx, std::size_t yy) const;
     T& mt_Get(std::size_t xx, std::size_t yy);
+
+    std::size_t mt_Get_Size_X(void) const;
+    std::size_t mt_Get_Size_Y(void) const;
 
     const T& operator[](const Index2D& ii) const;
     T& operator[](const Index2D& ii);

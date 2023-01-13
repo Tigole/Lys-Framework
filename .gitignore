@@ -34,3 +34,5 @@
 *.depend
 
 *.layout
+
+.vscode/

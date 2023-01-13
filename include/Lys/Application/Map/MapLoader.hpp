@@ -25,6 +25,8 @@ public:
     const ElementType* mt_Get_Element_By_Name(const std::string& element_name) const;
     const ElementType* mt_Get_Element_By_Id(uint32_t element_id) const;
 
+    bool mt_Iterate_Over_Elements(std::function<bool(const ElementType&)> callback) const;
+
 private:
     std::vector<ElementType> m_Elements;
     std::map<uint32_t, std::size_t> m_Elements_Id_Map;
@@ -76,6 +78,19 @@ const ElementType* MultiKeyContainer<ElementType>::mt_Get_Element_By_Id(uint32_t
     return nullptr;
 }
 
+template<typename ElementType>
+bool MultiKeyContainer<ElementType>::mt_Iterate_Over_Elements(std::function<bool(const ElementType&)> callback) const
+{
+    for (std::size_t ii = 0; ii < m_Elements.size(); ii++)
+    {
+        if (callback(m_Elements[ii]) == false)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 
 
@@ -94,18 +109,58 @@ struct LYS_API MapData
 {
     struct Object
     {
-        uint32_t m_Object_Id;
-        std::string m_Object_Name;
-        std::string m_Object_Class;
-        Vector2f m_Object_Pix_Pos;
-        Vector2f m_Object_Pix_Size;
+        uint32_t m_Object_Id = 0;
+        uint32_t m_Object_Gid = 0;
+        std::string m_Object_Name = "";
+        std::string m_Object_Class = "";
+        Vector2f m_Object_Pix_Pos = Vector2f(0.0f, 0.0f);
+        Vector2f m_Object_Pix_Size = Vector2f(0.0f, 0.0f);
+        float m_Object_Rotation_Degres = 0.0f;
+
+        template<typename T>
+        bool mt_Get_Property(const std::string& property_name, T& property_value, const std::map<std::string, T>& object_properties_pool) const
+        {
+            auto it = object_properties_pool.find(property_name);
+            if (it != object_properties_pool.end())
+            {
+                property_value = it->second;
+                return true;
+            }
+            return false;
+        }
+
+        bool mt_Get_Property(const std::string& property_name, bool& property_value) const
+        {
+            return mt_Get_Property(property_name, property_value, m_Object_Properties_Bool);
+        }
+
+        bool mt_Get_Property(const std::string& property_name, int& property_value) const
+        {
+            return mt_Get_Property(property_name, property_value, m_Object_Properties_Int);
+        }
+
+        bool mt_Get_Property(const std::string& property_name, float& property_value) const
+        {
+            return mt_Get_Property(property_name, property_value, m_Object_Properties_Float);
+        }
+
+        bool mt_Get_Property(const std::string& property_name, Color& property_value) const
+        {
+            return mt_Get_Property(property_name, property_value, m_Object_Properties_Color);
+        }
+
+        bool mt_Get_Property(const std::string& property_name, std::string& property_value) const
+        {
+            return mt_Get_Property(property_name, property_value, m_Object_Properties_String);
+        }
 
         std::map<std::string, bool> m_Object_Properties_Bool;
         std::map<std::string, int> m_Object_Properties_Int;
         std::map<std::string, float> m_Object_Properties_Float;
         std::map<std::string, Color> m_Object_Properties_Color;
         std::map<std::string, std::string> m_Object_Properties_String;
-        std::map<std::string, std::string> m_Object_Properties_File;
+        //std::map<std::string, std::string> m_Object_Properties_File;
+        std::vector<Vector2f> m_Polygon;
     };
 
     struct ObjectLayer
@@ -170,6 +225,7 @@ private:
 
     bool mt_Load_Object(const XML_Element& object);
     bool mt_Load_Object_Property(const XML_Element& property);
+    bool mt_Load_Object_Polygon(const XML_Element& polygon);
 
     bool mt_Load_Tileset(const File& file_path, MapData::TilesetData& tileset_data);
 

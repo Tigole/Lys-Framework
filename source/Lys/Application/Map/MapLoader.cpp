@@ -3,6 +3,8 @@
 #include "Lys/Core/Log.hpp"
 #include "TinyXML_Boosted/XMLFileLoader.hpp"
 
+#include <sstream>
+
 namespace lys
 {
 
@@ -106,9 +108,9 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
         map_data.m_Objects_Layers.mt_Add_Element(m_Object_Layer, m_Object_Layer.m_Object_Layer_Id, m_Object_Layer.m_Object_Layer_Name);
         return true;
     });
-    l_Loader.mt_Add_On_Entry_Callback("", [&](const XML_Element& )
+    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/polygon", [&](const XML_Element& polygon)
     {
-        return true;
+        return mt_Load_Object_Polygon(polygon);
     });
     l_Loader.mt_Add_On_Entry_Callback("", [&](const XML_Element& )
     {
@@ -189,7 +191,10 @@ bool MapLoader_Tiled_1_9::mt_Load_Layer_Data_CSV(const char* csv_encoded_data)
 
 bool MapLoader_Tiled_1_9::mt_Load_Object(const XML_Element& object)
 {
+    m_Object = MapData::Object();
+    
     if (object.mt_Get_Attribute("id", m_Object.m_Object_Id) == false) return false;
+    if (object.mt_Get_Attribute("gid", m_Object.m_Object_Gid) == false) return false;
     if (object.mt_Get_Attribute("name", m_Object.m_Object_Name) == false) return false;
     if (object.mt_Get_Attribute("x", m_Object.m_Object_Pix_Pos.x) == false) return false;
     if (object.mt_Get_Attribute("y", m_Object.m_Object_Pix_Pos.y) == false) return false;
@@ -197,6 +202,7 @@ bool MapLoader_Tiled_1_9::mt_Load_Object(const XML_Element& object)
     object.mt_Get_Attribute("class", m_Object.m_Object_Class);
     object.mt_Get_Attribute("width", m_Object.m_Object_Pix_Size.x);
     object.mt_Get_Attribute("height", m_Object.m_Object_Pix_Size.y);
+    object.mt_Get_Attribute("rotation", m_Object.m_Object_Rotation_Degres);
 
     return true;
 }
@@ -249,6 +255,30 @@ bool MapLoader_Tiled_1_9::mt_Load_Object_Property(const XML_Element& property)
     return false;
 }
 
+bool MapLoader_Tiled_1_9::mt_Load_Object_Polygon(const XML_Element& polygon)
+{
+    std::stringstream l_ss;
+    std::string l_Polygon_Points;
+
+    if (polygon.mt_Get_Attribute("points", l_Polygon_Points) == false) return false;
+    l_ss.str(l_Polygon_Points);
+
+    while(std::getline(l_ss, l_Polygon_Points, ' '))
+    {
+        std::stringstream l_ss2;
+        Vector2f l_Offset;
+        char l_Coma;
+
+        l_ss2.str(l_Polygon_Points);
+
+        l_ss2 >> l_Offset.x >> l_Coma >> l_Offset.y;
+
+        l_Offset;
+        m_Object.m_Polygon.push_back(l_Offset);
+    }
+
+    return true;
+}
 
 bool MapLoader_Tiled_1_9::mt_Load_Tileset(const File& file_path, MapData::TilesetData& tileset_data)
 {
