@@ -125,8 +125,13 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
         return true;
     });*/
 
+    if (l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext()) == false)
+    {
+        LYS_LOG_CORE_ERROR("%s", l_Loader.mt_Get_Error_Description().c_str());
+        return false;
+    }
 
-    return l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext());
+    return true;
 }
 
 bool MapLoader_Tiled_1_9::mt_Load_Layer(const XML_Element& layer)
@@ -194,7 +199,6 @@ bool MapLoader_Tiled_1_9::mt_Load_Object(const XML_Element& object)
     m_Object = MapData::Object();
 
     if (object.mt_Get_Attribute("id", m_Object.m_Object_Id) == false) return false;
-    if (object.mt_Get_Attribute("gid", m_Object.m_Object_Gid) == false) return false;
     if (object.mt_Get_Attribute("name", m_Object.m_Object_Name) == false) return false;
     if (object.mt_Get_Attribute("x", m_Object.m_Object_Pix_Pos.x) == false) return false;
     if (object.mt_Get_Attribute("y", m_Object.m_Object_Pix_Pos.y) == false) return false;
@@ -203,6 +207,7 @@ bool MapLoader_Tiled_1_9::mt_Load_Object(const XML_Element& object)
     object.mt_Get_Attribute("width", m_Object.m_Object_Pix_Size.x);
     object.mt_Get_Attribute("height", m_Object.m_Object_Pix_Size.y);
     object.mt_Get_Attribute("rotation", m_Object.m_Object_Rotation_Degres);
+    object.mt_Get_Attribute("gid", m_Object.m_Object_Gid);
 
     return true;
 }
@@ -296,7 +301,7 @@ bool MapLoader_Tiled_1_9::mt_Load_Tileset(const File& file_path, MapData::Tilese
         if (tileset.mt_Get_Attribute("columns", l_Column_Count) == false) return false;
 
         tileset_data.m_Tileset_Info.m_Tile_Count.x = l_Column_Count;
-        tileset_data.m_Tileset_Info.m_Tile_Count.y = l_Tile_Count / l_Column_Count;
+        tileset_data.m_Tileset_Info.m_Tile_Count.y = (l_Column_Count == 0) ? 1 : (l_Tile_Count / l_Column_Count);
         tileset_data.m_Tileset_Info.m_Texture_Size = l_Cell_Size_Pix * tileset_data.m_Tileset_Info.m_Tile_Count;
 
         return true;
