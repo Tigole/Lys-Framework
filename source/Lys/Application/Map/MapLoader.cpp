@@ -94,6 +94,10 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     {
         return mt_Load_Object(object);
     });
+    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/polygon", [&](const XML_Element& polygon)
+    {
+        return mt_Load_Object_Polygon(polygon);
+    });
     l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/property", [&](const XML_Element& object)
     {
         return mt_Load_Object_Property(object);
@@ -108,11 +112,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
         map_data.m_Objects_Layers.mt_Add_Element(m_Object_Layer, m_Object_Layer.m_Object_Layer_Id, m_Object_Layer.m_Object_Layer_Name);
         return true;
     });
-    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/polygon", [&](const XML_Element& polygon)
-    {
-        return mt_Load_Object_Polygon(polygon);
-    });
-    l_Loader.mt_Add_On_Entry_Callback("", [&](const XML_Element& )
+    /*l_Loader.mt_Add_On_Entry_Callback("", [&](const XML_Element& )
     {
         return true;
     });
@@ -123,7 +123,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     l_Loader.mt_Add_On_Entry_Callback("", [&](const XML_Element& )
     {
         return true;
-    });
+    });*/
 
 
     return l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext());
@@ -192,7 +192,7 @@ bool MapLoader_Tiled_1_9::mt_Load_Layer_Data_CSV(const char* csv_encoded_data)
 bool MapLoader_Tiled_1_9::mt_Load_Object(const XML_Element& object)
 {
     m_Object = MapData::Object();
-    
+
     if (object.mt_Get_Attribute("id", m_Object.m_Object_Id) == false) return false;
     if (object.mt_Get_Attribute("gid", m_Object.m_Object_Gid) == false) return false;
     if (object.mt_Get_Attribute("name", m_Object.m_Object_Name) == false) return false;
