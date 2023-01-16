@@ -1,6 +1,6 @@
 #include "Lys/GUIModule/Elements/GUI_Layout.hpp"
 #include "Lys/GUIModule/GUI_Interface.hpp"
-
+#if 0
 namespace lys
 {
 
@@ -85,3 +85,4 @@ void Layout::mt_Set_Margin(const Vector2f& margin)
 }
 
 }
+#endif

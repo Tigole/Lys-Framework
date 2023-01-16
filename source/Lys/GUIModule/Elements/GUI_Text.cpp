@@ -1,5 +1,5 @@
 #include "Lys/GUIModule/Elements/GUI_Text.hpp"
-
+#if 0
 #include "imgui.h"
 
 namespace lys
@@ -24,3 +24,4 @@ void Text::mt_Set_Text(const std::string& text)
 
 }
 }
+#endif

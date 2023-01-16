@@ -1,6 +1,6 @@
 #ifndef _GUI_MANAGER_HPP
 #define _GUI_MANAGER_HPP 1
-
+#if 0
 #include "Lys/Core/Singleton.hpp"
 #include "GUI_Event.hpp"
 
@@ -50,5 +50,5 @@ private:
 }
 
 }
-
+#endif // 0
 #endif // !_GUI_MANAGER_HPP

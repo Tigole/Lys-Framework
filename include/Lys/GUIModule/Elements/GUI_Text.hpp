@@ -1,6 +1,6 @@
 #ifndef _LYS_GUI_TEXT_HPP
 #define _LYS_GUI_TEXT_HPP 1
-
+#if 0
 #include "Lys/GUIModule/GUI_Element.hpp"
 
 namespace lys
@@ -23,5 +23,5 @@ private:
 
 }
 }
-
+#endif // 0
 #endif // _LYS_GUI_TEXT_HPP

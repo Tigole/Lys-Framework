@@ -1,6 +1,6 @@
 #ifndef _GUI_EVENT_HPP
 #define _GUI_EVENT_HPP 1
-
+#if 0
 #include <string>
 
 #include "Lys/LysConfig.hpp"
@@ -61,5 +61,5 @@ struct LYS_API EventDataGUI
 };
 
 #endif // LYS_USE_IMGUI
-
+#endif // 0
 #endif // !_GUI_EVENT_HPP

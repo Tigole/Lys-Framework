@@ -3,7 +3,7 @@
 #include "Lys/GUIModule/GUI_Manager.hpp"
 
 #include "Lys/Core/SFML_Conversion.hpp"
-
+#if 0
 namespace lys
 {
 
@@ -106,3 +106,4 @@ std::size_t Interface_Predefined::mt_Get_Element_Index(const std::string& elemen
 }
 
 }
+#endif

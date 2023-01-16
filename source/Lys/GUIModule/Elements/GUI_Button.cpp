@@ -1,5 +1,5 @@
 #include "Lys/GUIModule/Elements/GUI_Button.hpp"
-
+#if 0
 #include "Lys/GraphicModule/DrawCommandSettings.hpp"
 #include "Lys/GraphicModule/Renderer.hpp"
 
@@ -108,3 +108,4 @@ Vector2f Button::mt_Get_Required_Space(void) const
 }
 
 }
+#endif

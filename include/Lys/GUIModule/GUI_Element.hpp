@@ -1,6 +1,6 @@
 #ifndef _GUI_ELEMENT_HPP
 #define _GUI_ELEMENT_HPP 1
-
+#if 0
 #include "GUI_Styles.hpp"
 #include "Lys/MathModule/Rect.hpp"
 #include "GUI_Manager.hpp"
@@ -120,5 +120,5 @@ protected:
 std::string fn_GUIElementState_ToString(const lys::gui::Element_State& state);
 lys::gui::Element_State fn_GUIElementState_ToEnum(const std::string& state);
 #endif // LYS_USE_IMGUI
-
+#endif // 0
 #endif // !_GUI_ELEMENT_HPP

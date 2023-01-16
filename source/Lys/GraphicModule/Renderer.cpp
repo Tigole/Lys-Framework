@@ -10,9 +10,7 @@
 
 #include "Lys/MathModule/HexGrid.hpp"
 
-#if LYS_USE_IMGUI
 #include "imgui-SFML.h"
-#endif // LYS_USE_IMGUI
 
 namespace lys
 {
@@ -50,19 +48,14 @@ void Renderer::mt_Begin_Scene(float elapsed_time)
 {
     sf::Color l_Clear_Color(sf::Color::Black);
 
-#if LYS_USE_IMGUI
     ImGui::SFML::Update(*m_Wnd, sf::Time(sf::seconds(elapsed_time)));
-#endif // LYS_USE_IMGUI
 
     m_Wnd->clear(l_Clear_Color);
 }
 
 void Renderer::mt_End_Scene(void)
 {
-
-#if LYS_USE_IMGUI
     ImGui::SFML::Render(*m_Wnd);
-#endif // LYS_USE_IMGUI
 
     m_Wnd->display();
 }

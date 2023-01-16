@@ -7,9 +7,7 @@
     #include <windows.h>
 #endif
 
-#if LYS_USE_IMGUI
 #include "imgui-SFML.h"
-#endif // LYS_USE_IMGUI
 
 namespace lys
 {
@@ -44,9 +42,7 @@ void Window::mt_Create(const WindowSettings& settings)
     }
 #endif
 
-#if LYS_USE_IMGUI
     ImGui::SFML::Init(m_Wnd, true);
-#endif // LYS_USE_IMGUI
 
     m_Wnd.setFramerateLimit(0);
     m_Wnd.setKeyRepeatEnabled(false);
@@ -72,9 +68,7 @@ bool Window::mt_Poll_Event(Event& event)
         m_Wnd.setView(sf::View({l_Size.x / 2, l_Size.y / 2}, l_Size));
     }
 
-#if LYS_USE_IMGUI
     ImGui::SFML::ProcessEvent(event.m_SFML);
-#endif // LYS_USE_IMGUI
 
     return l_b_Ret;
 }

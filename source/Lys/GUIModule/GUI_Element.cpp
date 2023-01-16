@@ -1,5 +1,5 @@
 #include "Lys/GUIModule/GUI_Element.hpp"
-
+#if 0
 #include "Lys/MathModule/CollisionHandling.hpp"
 #include "Lys/GraphicModule/Renderer.hpp"
 
@@ -219,3 +219,4 @@ Vector2f Element::smt_Get_Text_Size(const std::string& text, const TextSettings&
 }
 
 }
+#endif

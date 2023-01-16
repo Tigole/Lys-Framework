@@ -1,5 +1,5 @@
 #include "Lys/GUIModule/GUI_Manager.hpp"
-
+#if 0
 
 #include "Lys/GUIModule/GUI_Manager_Loader.hpp"
 #include "Lys/GUIModule/GUI_Interface.hpp"
@@ -275,3 +275,4 @@ void Manager::mt_OnDraw(void)
 }
 
 }
+#endif

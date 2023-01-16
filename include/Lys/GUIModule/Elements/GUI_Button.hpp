@@ -3,6 +3,7 @@
 
 #include "Lys/GUIModule/GUI_Element.hpp"
 
+#if 0
 namespace lys
 {
 
@@ -49,5 +50,6 @@ private:
 }
 
 }
+#endif // 0
 
 #endif // !_GUI_BUTTON_HPP

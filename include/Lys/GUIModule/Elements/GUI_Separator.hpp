@@ -1,6 +1,6 @@
 #ifndef _LYS_GUI_SEPARATOR_HPP
 #define _LYS_GUI_SEPARATOR_HPP 1
-
+#if 0
 #include "Lys/GUIModule/GUI_Element.hpp"
 
 namespace lys
@@ -22,5 +22,5 @@ public:
 }
 
 }
-
+#endif // 0
 #endif // _LYS_GUI_SEPARATOR_HPP

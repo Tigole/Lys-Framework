@@ -1,6 +1,6 @@
 #ifndef _GUI_INTERFACE_HPP
 #define _GUI_INTERFACE_HPP 1
-
+#if 0
 #include "GUI_Element.hpp"
 
 #include <map>
@@ -77,5 +77,5 @@ protected:
 }
 
 }
-
+#endif // 0
 #endif // !_GUI_INTERFACE_HPP

@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 
+#if 0
 namespace lys
 {
 
@@ -37,4 +38,5 @@ protected:
 }
 
 }
+#endif // 0
 #endif // !_GUI_LAYOUT_HPP

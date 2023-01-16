@@ -1,5 +1,5 @@
 #include "Lys/GUIModule/Elements/GUI_Separator.hpp"
-
+#if 0
 #include "imgui.h"
 
 namespace lys
@@ -21,3 +21,4 @@ void Separator::mt_OnUpdate([[maybe_unused]]float elapsed_time)
 }
 
 }
+#endif
