@@ -39,6 +39,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-w" />
 			<Add option="-fPIC" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DIMGUI_SFML_SHARED_LIB" />
