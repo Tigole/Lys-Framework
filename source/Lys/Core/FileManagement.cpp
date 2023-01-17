@@ -309,4 +309,24 @@ bool fn_File_Exists(const std::string& file_name)
     return l_File.is_open();
 }
 
+std::string fn_Get_Relative_Path(const std::string& absolute_root_directory, const std::string& absolute_path)
+{
+    std::string l_Ret;
+    std::size_t l_Diff_Char_Pos = 0;
+
+    for (; l_Diff_Char_Pos < absolute_root_directory.size()
+            && (absolute_root_directory[l_Diff_Char_Pos] == absolute_path[l_Diff_Char_Pos]); l_Diff_Char_Pos++);
+
+    if (l_Diff_Char_Pos < absolute_root_directory.size())
+    {
+        LYS_LOG_CORE_FATAL("Case not handled yet");
+    }
+    else
+    {
+        l_Ret = absolute_path.substr(absolute_root_directory.size());
+    }
+
+    return l_Ret;
+}
+
 }

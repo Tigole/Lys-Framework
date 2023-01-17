@@ -49,6 +49,8 @@ LYS_API bool fn_Create_Directory(const std::string& path);
 
 LYS_API bool fn_File_Exists(const std::string& file_name);
 
+LYS_API std::string fn_Get_Relative_Path(const std::string& absolute_root_directory, const std::string& absolute_path);
+
 }
 
 #endif // _FILE_MANAGEMENT_HPP
