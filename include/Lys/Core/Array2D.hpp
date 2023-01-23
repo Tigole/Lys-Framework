@@ -11,8 +11,8 @@ struct LYS_API Index2D
 {
     Index2D();
     Index2D(std::size_t x, std::size_t y);
-    std::size_t xx;
-    std::size_t yy;
+    std::size_t xx = 0;
+    std::size_t yy = 0;
 };
 
 inline bool operator==(const Index2D& lhs, const Index2D& rhs) {return lhs.xx == rhs.xx && lhs.yy == rhs.yy;}
@@ -49,8 +49,8 @@ public:
     Index2D mt_Flat_Index_To_2D(std::size_t index) const;
 
 private:
-    Index2D m_Size;
-    std::vector<T> m_Array;
+    Index2D m_Size {};
+    std::vector<T> m_Array {};
 };
 
 }
