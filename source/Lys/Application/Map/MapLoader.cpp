@@ -35,12 +35,12 @@ bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data)
 
     if (l_Tiled_Header.m_Version == "1.9")
     {
-        MapLoader_Tiled_1_9 l_Loader;
+        MapLoader_Tiled_1_9 l_Map_Loader;
 
         map_data.m_Tiles_Layers.mt_Clear();
         map_data.m_Objects_Layers.mt_Clear();
 
-        return l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext(), map_data);
+        return l_Map_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext(), map_data);
     }
 
     LYS_LOG_CORE_ERROR("Tiled version not handled: '%s'", l_Tiled_Header.m_Version.c_str());
@@ -51,8 +51,6 @@ bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data)
 
 bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
 {
-    bool l_b_Ret = true;
-    const TiXmlElement* l_Child;
     XMLFileLoader l_Loader;
 
     l_Loader.mt_Add_On_Entry_Callback("/map/tileset", [&](const XML_Element& tileset)
@@ -77,7 +75,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     {
         return mt_Load_Layer_Data(layer);
     });
-    l_Loader.mt_Add_On_Exit_Callback("/map/layer", [&](const XML_Element& layer)
+    l_Loader.mt_Add_On_Exit_Callback("/map/layer", [&](const XML_Element&)
     {
         map_data.m_Tiles_Layers.mt_Add_Element(m_Tile_Layer, m_Tile_Layer.m_Tile_Layer_Id, m_Tile_Layer.m_Tile_Layer_Name);
 
@@ -104,7 +102,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     {
         return mt_Load_Object_Property(object);
     });
-    l_Loader.mt_Add_On_Exit_Callback("/map/objectgroup/object", [&](const XML_Element& object)
+    l_Loader.mt_Add_On_Exit_Callback("/map/objectgroup/object", [&](const XML_Element&)
     {
         m_Object_Layer.m_Objects.mt_Add_Element(m_Object, m_Object.m_Object_Id, m_Object.m_Object_Name);
         return true;
@@ -280,7 +278,6 @@ bool MapLoader_Tiled_1_9::mt_Load_Object_Polygon(const XML_Element& polygon)
 
         l_ss2 >> l_Offset.x >> l_Coma >> l_Offset.y;
 
-        l_Offset;
         m_Object.m_Polygon.push_back(l_Offset);
     }
 
