@@ -199,10 +199,10 @@ bool MapLoader_Tiled_1_9::mt_Load_Object(const XML_Element& object)
     m_Object = MapData::Object();
 
     if (object.mt_Get_Attribute("id", m_Object.m_Object_Id) == false) return false;
-    if (object.mt_Get_Attribute("name", m_Object.m_Object_Name) == false) return false;
     if (object.mt_Get_Attribute("x", m_Object.m_Object_Pix_Pos.x) == false) return false;
     if (object.mt_Get_Attribute("y", m_Object.m_Object_Pix_Pos.y) == false) return false;
 
+    object.mt_Get_Attribute("name", m_Object.m_Object_Name);
     object.mt_Get_Attribute("class", m_Object.m_Object_Class);
     object.mt_Get_Attribute("width", m_Object.m_Object_Pix_Size.x);
     object.mt_Get_Attribute("height", m_Object.m_Object_Pix_Size.y);
