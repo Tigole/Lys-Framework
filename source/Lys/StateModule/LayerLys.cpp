@@ -9,6 +9,7 @@ namespace lys
 
 
 LayerLys::LayerLys() :
+    lys::Layer("Lys"),
     m_Next_State(-1),
     m_Condition_Change_State(false)
 {}

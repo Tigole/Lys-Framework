@@ -25,7 +25,7 @@ enum class LayerForward
 class LYS_API Layer
 {
 public:
-    Layer(){}
+    Layer(const char* layer_id) : m_Layer_Id(layer_id) {}
     virtual ~Layer(){}
 
     LayerForward mt_On_Event(const Event& event);
@@ -44,6 +44,8 @@ public:
     {
         m_Message_Manager.mt_Add_Receiver(pmt_Callback, receiver, true);
     }
+
+    const char* mt_Get_Layer_Id(void) const { return m_Layer_Id; }
 
 protected:
 
@@ -67,7 +69,9 @@ protected:
 
 private:
 
-    MessageManager m_Message_Manager;
+    MessageManager m_Message_Manager {};
+
+    const char* m_Layer_Id = nullptr;
 
 };
 
