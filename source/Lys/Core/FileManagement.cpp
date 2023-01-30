@@ -54,6 +54,11 @@ std::string File::mt_Get_Path_Name_Ext(void) const
     return m_Path + m_Name + '.' + m_Extension;
 }
 
+std::string File::mt_Get_Name_Ext(void) const
+{
+    return m_Name + '.' + m_Extension;
+}
+
 std::string File::mt_Get_Parent_Path(void) const
 {
     std::string l_Parent_Path;
@@ -82,6 +87,27 @@ bool File::mt_Create_Path_To_File(void) const
     }
 
     return l_b_Ret;
+}
+
+bool File::mt_Copy_Content_To(const File& destination) const
+{
+    destination.mt_Create_Path_To_File();
+    std::ifstream l_Source_Stream(mt_Get_Path_Name_Ext());
+    std::ofstream l_Destination_Stream(destination.mt_Get_Path_Name_Ext());
+
+    if ((l_Source_Stream.is_open() == false) || (l_Destination_Stream.is_open() == false))
+    {
+        return false;
+    }
+
+    l_Destination_Stream << l_Source_Stream.rdbuf();
+
+    return true;
+}
+
+bool File::mt_Copy_Content_From(const File& source) const
+{
+    return source.mt_Copy_Content_To(*this);
 }
 
 std::vector<std::string> File::mt_Get_Sub_Sequence_Path(void) const

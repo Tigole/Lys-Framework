@@ -21,12 +21,16 @@ public:
 
     std::string mt_Get_Path_Name(void) const;
     std::string mt_Get_Path_Name_Ext(void) const;
+    std::string mt_Get_Name_Ext(void) const;
     const std::string& mt_Get_Name(void) const {return m_Name;}
     const std::string& mt_Get_Extension(void) const {return m_Extension;}
     const std::string& mt_Get_Path(void) const {return m_Path;}
     std::string mt_Get_Parent_Path(void) const;
 
     bool mt_Create_Path_To_File(void) const;
+
+    bool mt_Copy_Content_To(const File& destination) const;
+    bool mt_Copy_Content_From(const File& source) const;
 
 private:
 
