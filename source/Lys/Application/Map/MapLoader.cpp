@@ -306,7 +306,13 @@ bool MapLoader_Tiled_1_9::mt_Load_Tileset(const File& file_path, MapData::Tilese
         return true;
     });
 
-    return l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext());
+    if (l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext()) == false)
+    {
+        LYS_LOG_CORE_ERROR("'%s': %s", file_path.mt_Get_Path_Name_Ext().c_str(), l_Loader.mt_Get_Error_Description().c_str());
+        return false;
+    }
+
+    return true;
 }
 
 
