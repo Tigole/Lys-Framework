@@ -28,7 +28,10 @@ public:
 
     int mt_Generate_IntRange(int min, int max)
     {
-        LYS_ASSERT(min != max);
+        if (min == max)
+        {
+            return min;
+        }
 
         return (mt_Generate_Int() % (max - min)) + min;
     }
