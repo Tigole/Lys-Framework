@@ -12,6 +12,9 @@
 
 #include "imgui-SFML.h"
 
+#include <array>
+#include <SFML/Graphics/Vertex.hpp>
+
 namespace lys
 {
 

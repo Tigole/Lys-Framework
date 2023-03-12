@@ -14,8 +14,11 @@ class LYS_API File
 {
 public:
     File();
+    File(const File& rhs);
     File(const std::string& full_path);
     File(const std::string& path, const std::string& name, const std::string& ext);
+    File& operator=(const std::string& f);
+    File& operator=(const File& f);
 
     uint32_t mt_Get_Last_Modification_Date(void) const;
 

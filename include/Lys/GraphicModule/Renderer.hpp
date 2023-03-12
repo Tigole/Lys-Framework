@@ -5,6 +5,7 @@
 #include "Lys/Core/Core.hpp"
 #include "Lys/MathModule/Rect.hpp"
 
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 namespace sf

@@ -17,19 +17,37 @@
 namespace lys
 {
 
-File::File()
- :  m_Path(), m_Name(), m_Extension()
+File::File() :
+    m_Path(), m_Name(), m_Extension()
 {}
 
-File::File(const std::string& full_path)
- :  m_Path(), m_Name(), m_Extension()
+File::File(const File& rhs) :
+    File(rhs.m_Path, rhs.m_Name, rhs.m_Extension)
+{}
+
+File::File(const std::string& full_path) :
+    m_Path(), m_Name(), m_Extension()
 {
     smt_Cut_Path(full_path, *this);
 }
 
-File::File(const std::string& path, const std::string& name, const std::string& ext)
- :  m_Path(path), m_Name(name), m_Extension(ext)
+File::File(const std::string& path, const std::string& name, const std::string& ext) :
+    m_Path(path), m_Name(name), m_Extension(ext)
 {}
+
+File& File::operator=(const std::string& f)
+{
+    smt_Cut_Path(f, *this);
+    return *this;
+}
+
+File& File::operator=(const File& f)
+{
+    m_Path = f.m_Path;
+    m_Name = f.m_Name;
+    m_Extension = f.m_Extension;
+    return *this;
+}
 
 uint32_t File::mt_Get_Last_Modification_Date(void) const
 {
@@ -175,6 +193,14 @@ bool File::smt_Cut_Path(const std::string& full_path, std::string& path, std::st
         name = full_path.substr(l_Last_Separator, l_Dot_Pos - l_Last_Separator);
         ext = full_path.substr(l_Dot_Pos + 1);
 
+        for (std::size_t ii = 0; ii < path.size(); ii++)
+        {
+            if (path[ii] == '\\')
+            {
+                path[ii] = '/';
+            }
+        }
+
         LYS_LOG_CORE_TRACE("\nfull path: '%s'\npath: '%s'\nname: '%s'\next: '%s'", full_path.c_str(), path.c_str(), name.c_str(), ext.c_str());
     }
     else
@@ -296,31 +322,32 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
 
 bool fn_Create_Directory(const std::string& path)
 {
+    File l_File = path;
 #if (PLATFORM == PLATFORM_WINDOWS)
-    bool l_Creation_Succeded = CreateDirectory(path.c_str(), nullptr);
+    bool l_Creation_Succeded = CreateDirectory(l_File.mt_Get_Path().c_str(), nullptr);
 
     if (l_Creation_Succeded == true)
     {
-        LYS_LOG_CORE_DEBUG("Directory created: '%s'", path.c_str());
+        LYS_LOG_CORE_DEBUG("Directory created: '%s'", l_File.mt_Get_Path().c_str());
     }
     else
     {
         if (GetLastError() == ERROR_ALREADY_EXISTS)
         {
-            LYS_LOG_CORE_TRACE("Directory already exists: '%s'", path.c_str());
+            LYS_LOG_CORE_TRACE("Directory already exists: '%s'", l_File.mt_Get_Path().c_str());
             l_Creation_Succeded = true;
         }
         else
         {
-            LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", path.c_str());
+            LYS_LOG_CORE_ERROR("Can't create directory: \"%s\"", l_File.mt_Get_Path().c_str());
         }
     }
     return l_Creation_Succeded;
 #else
     struct stat st = {0};
-    if (stat(path.c_str(), &st) == -1)
+    if (stat(l_File.mt_Get_Path().c_str(), &st) == -1)
     {
-        return mkdir(path.c_str(), 0700) == 0;
+        return mkdir(l_File.mt_Get_Path().c_str(), 0700) == 0;
     }
     return true;
 #endif
