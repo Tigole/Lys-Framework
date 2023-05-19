@@ -101,6 +101,7 @@ bool File::mt_Create_Path_To_File(void) const
 
     for (std::size_t ii = 0; (ii < l_Sub_Seq.size()) && (l_b_Ret == true); ii++)
     {
+        LYS_LOG_CORE_DEBUG("Creating sub directory: %s", l_Sub_Seq[ii].c_str());
         l_b_Ret = fn_Create_Directory(l_Sub_Seq[ii]);
     }
 
@@ -148,6 +149,11 @@ std::vector<std::string> File::mt_Get_Sub_Sequence_Path(void) const
     }
 
     l_Ret.push_back(l_Current_Path);
+
+    if (m_Path.size() >= 2 && (m_Path[1] == ':'))
+    {
+        l_Ret.erase(l_Ret.begin());
+    }
 
     return l_Ret;
 }
@@ -322,7 +328,10 @@ std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
 
 bool fn_Create_Directory(const std::string& path)
 {
-    File l_File = path;
+    File l_File(path, "", "");
+
+    LYS_LOG_CORE_TRACE("Creating directory: '%s' -> '%s'", path.c_str(), l_File.mt_Get_Path().c_str());
+
 #if (PLATFORM == PLATFORM_WINDOWS)
     bool l_Creation_Succeded = CreateDirectory(l_File.mt_Get_Path().c_str(), nullptr);
 
