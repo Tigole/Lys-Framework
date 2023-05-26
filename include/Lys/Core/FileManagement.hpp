@@ -50,7 +50,7 @@ private:
 LYS_API bool fn_Is_File(const std::string& path);
 
 LYS_API std::vector<File> fn_Get_Files(const std::string& path, int depth = -1);
-LYS_API std::vector<std::string> fn_Get_Directories(const std::string& path, int depth = -1);
+LYS_API std::vector<std::string> fn_Get_Directories(std::string path, int depth = -1);
 
 LYS_API bool fn_Create_Directory(const std::string& path);
 

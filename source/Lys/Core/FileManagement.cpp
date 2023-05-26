@@ -287,12 +287,17 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
     return l_Ret;
 }
 
-std::vector<std::string> fn_Get_Directories(const std::string& path, int depth)
+std::vector<std::string> fn_Get_Directories(std::string path, int depth)
 {
     std::vector<std::string> l_Ret;
     DIR *dir;
     struct dirent *ent;
     std::string l_str;
+
+    if ((path.back() != '/') && (path.back() != '\\'))
+    {
+        path += '/';
+    }
 
     if ((dir = opendir(path.c_str())) != NULL)
     {
