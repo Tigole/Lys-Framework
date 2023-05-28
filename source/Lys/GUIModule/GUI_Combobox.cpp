@@ -81,7 +81,11 @@ void ComboBox::mt_Init(std::size_t init_index)
 
 const std::string& ComboBox::mt_Get(void) const
 {
-    return m_List[m_Current_Selected];
+    if (m_Current_Selected < m_List.size())
+    {
+        return m_List[m_Current_Selected];
+    }
+    return m_Empty;
 }
 
 std::size_t ComboBox::mt_Get_Index(void) const
