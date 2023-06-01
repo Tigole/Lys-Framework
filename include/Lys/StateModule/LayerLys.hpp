@@ -23,6 +23,8 @@ public:
     std::size_t m_Next_State;
 
     bool m_Condition_Change_State;
+
+    float m_Remaining_Time;
 };
 
 
