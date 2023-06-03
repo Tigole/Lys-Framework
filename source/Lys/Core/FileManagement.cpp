@@ -10,6 +10,7 @@
 #include <sys/types.h>
 
 #include <fstream>
+#include <filesystem>
 
 
 #include "Lys/Core/Log.hpp"
@@ -242,7 +243,6 @@ bool fn_Is_File(const std::string& path)
 
 
 
-
 std::vector<File> fn_Get_Files(const std::string& path, int depth)
 {
     std::vector<File> l_Ret;
@@ -252,11 +252,28 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
     std::string l_File_Name;
     std::string l_File_Ext;
     std::string l_File_Path;
+    std::string l_Current_Dir = getcwd(nullptr, 0);
+    std::filesystem::path l_Path = std::filesystem::absolute(path);
 
+    for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator(l_Path))
+    {
+        if (entry.is_regular_file() == true)
+        {
+            l_File_Name = entry.path().stem().string();// l_str.substr(0, l_str.find_last_of('.'));
+            l_File_Ext = entry.path().extension().string();//l_str.substr(l_str.find_last_of('.') + 1);
+            l_File_Path = entry.path().parent_path().string() + '/';
+            l_File_Ext = l_File_Ext.substr(1);
+            LYS_LOG_CORE_TRACE("Pushing file: '%s%s.%s'", l_File_Path.c_str(), l_File_Name.c_str(), l_File_Ext.c_str());
+            l_Ret.push_back(File(l_File_Path, l_File_Name, l_File_Ext));
+        }
+    }
+
+#if 0
     if ((dir = opendir(path.c_str())) != NULL)
     {
-        /* print all the files and directories within directory */
-        while ((ent = readdir (dir)) != NULL)
+        chdir(path.c_str());
+        errno = 0;
+        while ((ent = readdir(dir)) != NULL)
         {
             l_str = ent->d_name;
             if ((l_str != ".") && (l_str != ".."))
@@ -266,24 +283,36 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
                     l_File_Name = l_str.substr(0, l_str.find_last_of('.'));
                     l_File_Ext = l_str.substr(l_str.find_last_of('.') + 1);
                     l_File_Path = path;
+                    LYS_LOG_CORE_TRACE("Pushing file: '%s%s.%s'", path.c_str(), l_File_Name.c_str(), l_File_Ext.c_str());
                     l_Ret.push_back(File(l_File_Path, l_File_Name, l_File_Ext));
                 }
                 else if (depth != 0)
                 {
                     std::vector<File> l_Sub;
 
-                    l_Sub = fn_Get_Files(path + l_str + '/', depth - 1);
+                    l_Sub = fn_Get_Files(path + '/' + l_str + '/', depth - 1);
 
                     for (std::size_t ii = 0; ii < l_Sub.size(); ii++)
                     {
                         l_Ret.push_back(l_Sub[ii]);
                     }
                 }
+                else
+                {
+                    LYS_LOG_CORE_DEBUG("Is not handled: '%s'", std::string(path + l_str).c_str());
+                }
             }
         }
-        closedir (dir);
-    }
+        if (errno != 0)
+        {
+            LYS_LOG_CORE_ERROR("Errno: '%d' '%s'", errno, strerror(errno));
+        }
 
+        closedir (dir);
+
+        chdir(l_Current_Dir.c_str());
+    }
+#endif // 0
     return l_Ret;
 }
 
