@@ -246,8 +246,10 @@ bool fn_Is_File(const std::string& path)
 std::vector<File> fn_Get_Files(const std::string& path, int depth)
 {
     std::vector<File> l_Ret;
+#if 0
     DIR *dir;
     struct dirent *ent;
+#endif // 0
     std::string l_str;
     std::string l_File_Name;
     std::string l_File_Ext;
@@ -365,6 +367,13 @@ bool fn_Create_Directory(const std::string& path)
     File l_File(path, "", "");
 
     LYS_LOG_CORE_TRACE("Creating directory: '%s' -> '%s'", path.c_str(), l_File.mt_Get_Path().c_str());
+
+    if (std::filesystem::exists(std::filesystem::absolute(path)) == true)
+    {
+        return true;
+    }
+
+    return std::filesystem::create_directories(std::filesystem::absolute(path));
 
 #if (PLATFORM == PLATFORM_WINDOWS)
     bool l_Creation_Succeded = CreateDirectory(l_File.mt_Get_Path().c_str(), nullptr);

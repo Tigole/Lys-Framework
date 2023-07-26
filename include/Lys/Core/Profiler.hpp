@@ -49,11 +49,11 @@ private:
 
     void mt_Write_Function(const char* function_name, const char* phase);
 
-    bool m_Enabled;
-    std::ofstream m_Stream;
-    bool m_First_Write;
-    sf::Clock m_Clk;
-    std::mutex m_Mutex;
+    bool m_Enabled = false;
+    std::ofstream m_Stream = {};
+    bool m_First_Write = false;
+    sf::Clock m_Clk = {};
+    std::mutex m_Mutex = {};
 };
 
 }
