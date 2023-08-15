@@ -154,39 +154,39 @@ struct LYS_API MapData
             return mt_Get_Property(property_name, property_value, m_Object_Properties_String);
         }
 
-        std::map<std::string, bool> m_Object_Properties_Bool {};
-        std::map<std::string, int> m_Object_Properties_Int {};
-        std::map<std::string, float> m_Object_Properties_Float {};
-        std::map<std::string, Color> m_Object_Properties_Color {};
-        std::map<std::string, std::string> m_Object_Properties_String {};
+        std::map<std::string, bool> m_Object_Properties_Bool = {};
+        std::map<std::string, int> m_Object_Properties_Int = {};
+        std::map<std::string, float> m_Object_Properties_Float = {};
+        std::map<std::string, Color> m_Object_Properties_Color = {};
+        std::map<std::string, std::string> m_Object_Properties_String = {};
         //std::map<std::string, std::string> m_Object_Properties_File;
-        std::vector<Vector2f> m_Polygon {};
+        std::vector<Vector2f> m_Polygon = {};
     };
 
     struct ObjectLayer
     {
         uint32_t m_Object_Layer_Id = -1;
-        std::string m_Object_Layer_Name {};
-        MultiKeyContainer<Object> m_Objects {};
+        std::string m_Object_Layer_Name = {};
+        MultiKeyContainer<Object> m_Objects = {};
     };
 
     struct TileLayer
     {
         uint32_t m_Tile_Layer_Id = -1;
-        std::string m_Tile_Layer_Name {};
-        Vector2u m_Tile_Layer_Size {0, 0};
-        Array2D<uint32_t> m_Tiles {};
+        std::string m_Tile_Layer_Name = {};
+        Vector2u m_Tile_Layer_Size = {0, 0};
+        Array2D<uint32_t> m_Tiles = {};
     };
 
     struct TilesetData
     {
         uint32_t m_First_Gid = -1;
-        TilesetInfo m_Tileset_Info {};
+        TilesetInfo m_Tileset_Info = {};
     };
 
-    MultiKeyContainer<TileLayer> m_Tiles_Layers {};
-    MultiKeyContainer<ObjectLayer> m_Objects_Layers {};
-    std::vector<TilesetData> m_Tileset_Data {};
+    MultiKeyContainer<TileLayer> m_Tiles_Layers = {};
+    MultiKeyContainer<ObjectLayer> m_Objects_Layers = {};
+    std::vector<TilesetData> m_Tileset_Data = {};
 };
 
 class LYS_API MapLoader

@@ -26,10 +26,12 @@ class LYS_API Layer
 {
 public:
     Layer(const char* layer_id) : m_Layer_Id(layer_id) {}
+    Layer(const Layer&) = delete;
+    Layer& operator=(const Layer&) = delete;
     virtual ~Layer(){}
 
     LayerForward mt_On_Event(const Event& event);
-    virtual LayerForward mt_On_Update(float elapsed_time){return LayerForward::Continue;}
+    virtual LayerForward mt_On_Update([[unused]]float elapsed_time){return LayerForward::Continue;}
     virtual void mt_On_Render(void){}
     virtual LayerForward mt_Get_Rendering_Forward_Strategy(void) const {return LayerForward::Stop;}
 
@@ -72,7 +74,6 @@ private:
     MessageManager m_Message_Manager = {};
 
     const char* m_Layer_Id = nullptr;
-
 };
 
 

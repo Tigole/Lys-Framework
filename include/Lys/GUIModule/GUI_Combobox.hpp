@@ -37,9 +37,10 @@ public:
     const std::vector<std::string>& mt_Get_List(void) const;
 
 private:
-    std::vector<std::string> m_List;
-    std::size_t m_Current_Selected;
-    bool m_Reset;
+    std::vector<std::string> m_List = {};
+    std::size_t m_Current_Selected = -1;
+    bool m_Reset = false;
+    std::string m_Empty = "";
 };
 
 }

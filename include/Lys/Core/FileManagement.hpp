@@ -14,8 +14,11 @@ class LYS_API File
 {
 public:
     File();
+    File(const File& rhs);
     File(const std::string& full_path);
     File(const std::string& path, const std::string& name, const std::string& ext);
+    File& operator=(const std::string& f);
+    File& operator=(const File& f);
 
     uint32_t mt_Get_Last_Modification_Date(void) const;
 
@@ -47,7 +50,7 @@ private:
 LYS_API bool fn_Is_File(const std::string& path);
 
 LYS_API std::vector<File> fn_Get_Files(const std::string& path, int depth = -1);
-LYS_API std::vector<std::string> fn_Get_Directories(const std::string& path, int depth = -1);
+LYS_API std::vector<std::string> fn_Get_Directories(std::string path, int depth = -1);
 
 LYS_API bool fn_Create_Directory(const std::string& path);
 

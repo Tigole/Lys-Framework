@@ -11,11 +11,19 @@ namespace lys
 LayerLys::LayerLys() :
     lys::Layer("Lys"),
     m_Next_State(-1),
-    m_Condition_Change_State(false)
+    m_Condition_Change_State(false),
+    m_Remaining_Time(2.0f)
 {}
 
 LayerForward LayerLys::mt_On_Update([[maybe_unused]] float elapsed_time)
 {
+    m_Remaining_Time -= elapsed_time;
+
+    if (m_Remaining_Time < 0.0f)
+    {
+        m_Condition_Change_State = true;
+    }
+
     if (m_Condition_Change_State == true)
     {
         mt_Send_Message(Message_ChangeState(m_Next_State));
