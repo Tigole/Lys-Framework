@@ -22,6 +22,12 @@ const T& Array2D<T>::operator()(std::size_t xx, std::size_t yy) const
 }
 
 template<typename T>
+T& Array2D<T>::operator()(std::size_t xx, std::size_t yy)
+{
+    return m_Array[xx * m_Size.yy + yy];
+}
+
+template<typename T>
 const T& Array2D<T>::mt_Get(std::size_t xx, std::size_t yy) const
 {
     return m_Array[xx * m_Size.yy + yy];

@@ -28,6 +28,7 @@ public:
     void mt_Resize(std::size_t xx, std::size_t yy, const T& default_value = T());
 
     const T& operator()(std::size_t xx, std::size_t yy) const;
+    T& operator()(std::size_t xx, std::size_t yy);
     const T& mt_Get(std::size_t xx, std::size_t yy) const;
     T& mt_Get(std::size_t xx, std::size_t yy);
 
@@ -49,8 +50,8 @@ public:
     Index2D mt_Flat_Index_To_2D(std::size_t index) const;
 
 private:
-    Index2D m_Size {};
-    std::vector<T> m_Array {};
+    Index2D m_Size = {};
+    std::vector<T> m_Array = {};
 };
 
 }

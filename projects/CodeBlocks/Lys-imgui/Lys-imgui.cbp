@@ -41,6 +41,7 @@
 		<Compiler>
 			<Add option="-w" />
 			<Add option="-fPIC" />
+			<Add option="-m64" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DIMGUI_SFML_SHARED_LIB" />
 			<Add option="-DIMGUI_SFML_EXPORTS" />
@@ -50,6 +51,7 @@
 			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
 		</Compiler>
 		<Linker>
+			<Add option="-m64" />
 			<Add option="[[" />
 			<Add option='print(&quot;-lsfml-system &quot;);' />
 			<Add option='print(&quot;-lsfml-window &quot;);' />

@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <memory>
+
 namespace sf
 {
 
@@ -58,6 +60,8 @@ public:
     void mt_Draw_VertexArray(const VertexArray& va, const Texture* texture);
 
     const sf::Font& mt_Get_Default_Font(void) const;
+
+    sf::RenderWindow& mt_Get_SFML_RenderWindow(void) {return *m_Wnd;}
 
 private:
 

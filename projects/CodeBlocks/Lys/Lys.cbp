@@ -45,6 +45,7 @@
 		<Compiler>
 			<Add option="-std=c++17" />
 			<Add option="-fPIC" />
+			<Add option="-m64" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
@@ -54,6 +55,7 @@
 			<Add directory="../../../submodules/glm" />
 		</Compiler>
 		<Linker>
+			<Add option="-m64" />
 			<Add option="[[" />
 			<Add option='print(&quot;-lLys-log &quot;);' />
 			<Add option='print(&quot;-lLys-imgui &quot;);' />
@@ -73,6 +75,7 @@
 			<Add option='print(&quot;-lGL &quot;);' />
 			<Add option="};" />
 			<Add option="]]" />
+			<Add directory="../../../submodules/TinyXML_Boosted/Build" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Application/Application.hpp" />
 		<Unit filename="../../../include/Lys/Application/Event.hpp" />
@@ -148,6 +151,7 @@
 		<Unit filename="../../../source/Lys/GraphicModule/Renderer.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/CollisionHandling.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/HexGrid.cpp" />
+		<Unit filename="../../../source/Lys/MathModule/MathCore.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/Layer.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/LayerLys.cpp" />
 		<Unit filename="../../../source/Lys/StateModule/State.cpp" />
