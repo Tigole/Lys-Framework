@@ -420,7 +420,8 @@ std::string fn_Get_Relative_Path(const std::string& absolute_root_directory, con
     std::size_t l_Diff_Char_Pos = 0;
 
     for (; l_Diff_Char_Pos < absolute_root_directory.size()
-            && (absolute_root_directory[l_Diff_Char_Pos] == absolute_path[l_Diff_Char_Pos]); l_Diff_Char_Pos++);
+            && (absolute_root_directory[l_Diff_Char_Pos] == absolute_path[l_Diff_Char_Pos]); l_Diff_Char_Pos++)
+    {}
 
     if (l_Diff_Char_Pos < absolute_root_directory.size())
     {
