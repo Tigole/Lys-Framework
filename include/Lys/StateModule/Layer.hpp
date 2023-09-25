@@ -71,7 +71,7 @@ protected:
 
 private:
 
-    MessageManager m_Message_Manager {};
+    MessageManager m_Message_Manager = {};
 
     const char* m_Layer_Id = nullptr;
 };

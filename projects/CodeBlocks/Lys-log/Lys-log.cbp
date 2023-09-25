@@ -44,6 +44,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-fPIC" />
+			<Add option="-m64" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
@@ -52,6 +53,7 @@
 			<Add directory="../../../submodules/TinyXML_Boosted/Sources" />
 		</Compiler>
 		<Linker>
+			<Add option="-m64" />
 			<Add directory="C:/Users/Janniere Sylvain/Documents/GitHub/SFML_Fork/Build/lib" />
 		</Linker>
 		<Unit filename="../../../include/Lys/Core/Color.hpp" />

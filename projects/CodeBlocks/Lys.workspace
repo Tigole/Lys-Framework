@@ -5,11 +5,13 @@
 			<Depends filename="Lys-imgui/Lys-imgui.cbp" />
 			<Depends filename="Lys-log/Lys-log.cbp" />
 			<Depends filename="Lys-core/Lys-core.cbp" />
+			<Depends filename="../../submodules/TinyXML_Boosted/Projects/CodeBlocks/TinyXML_Boosted.cbp" />
 		</Project>
 		<Project filename="Lys-imgui/Lys-imgui.cbp" />
 		<Project filename="Lys-log/Lys-log.cbp" />
 		<Project filename="Lys-core/Lys-core.cbp">
 			<Depends filename="Lys-log/Lys-log.cbp" />
 		</Project>
+		<Project filename="../../submodules/TinyXML_Boosted/Projects/CodeBlocks/TinyXML_Boosted.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

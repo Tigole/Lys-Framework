@@ -10,6 +10,9 @@
 
 #include "Lys/MathModule/HexGrid.hpp"
 
+#include <array>
+#include <SFML/Graphics/Vertex.hpp>
+
 #include "imgui-SFML.h"
 
 #include <array>

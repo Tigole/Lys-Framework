@@ -14,64 +14,64 @@ namespace lys
 
 struct LYS_API Texture
 {
-    sf::Texture m_SFML_Texture;
+    sf::Texture m_SFML_Texture = {};
 };
 
 struct LYS_API TextureData
 {
-    Rectf m_Normalized_Texture_Area;
-    const Texture* m_Texture;
+    Rectf m_Normalized_Texture_Area = {};
+    const Texture* m_Texture = nullptr;
 };
 
 struct LYS_API LineSettings
 {
-    Vector2f m_Start_Pos;
-    Vector2f m_End_Pos;
+    Vector2f m_Start_Pos = {};
+    Vector2f m_End_Pos = {};
 
-    Color m_Start_Color;
-    Color m_End_Color;
+    Color m_Start_Color = {};
+    Color m_End_Color = {};
 };
 
 struct LYS_API RectangleSettings
 {
-    Vector2f m_Position;
-    Vector2f m_Size;
-    Color m_Fill_Color;
+    Vector2f m_Position = {};
+    Vector2f m_Size = {};
+    Color m_Fill_Color = {};
 
     float m_Outline_Thickness = 0.0f;
-    Color m_Outline_Color;
+    Color m_Outline_Color = {};
 
-    TextureData m_Texture_Data;
+    TextureData m_Texture_Data = {};
 };
 
 struct LYS_API CircleSettings
 {
-    Vector2f m_Center;
+    Vector2f m_Center = {};
     float m_Radius = 0.0f;
-    Color m_Fill_Color;
+    Color m_Fill_Color = {};
     std::size_t m_Point_Count = 30;
 
     float m_Outline_Thickness = 0.0f;
-    Color m_Outline_Color;
+    Color m_Outline_Color = {};
 
-    TextureData m_Texture_Data;
+    TextureData m_Texture_Data = {};
 };
 
 struct LYS_API HexagonSettings
 {
-    Vector2i m_Center;
-    float m_Radius;
-    Color m_Fill_Color;
+    Vector2i m_Center = {};
+    float m_Radius = 0.0f;
+    Color m_Fill_Color = {};
 
     float m_Outline_Thickness = 0.0f;
-    Color m_Outline_Color;
+    Color m_Outline_Color = {};
 
-    TextureData m_Texture_Data;
+    TextureData m_Texture_Data = {};
 };
 
 struct LYS_API VertexArray
 {
-    sf::VertexArray m_SFML_VA;
+    sf::VertexArray m_SFML_VA = {};
 };
 
 
