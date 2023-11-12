@@ -98,7 +98,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     {
         return mt_Load_Object_Polygon(polygon);
     });
-    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/property", [&](const XML_Element& object)
+    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/properties/property", [&](const XML_Element& object)
     {
         return mt_Load_Object_Property(object);
     });
@@ -223,7 +223,7 @@ bool MapLoader_Tiled_1_9::mt_Load_Object_Property(const XML_Element& property)
     Color l_Color;
 
     if (property.mt_Get_Attribute("name", l_Property_Name) == false) return false;
-    if (property.mt_Get_Attribute("type", l_Property_Type) == false)
+    if (property.mt_Get_Attribute("type", l_Property_Type) == true)
     {
         if (l_Property_Type == "bool")
         {
