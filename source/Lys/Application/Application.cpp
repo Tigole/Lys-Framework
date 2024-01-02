@@ -2,6 +2,10 @@
 
 #include "Lys/StateModule/StateLys.hpp"
 #include "Lys/MessageModule/MessageManager.hpp"
+#include "Lys/Core/Log.hpp"
+
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 namespace lys
 {
@@ -33,9 +37,7 @@ Application::Application(const char* title, const CommandLineArguments& cla) :
     m_CLA(cla),
     m_Window_Settings(title, sf::VideoMode::getDesktopMode(), false),
     m_State_Manager()
-{
-    Renderer::smt_Create(&Window::smt_Get());
-}
+{}
 
 
 int Application::mt_Run(void)
@@ -51,6 +53,10 @@ int Application::mt_Run(void)
     m_State_Manager.mt_Add_State(-1, l_Startup_State);
 
     Window::smt_Get().mt_Create(WindowSettings(m_Window_Settings.m_Title, m_Window_Settings.m_VideoMode, m_Window_Settings.m_Full_Screen));
+    LYS_LOG_CORE_ERROR("glewInit: %d", glewInit());
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    Renderer::smt_Create(&Window::smt_Get());
 
     l_Startup_State->mt_Set_Next_State(mt_Initialize());
     m_State_Manager.mt_Change_State(-1);

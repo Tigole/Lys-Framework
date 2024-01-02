@@ -38,7 +38,7 @@ void Window::mt_Create(const WindowSettings& settings)
 #if (PLATFORM == PLATFORM_WINDOWS)
     if (settings.m_VideoMode == sf::VideoMode::getDesktopMode())
     {
-        ShowWindow(m_Wnd.getSystemHandle(), SW_MAXIMIZE);
+        ShowWindow(m_Wnd.getNativeHandle(), SW_MAXIMIZE);
     }
 #endif
 
@@ -70,7 +70,7 @@ bool Window::mt_Poll_Event(Event& event)
             m_Wnd.setView(sf::View({l_Size.x / 2, l_Size.y / 2}, l_Size));
         }
 
-        ImGui::SFML::ProcessEvent(event.m_SFML);
+        ImGui::SFML::ProcessEvent(m_Wnd, event.m_SFML);
     }
 
     return l_b_Ret;

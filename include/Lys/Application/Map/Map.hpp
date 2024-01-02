@@ -48,7 +48,7 @@ public:
 
     struct LYS_API LayerData
     {
-        VertexArray m_VA;
+        sf::VertexArray m_VA;
         const Texture* m_Texture;
     };
 

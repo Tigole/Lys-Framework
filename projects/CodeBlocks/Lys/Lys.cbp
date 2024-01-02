@@ -4,14 +4,14 @@
 	<Project>
 		<Option title="Lys" />
 		<Option pch_mode="2" />
-		<Option compiler="msys2" />
+		<Option compiler="msys2-sfml" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../../build/Debug/Lys" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../build/Debug" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
-				<Option compiler="msys2" />
+				<Option compiler="msys2-sfml" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -28,7 +28,7 @@
 				<Option working_dir="../../../build/Release" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
-				<Option compiler="msys2" />
+				<Option compiler="msys2-sfml" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -105,9 +105,16 @@
 		<Unit filename="../../../include/Lys/GUIModule/GUI_Manager.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/GUI_Manager_Loader.hpp" />
 		<Unit filename="../../../include/Lys/GUIModule/GUI_Styles.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/Camera.hpp" />
 		<Unit filename="../../../include/Lys/GraphicModule/DrawCommandSettings.hpp" />
 		<Unit filename="../../../include/Lys/GraphicModule/EmbeddedFonts/JackInput.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/Material.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/Mesh.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/OpenGLTranslation.hpp" />
 		<Unit filename="../../../include/Lys/GraphicModule/Renderer.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/Shader.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/Transform.hpp" />
+		<Unit filename="../../../include/Lys/GraphicModule/VertexArray.hpp" />
 		<Unit filename="../../../include/Lys/Lys.hpp" />
 		<Unit filename="../../../include/Lys/LysApplication.hpp" />
 		<Unit filename="../../../include/Lys/LysCore.hpp" />
@@ -147,8 +154,12 @@
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Interface.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager.cpp" />
 		<Unit filename="../../../source/Lys/GUIModule/GUI_Manager_Loader.cpp" />
+		<Unit filename="../../../source/Lys/GraphicModule/Camera.cpp" />
 		<Unit filename="../../../source/Lys/GraphicModule/EmbeddedFonts/JackInput.cpp" />
+		<Unit filename="../../../source/Lys/GraphicModule/Mesh.cpp" />
 		<Unit filename="../../../source/Lys/GraphicModule/Renderer.cpp" />
+		<Unit filename="../../../source/Lys/GraphicModule/Shader.cpp" />
+		<Unit filename="../../../source/Lys/GraphicModule/VertexArray.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/CollisionHandling.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/HexGrid.cpp" />
 		<Unit filename="../../../source/Lys/MathModule/MathCore.cpp" />

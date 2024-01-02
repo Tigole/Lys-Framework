@@ -249,6 +249,18 @@ bool MapLoader_Tiled_1_9::mt_Load_Object_Property(const XML_Element& property)
             m_Object.m_Object_Properties_Color.emplace(l_Property_Name, l_Color);
             return true;
         }
+        else if (l_Property_Type == "file")
+        {
+            property.mt_Get_Attribute("value", l_String_Value);
+            m_Object.m_Object_Properties_String.emplace(l_Property_Name, l_String_Value);
+            return true;
+        }
+        else if (l_Property_Type == "object")
+        {
+            property.mt_Get_Attribute("value", l_Int_Value);
+            m_Object.m_Object_Properties_Int.emplace(l_Property_Name, l_Int_Value);
+            return true;
+        }
     }
     else
     {
@@ -256,6 +268,8 @@ bool MapLoader_Tiled_1_9::mt_Load_Object_Property(const XML_Element& property)
         m_Object.m_Object_Properties_String.emplace(l_Property_Name, l_String_Value);
         return true;
     }
+
+    LYS_LOG_CORE_ERROR("Failed to load property '%s' of type '%s' (unsupported)", l_Property_Name.c_str(), l_Property_Type.c_str());
 
     return false;
 }

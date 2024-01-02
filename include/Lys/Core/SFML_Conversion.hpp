@@ -24,7 +24,7 @@ Vector2<T> constexpr sf_From(const sf::Vector2<U>& v)
 template<typename T, typename U>
 sf::Rect<T> constexpr sf_To(const Rect<U>& r)
 {
-    return sf::Rect<T>(r.m_Top_Left.x, r.m_Top_Left.y, r.m_Width_Height.x, r.m_Width_Height.y);
+    return sf::Rect<T>(sf::Vector2<T>(r.m_Top_Left.x, r.m_Top_Left.y), sf::Vector2<T>(r.m_Width_Height.x, r.m_Width_Height.y));
 }
 
 template<typename T, typename U>
@@ -43,9 +43,9 @@ inline Color LYS_API sf_From(const sf::Color& c)
     return Color(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, c.a / 255.0f);
 }
 
-inline sf::Uint32 LYS_API sf_To(gui::TextStyle style)
+inline uint32_t LYS_API sf_To(gui::TextStyle style)
 {
-    sf::Uint32 l_Ret;
+    uint32_t l_Ret;
 
     switch(style)
     {

@@ -48,7 +48,7 @@ void LayerLys::mt_On_Render(void)
 
 LayerForward LayerLys::mt_On_Event_Key_Released(const KeyEvent& key_event)
 {
-    if (key_event.m_Key.code == sf::Keyboard::Space)
+    if (key_event.m_Key.code == sf::Keyboard::Key::Space)
     {
         m_Condition_Change_State = true;
     }

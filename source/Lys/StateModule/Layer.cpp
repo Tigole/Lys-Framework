@@ -23,8 +23,6 @@ LayerForward Layer::mt_On_Event(const Event& event)
     case sf::Event::KeyPressed: return mt_On_Event_Key_Pressed(KeyEvent{event.m_SFML.key});
     case sf::Event::KeyReleased: return mt_On_Event_Key_Released(KeyEvent{event.m_SFML.key});
 
-    case sf::Event::MouseWheelMoved:        /// Ignored (deprecated)
-        break;
     case sf::Event::MouseWheelScrolled: return mt_On_Event_Mouse_Wheel_Scroll(MouseWheelScrollEvent{event.m_SFML.mouseWheelScroll});
     case sf::Event::MouseButtonPressed: return mt_On_Event_Mouse_Button_Pressed(MouseButtonEvent{event.m_SFML.mouseButton});
     case sf::Event::MouseButtonReleased: return mt_On_Event_Mouse_Button_Released(MouseButtonEvent{event.m_SFML.mouseButton});

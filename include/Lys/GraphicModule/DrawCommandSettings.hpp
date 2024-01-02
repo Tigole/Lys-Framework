@@ -69,12 +69,6 @@ struct LYS_API HexagonSettings
     TextureData m_Texture_Data = {};
 };
 
-struct LYS_API VertexArray
-{
-    sf::VertexArray m_SFML_VA = {};
-};
-
-
 }
 
 #endif // _LYS_DRAW_COMMAND_SETTINGS_HPP

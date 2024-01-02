@@ -1,5 +1,7 @@
 #include "Lys/Core/Profiler.hpp"
 
+#include <SFML/System/Time.hpp>
+
 #if (PLATFORM == PLATFORM_WINDOWS)
     #include <windows.h>
 #endif

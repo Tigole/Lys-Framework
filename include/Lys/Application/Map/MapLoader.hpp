@@ -199,11 +199,11 @@ private:
 
     struct TiledHeader
     {
-        std::string m_Version {};
-        std::string m_Tiled_Version {};
-        std::string m_Orientation {};
-        Vector2i m_Map_Dimension {0, 0};
-        Vector2i m_Tile_Dimension {0, 0};
+        std::string m_Version = {};
+        std::string m_Tiled_Version = {};
+        std::string m_Orientation = {};
+        Vector2i m_Map_Dimension = {0, 0};
+        Vector2i m_Tile_Dimension = {0, 0};
         bool m_Is_Infinite = false;
     };
 };
@@ -229,9 +229,9 @@ private:
 
     bool mt_Load_Tileset(const File& file_path, MapData::TilesetData& tileset_data);
 
-    MapData::TileLayer m_Tile_Layer {};
-    MapData::ObjectLayer m_Object_Layer {};
-    MapData::Object m_Object {};
+    MapData::TileLayer m_Tile_Layer = {};
+    MapData::ObjectLayer m_Object_Layer = {};
+    MapData::Object m_Object = {};
 };
 
 

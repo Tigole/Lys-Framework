@@ -4,6 +4,12 @@
 #include "Lys/LysConfig.hpp"
 #include "Lys/Core/Core.hpp"
 #include "Lys/MathModule/Rect.hpp"
+#include "Lys/GraphicModule/Camera.hpp"
+#include "Lys/GraphicModule/Shader.hpp"
+#include "Lys/GraphicModule/VertexArray.hpp"
+
+#include "glm/glm.hpp"
+#include <map>
 
 #include <memory>
 #include <SFML/Graphics.hpp>
@@ -34,8 +40,8 @@ struct TextSettings;
 struct VertexArray;
 struct TextureData;
 struct Texture;
-
-
+struct Material;
+struct Shader;
 
 class LYS_API Renderer
 {
@@ -58,11 +64,17 @@ public:
     void mt_Draw_Circle(const CircleSettings& circle_settings);
     void mt_Draw_Hexagon(const HexagonSettings& hexagon_settings);
     Rectf mt_Draw_Text(const char* text, const Vector2f& screen_pos, const gui::TextSettings& text_settings);
-    void mt_Draw_VertexArray(const VertexArray& va, const Texture* texture);
+    void mt_Draw_VertexArray(VertexArray* va, Material* material, const glm::mat4& model_matrix);
+    void mt_Draw_VertexArray(const sf::VertexArray& va, const Texture* texture);
 
     const sf::Font& mt_Get_Default_Font(void) const;
+    Shader& mt_Get_Default_Shader(void);
 
     sf::RenderWindow& mt_Get_SFML_RenderWindow(void) {return *m_Wnd;}
+
+    Camera m_Camera;
+
+    std::unique_ptr<VertexBuffer> m_Instanced_Buffer;
 
 private:
 
@@ -71,9 +83,17 @@ private:
     sf::RenderWindow* m_Wnd;
 
     sf::Font m_Default_Font;
+    Shader m_Default_Shader;
 
     static std::unique_ptr<Renderer> sm_Renderer;
     Renderer(Window* wnd);
+
+
+    std::map<std::pair<VertexArray*, Material*>, std::vector<glm::mat4>> m_Mesh_Material_Render_Buffer = {};
+    void mt_Flush_Mesh_Material(void);
+
+    template<typename T>
+    inline void mt_Send_To_Shader(Shader* s, std::map<std::string, T>& m);
 };
 
 }
