@@ -105,6 +105,18 @@ bool MultiKeyContainer<ElementType>::mt_Iterate_Over_Elements(std::function<bool
 namespace lys
 {
 
+class LYS_API MapLayout
+{
+public:
+    virtual ~MapLayout() = default;
+
+    //virtual Rectf mt_Get_Tile_Rect(uint32_t tile_index) = 0;
+    virtual Vector2f mt_Coord_To_Normalized_Space(const Vector2i& coord, bool center) const = 0;
+    virtual Vector2f mt_Get_Cell_Size_Normalized_Space(void) const = 0;
+};
+
+
+
 struct LYS_API MapData
 {
     struct Object
@@ -184,16 +196,36 @@ struct LYS_API MapData
         TilesetInfo m_Tileset_Info = {};
     };
 
+    enum class TileType
+    {
+        None,
+        Orthogonal,
+        Hexagonal
+    };
+
+    enum class StaggerAxis
+    {
+        None, X, Y
+    };
+
+    enum class StaggerIndex
+    {
+        None, Odd, Even
+    };
+
     MultiKeyContainer<TileLayer> m_Tiles_Layers = {};
     MultiKeyContainer<ObjectLayer> m_Objects_Layers = {};
     std::vector<TilesetData> m_Tileset_Data = {};
+    TileType m_Tile_Type = TileType::None;
+    StaggerAxis m_Stagger_Axis = StaggerAxis::None;
+    StaggerIndex m_Stagger_Index = StaggerIndex::None;
 };
 
 class LYS_API MapLoader
 {
 public:
 
-    bool mt_Load_Map(const File& file_path, MapData& map_data);
+    bool mt_Load_Map(const File& file_path, MapData& map_data, std::unique_ptr<MapLayout>& map_layout);
 
 private:
 
@@ -215,7 +247,7 @@ class LYS_API MapLoader_Tiled_1_9
 {
 public:
 
-    bool mt_Load(const File& file_path, MapData& map_data);
+    bool mt_Load(const File& file_path, MapData& map_data, std::unique_ptr<MapLayout>& map_layout);
 
 private:
 

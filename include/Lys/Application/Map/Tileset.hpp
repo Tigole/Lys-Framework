@@ -17,13 +17,28 @@ private:
     Texture m_Texture;
 };
 
-struct LYS_API TilesetInfo
+
+class LYS_API Tileset
 {
-    Vector2u m_Tile_Count;
-    Vector2u m_Texture_Size;
+public:
+    virtual ~Tileset() = default;
+
+    Rectf mt_Tileset_Get_Tile_Normalized_Rect(uint32_t tile_id);
+
+protected:
+
 };
 
-LYS_API Rectf fn_Tileset_Get_Tile_Normalized_Rect(const TilesetInfo& tileset_data, const Vector2u& tile_cell);
+
+struct LYS_API TilesetInfo
+{
+    Vector2u m_Tile_Count = {};
+    Vector2u m_Texture_Size = {};
+    Vector2f m_Tile_Size = {};
+};
+
+Vector2f LYS_API fn_Tileset_Get_Tile_Normalized_Pos(const TilesetInfo& tileset_data, uint32_t tile_id);
+Vector2f LYS_API fn_Tileset_Get_Tile_Normalized_Size(const TilesetInfo& tileset_data);
 
 }
 

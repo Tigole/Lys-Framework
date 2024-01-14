@@ -15,9 +15,14 @@ namespace lys
 class LYS_API Shader
 {
 public:
+    Shader(const char* camera_uniform_name, const char* model_matrix_attribute_name);
+
     void mt_Use(void);
     bool mt_Create_From_File(const std::string& vertex_shader_file, const std::string& fragment_shader_file);
     bool mt_Create_From_String(const std::string& vertex_shader_code, const std::string& fragment_shader_code);
+
+    const char* mt_Get_Camera_Uniform_Name(void) const;
+    const char* mt_Get_Model_Matrix_Attribute_Name(void) const;
 
     void mt_Set_Uniform(const std::string& uniform_name, bool uniform_value);
     void mt_Set_Uniform(const std::string& uniform_name, int uniform_value);
@@ -38,7 +43,9 @@ private:
 
     bool mt_Get_File_Content(const std::string& file, std::string& file_content) const;
 
-    unsigned int m_Id;
+    unsigned int m_Id = -1;
+    const char* m_Camera_Uniform_Name = "";
+    const char* m_Model_Matrix_Attribute_Name = "";
 };
 
 }

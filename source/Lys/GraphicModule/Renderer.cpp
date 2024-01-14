@@ -24,6 +24,7 @@
 #include "Lys/GraphicModule/Material.hpp"
 #include "Lys/GraphicModule/Shader.hpp"
 #include "Lys/GraphicModule/VertexArray.hpp"
+#include "Lys/GraphicModule/Camera.hpp"
 
 namespace lys
 {
@@ -62,10 +63,12 @@ in vec3 FragPos; \n\
  \n\
 uniform float t; \n\
 uniform sampler2D texture1; \n\
+uniform vec3 uColor; \n\
  \n\
 void main() \n\
 { \n\
-	FragColor = vec4(0.8);//texture(texture1, TexCoord); \n\
+	FragColor = vec4(uColor, 1.0);//texture(texture1, TexCoord); \n\
+	FragColor *= texture(texture1, TexCoord); \n\
 } \n\
 ";
 
@@ -90,21 +93,25 @@ Renderer& Renderer::smt_Get(void)
 
 
 Renderer::Renderer(Window* wnd) :
-    m_Wnd(&wnd->m_Wnd)
+    m_Wnd(&wnd->m_Wnd),
+    m_Default_Shader("uCameraMatrix", "aModelMatrix")
 {
     constexpr const float l_Camera_Pitch = 0.0f;
-    constexpr const float l_Camera_Yaw = 0.0f;
-    constexpr const glm::vec3 l_Camera_Pos = glm::vec3(0.0f, 0.0f, -10.0f);
+    constexpr const float l_Camera_Yaw = -90.0f;
+    constexpr const glm::vec3 l_Camera_Pos = glm::vec3(0.0f, 0.0f, 10.0f);
 
     m_Default_Font.loadFromMemory(font::jack_input, font::jack_input_length);
     m_Default_Shader.mt_Create_From_String(g_Default_Vertex_Shader_Code, g_Default_Fragment_Shader_Code);
-    m_Instanced_Buffer.reset(new VertexBuffer(VertexBufferLayout({VertexBufferLayoutElement("aModelMatrix", ShaderDataType::mat4, false)})));
-    m_Camera.mt_Set(l_Camera_Pos, l_Camera_Pitch, l_Camera_Yaw,
-                    CameraData(glm::radians(45.0f), m_Wnd->getSize(), 1.0f, 100.0f));
+    m_Instanced_Buffer.reset(new VertexBuffer(VertexBufferLayout({VertexBufferLayoutElement(m_Default_Shader.mt_Get_Model_Matrix_Attribute_Name(), ShaderDataType::mat4, false)})));
 }
 
 Renderer::~Renderer()
 {}
+
+void Renderer::mt_Set_Camera(Camera* camera)
+{
+    m_Camera = camera;
+}
 
 void Renderer::mt_Begin_Scene(float elapsed_time)
 {
@@ -302,7 +309,14 @@ void Renderer::mt_Set_Texture(sf::Shape& s, const TextureData& data)
 
 void Renderer::mt_Flush_Mesh_Material(void)
 {
-    constexpr const int l_Polygon_Mode = GL_FILL;
+    constexpr const int l_Polygon_Mode = GL_FILL; // GL_FILL | GL_LINE | GL_POINT
+
+    if (m_Camera == nullptr)
+    {
+        //LYS_LOG_CORE_ERROR("No camera set");
+        return;
+    }
+
     /// Material
     glPolygonMode(GL_FRONT_AND_BACK, l_Polygon_Mode);
     for (auto l_it = m_Mesh_Material_Render_Buffer.begin(); l_it != m_Mesh_Material_Render_Buffer.end() && true; l_it++)
@@ -315,7 +329,7 @@ void Renderer::mt_Flush_Mesh_Material(void)
             continue;
 
         l_Material->m_Shader->mt_Use();
-        l_Material->m_Shader->mt_Set_Uniform("uCameraMatrix", m_Camera.mt_Get_ViewProjection_Matrix());
+        l_Material->m_Shader->mt_Set_Uniform(l_Material->m_Shader->mt_Get_Camera_Uniform_Name(), m_Camera->mt_Get_ViewProjection_Matrix());
 
         for (std::size_t ii = 0; ii < l_Material->m_Textures.size(); ii++)
         {
@@ -333,7 +347,7 @@ void Renderer::mt_Flush_Mesh_Material(void)
 
         l_VA->mt_Bind();
 
-        l_VA->mt_Update_Data("aModelMatrix", &l_Matrices[0], l_Matrices.size() * sizeof(l_Matrices[0]), DrawingUsage::Dynamic);
+        l_VA->mt_Update_Data(l_Material->m_Shader->mt_Get_Model_Matrix_Attribute_Name(), &l_Matrices[0], l_Matrices.size() * sizeof(l_Matrices[0]), DrawingUsage::Dynamic);
 
         glDrawElementsInstanced(GL_TRIANGLES, l_VA->mt_Indice_Count(), GL_UNSIGNED_INT, nullptr, l_Matrices.size());
 

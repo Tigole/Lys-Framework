@@ -54,7 +54,7 @@ std::size_t Array2D<T>::mt_Get_Size_Y(void) const
 template<typename T>
 const T& Array2D<T>::operator[](const Index2D& ii) const
 {
-    return m_Array.mt_Get(ii.xx, ii.yy);
+    return mt_Get(ii.xx, ii.yy);
 }
 
 template<typename T>

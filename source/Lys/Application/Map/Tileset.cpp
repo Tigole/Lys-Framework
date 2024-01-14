@@ -3,16 +3,29 @@
 namespace lys
 {
 
-Rectf fn_Tileset_Get_Tile_Normalized_Rect(const TilesetInfo& tileset_data, const Vector2u& tile_cell)
+Vector2f fn_Tileset_Get_Tile_Normalized_Pos(const TilesetInfo& tileset_data, uint32_t tile_id)
 {
-    Rectf l_Ret;
+    const Vector2f l_Tile_To_Pix = fn_Tileset_Get_Tile_Normalized_Size(tileset_data);
+    Vector2f l_Ret;
 
-    l_Ret.m_Width_Height.x = static_cast<float>(tileset_data.m_Texture_Size.x) / static_cast<float>(tileset_data.m_Tile_Count.x);
-    l_Ret.m_Width_Height.y = static_cast<float>(tileset_data.m_Texture_Size.y) / static_cast<float>(tileset_data.m_Tile_Count.y);
-    l_Ret.m_Top_Left = l_Ret.m_Width_Height * lys::Vector2f(tile_cell.x, tile_cell.y);
+    if ((tile_id > 0) && (tile_id <= (tileset_data.m_Tile_Count.x * tileset_data.m_Tile_Count.y)))
+    {
+        tile_id--;
+        l_Ret.x = (tile_id % tileset_data.m_Tile_Count.x) * l_Tile_To_Pix.x;
+        l_Ret.y = (tile_id / tileset_data.m_Tile_Count.x) * l_Tile_To_Pix.y;
+    }
 
     return l_Ret;
+}
 
+Vector2f LYS_API fn_Tileset_Get_Tile_Normalized_Size(const TilesetInfo& tileset_data)
+{
+    Vector2f l_Ret(tileset_data.m_Tile_Size);
+
+    l_Ret.x /= tileset_data.m_Texture_Size.x;
+    l_Ret.y /= tileset_data.m_Texture_Size.y;
+
+    return l_Ret;
 }
 
 }
