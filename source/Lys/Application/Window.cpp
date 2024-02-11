@@ -51,6 +51,7 @@ void Window::mt_Create(const WindowSettings& settings)
 void Window::mt_Destroy(void)
 {
     LYS_LOG_CORE_DEBUG("Closing window");
+    ImGui::SFML::Shutdown();
     m_Wnd.close();
 }
 
