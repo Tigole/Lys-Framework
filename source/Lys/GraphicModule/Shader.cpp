@@ -9,6 +9,11 @@
 namespace lys
 {
 
+Shader::Shader(const char* camera_uniform_name, const char* model_matrix_attribute_name) :
+    m_Camera_Uniform_Name(camera_uniform_name),
+    m_Model_Matrix_Attribute_Name(model_matrix_attribute_name)
+{}
+
 void Shader::mt_Use(void)
 {
     glUseProgram(m_Id);
@@ -53,6 +58,16 @@ bool Shader::mt_Create_From_String(const std::string& vertex_shader_code, const 
     glDeleteShader(l_fragment_shader);
 
     return l_b_Ret;
+}
+
+const char* Shader::mt_Get_Camera_Uniform_Name(void) const
+{
+    return m_Camera_Uniform_Name;
+}
+
+const char* Shader::mt_Get_Model_Matrix_Attribute_Name(void) const
+{
+    return m_Model_Matrix_Attribute_Name;
 }
 
 void Shader::mt_Set_Uniform(const std::string& uniform_name, bool uniform_value)

@@ -4,7 +4,6 @@
 #include "Lys/LysConfig.hpp"
 #include "Lys/Core/Core.hpp"
 #include "Lys/MathModule/Rect.hpp"
-#include "Lys/GraphicModule/Camera.hpp"
 #include "Lys/GraphicModule/Shader.hpp"
 #include "Lys/GraphicModule/VertexArray.hpp"
 
@@ -42,6 +41,7 @@ struct TextureData;
 struct Texture;
 struct Material;
 struct Shader;
+class Camera;
 
 class LYS_API Renderer
 {
@@ -55,6 +55,7 @@ public:
 
 public:
 
+    void mt_Set_Camera(Camera* camera);
     void mt_Begin_Scene(float elapsed_time);
 
     void mt_End_Scene(void);
@@ -72,11 +73,11 @@ public:
 
     sf::RenderWindow& mt_Get_SFML_RenderWindow(void) {return *m_Wnd;}
 
-    Camera m_Camera;
-
     std::unique_ptr<VertexBuffer> m_Instanced_Buffer;
 
 private:
+
+    Camera* m_Camera = nullptr;
 
     void mt_Set_Texture(sf::Shape& s, const TextureData& data);
 

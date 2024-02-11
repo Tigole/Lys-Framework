@@ -1,6 +1,7 @@
 #include "Lys/Application/Map/MapLoader.hpp"
 #include "Lys/Application/Map/Map.hpp"
 #include "Lys/Core/Log.hpp"
+#include "Lys/MathModule/HexGrid.hpp"
 #include "TinyXML_Boosted/XMLFileLoader.hpp"
 
 #include <sstream>
@@ -9,7 +10,48 @@ namespace lys
 {
 
 
-bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data)
+class MapLayout_Hexagonal : public MapLayout
+{
+public:
+    Vector2f mt_Coord_To_Normalized_Space(const Vector2i& coord, bool center) const override;
+    Vector2f mt_Get_Cell_Size_Normalized_Space(void) const override;
+};
+
+Vector2f MapLayout_Hexagonal::mt_Coord_To_Normalized_Space(const Vector2i& coord, bool center) const
+{
+    hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, 0.0f, 0.0f);
+    //hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, tile_size.x / 2.0f, tile_size.y / 2.0f);
+    //hex::Point l_Point = hex::fn_Hex_To_Pixel(l_Layout, hex::fn_From_Offset(hex::OffsetCoordMode::Odd, hex::OffsetCoordType::r, {coord.x, coord.y}));
+
+    Vector2f l_Pix;
+
+    l_Pix.x = (coord.x + (0.5f * (coord.y & 1)));
+    l_Pix.y = coord.y * 0.75f;
+
+    if (center == true)
+    {
+        l_Pix.x += 0.5f;
+        l_Pix.y += 0.5f;
+    }
+
+    return l_Pix * mt_Get_Cell_Size_Normalized_Space();
+}
+
+Vector2f MapLayout_Hexagonal::mt_Get_Cell_Size_Normalized_Space(void) const
+{
+    return Vector2f(sqrt(3) / 2.0f, 1.0f);
+}
+
+
+
+
+
+
+
+
+
+
+bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data, std::unique_ptr<MapLayout>& map_layout)
 {
     XMLFileLoader l_Loader;
     TiledHeader l_Tiled_Header;
@@ -40,7 +82,7 @@ bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data)
         map_data.m_Tiles_Layers.mt_Clear();
         map_data.m_Objects_Layers.mt_Clear();
 
-        return l_Map_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext(), map_data);
+        return l_Map_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext(), map_data, map_layout);
     }
 
     LYS_LOG_CORE_ERROR("Tiled version not handled: '%s'", l_Tiled_Header.m_Version.c_str());
@@ -49,10 +91,64 @@ bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data)
 }
 
 
-bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
+bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data, std::unique_ptr<MapLayout>& map_layout)
 {
+    auto l_fn_Orientation = [](const std::string& value, MapData::TileType& res)
+    {
+        if (value == "orthogonal")
+        {
+            res = MapData::TileType::Orthogonal;
+            return true;
+        }
+        if (value == "hexagonal")
+        {
+            res = MapData::TileType::Hexagonal;
+            return true;
+        }
+
+        return false;
+    };
+    auto l_fn_Axis = [](const std::string& value, MapData::StaggerAxis& res)
+    {
+        if (value == "x")
+        {
+            res = MapData::StaggerAxis::X;
+            return true;
+        }
+        if (value == "y")
+        {
+            res = MapData::StaggerAxis::Y;
+            return true;
+        }
+        return false;
+    };
+    auto l_fn_Index = [](const std::string& value, MapData::StaggerIndex& res)
+    {
+        if (value == "even")
+        {
+            res = MapData::StaggerIndex::Even;
+            return true;
+        }
+        if (value == "odd")
+        {
+            res = MapData::StaggerIndex::Odd;
+            return true;
+        }
+        return false;
+    };
     XMLFileLoader l_Loader;
 
+    l_Loader.mt_Add_On_Entry_Callback("/map", [&](const XML_Element& map)
+    {
+        if (map.mt_Get_Attribute("orientation", map_data.m_Tile_Type, l_fn_Orientation) == false) return false;
+        if (map_data.m_Tile_Type == MapData::TileType::Hexagonal)
+        {
+            if (map.mt_Get_Attribute("staggeraxis", map_data.m_Stagger_Axis, l_fn_Axis) == false) return false;
+            if (map.mt_Get_Attribute("staggerindex", map_data.m_Stagger_Index, l_fn_Index) == false) return false;
+        }
+
+        return true;
+    });
     l_Loader.mt_Add_On_Entry_Callback("/map/tileset", [&](const XML_Element& tileset)
     {
         std::string l_Source_File;
@@ -63,6 +159,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
 
         if (mt_Load_Tileset(file_path.mt_Get_Path() + l_Source_File, l_Tileset_Data) == false) return false;
 
+/// fixme multiple images
         map_data.m_Tileset_Data.push_back(l_Tileset_Data);
 
         return true;
@@ -129,6 +226,12 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data)
     {
         LYS_LOG_CORE_ERROR("%s", l_Loader.mt_Get_Error_Description().c_str());
         return false;
+    }
+
+    if (map_data.m_Tile_Type == MapData::TileType::Hexagonal)
+    {
+/// fixme Multiple layouts (1 by tileset ?) ?
+        map_layout.reset(new MapLayout_Hexagonal());
     }
 
     return true;
@@ -304,18 +407,18 @@ bool MapLoader_Tiled_1_9::mt_Load_Tileset(const File& file_path, MapData::Tilese
 
     l_Loader.mt_Add_On_Entry_Callback("/tileset", [&](const XML_Element& tileset)
     {
-        Vector2u l_Cell_Size_Pix;
         unsigned int l_Tile_Count;
         unsigned int l_Column_Count;
 
-        if (tileset.mt_Get_Attribute("tilewidth", l_Cell_Size_Pix.x) == false) return false;
-        if (tileset.mt_Get_Attribute("tileheight", l_Cell_Size_Pix.y) == false) return false;
+        if (tileset.mt_Get_Attribute("tilewidth", tileset_data.m_Tileset_Info.m_Tile_Size.x) == false) return false;
+        if (tileset.mt_Get_Attribute("tileheight", tileset_data.m_Tileset_Info.m_Tile_Size.y) == false) return false;
         if (tileset.mt_Get_Attribute("tilecount", l_Tile_Count) == false) return false;
         if (tileset.mt_Get_Attribute("columns", l_Column_Count) == false) return false;
 
         tileset_data.m_Tileset_Info.m_Tile_Count.x = l_Column_Count;
         tileset_data.m_Tileset_Info.m_Tile_Count.y = (l_Column_Count == 0) ? 1 : (l_Tile_Count / l_Column_Count);
-        tileset_data.m_Tileset_Info.m_Texture_Size = l_Cell_Size_Pix * tileset_data.m_Tileset_Info.m_Tile_Count;
+        tileset_data.m_Tileset_Info.m_Texture_Size.x = tileset_data.m_Tileset_Info.m_Tile_Size.x * tileset_data.m_Tileset_Info.m_Tile_Count.x;
+        tileset_data.m_Tileset_Info.m_Texture_Size.y = tileset_data.m_Tileset_Info.m_Tile_Size.y * tileset_data.m_Tileset_Info.m_Tile_Count.y;
 
         return true;
     });

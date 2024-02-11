@@ -4,34 +4,31 @@ namespace lys
 {
 
 Camera::Camera()
- :  m_Data(),
-    m_Position(),
-    m_Pitch(0.0f),
-    m_Yaw(-90.0f)
-{}
+{
+    mt_Update_Vectors();
+    mt_Recalculate_Perspective();
+}
 
-void Camera::mt_Set(const glm::vec3& position, const CameraData& data)
+void Camera::mt_Set_Data(const CameraData& data)
 {
     m_Data = data;
+    mt_Recalculate_Perspective();
+}
+
+void Camera::mt_Set(const glm::vec3& position, float pitch, float yaw)
+{
+    m_Yaw = yaw;
+    m_Pitch = pitch;
     m_Position = position;
 
-    mt_Recalculate_Perspective();
+    m_Pitch = std::min(m_Pitch, 89.0f);
+    m_Pitch = std::max(m_Pitch, -89.0f);
+
     m_Fwd_Dir = glm::vec3(0.0f, 0.0f, -1.0f);
     m_Up_Dir = glm::vec3(0.0f, 1.0f, 0.0f);
     m_World_Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     mt_Update_Vectors();
-}
-
-void Camera::mt_Set(const glm::vec3& position, float pitch, float yaw, const CameraData& data)
-{
-    m_Yaw = yaw;
-    m_Pitch = pitch;
-
-    m_Pitch = std::min(m_Pitch, 89.0f);
-    m_Pitch = std::max(m_Pitch, -89.0f);
-
-    mt_Set(position, data);
 }
 
 glm::mat4 Camera::mt_Get_ViewProjection_Matrix(void) const
@@ -62,6 +59,11 @@ glm::vec3 Camera::mt_Get_Up() const
 glm::vec3 Camera::mt_Get_Right() const
 {
     return m_Right_Dir;
+}
+
+const CameraData& Camera::mt_Get_Data(void)
+{
+    return m_Data;
 }
 
 float Camera::mt_Get_Yaw(void) const
