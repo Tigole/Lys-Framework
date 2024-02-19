@@ -43,9 +43,9 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++17" />
 			<Add option="-fPIC" />
 			<Add option="-m64" />
+			<Add option="-std=c++17" />
 			<Add option="-DLYS_USE_IMGUI" />
 			<Add option="-DLYS_BUILD_DLL" />
 			<Add directory="../../../include" />
@@ -70,6 +70,7 @@
 			<Add option='print(&quot;-lopengl32 &quot;);' />
 			<Add option='print(&quot;-lglu32 &quot;);' />
 			<Add option='print(&quot;-luser32 &quot;);' />
+			<Add option='print(&quot;-lglew32 &quot;);' />
 			<Add option="}" />
 			<Add option="else if(PLATFORM == PLATFORM_GTK) {" />
 			<Add option='print(&quot;-lGL &quot;);' />

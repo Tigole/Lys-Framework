@@ -93,7 +93,7 @@ bool MapLoader::mt_Load_Map(const File& file_path, MapData& map_data, std::uniqu
 
 bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data, std::unique_ptr<MapLayout>& map_layout)
 {
-    auto l_fn_Orientation = [](const std::string& value, MapData::TileType& res)
+    auto l_fn_Orientation = [](const std::string& value, MapData::TileType& res) -> bool
     {
         if (value == "orthogonal")
         {
@@ -108,7 +108,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data, std:
 
         return false;
     };
-    auto l_fn_Axis = [](const std::string& value, MapData::StaggerAxis& res)
+    auto l_fn_Axis = [](const std::string& value, MapData::StaggerAxis& res) -> bool
     {
         if (value == "x")
         {
@@ -122,7 +122,7 @@ bool MapLoader_Tiled_1_9::mt_Load(const File& file_path, MapData& map_data, std:
         }
         return false;
     };
-    auto l_fn_Index = [](const std::string& value, MapData::StaggerIndex& res)
+    auto l_fn_Index = [](const std::string& value, MapData::StaggerIndex& res) -> bool
     {
         if (value == "even")
         {
