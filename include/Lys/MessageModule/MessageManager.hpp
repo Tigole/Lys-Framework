@@ -7,6 +7,7 @@
 #include <vector>
 #include <mutex>
 #include <any>
+#include <algorithm>
 
 #include "Lys/LysConfig.hpp"
 
