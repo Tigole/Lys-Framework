@@ -1,13 +1,15 @@
 #ifndef _LYS_MESSAGE_MANAGER_HPP
 #define _LYS_MESSAGE_MANAGER_HPP 1
 
-#include <unordered_map>
+#include <algorithm>
+#include <any>
 #include <functional>
 #include <memory>
-#include <vector>
 #include <mutex>
 #include <any>
 #include <algorithm>
+#include <unordered_map>
+#include <vector>
 
 #include "Lys/LysConfig.hpp"
 
@@ -21,7 +23,7 @@ class LYS_API BaseMessageHandler
 {
 public:
     BaseMessageHandler() : m_Active(false) {}
-    virtual ~BaseMessageHandler(){}
+    virtual ~BaseMessageHandler() {}
     void mt_On_Receive(const std::any& msg)
     {
         if (m_Active == true)
@@ -41,7 +43,7 @@ protected:
 };
 
 template<class C, class MsgType>
-class MessageHandler : public BaseMessageHandler
+class MessageHandler: public BaseMessageHandler
 {
 public:
     MessageHandler(void (C::*pmt_Callback)(const MsgType&), C* object) : m_Callback(std::bind(pmt_Callback, object, std::placeholders::_1))
@@ -56,12 +58,12 @@ private:
     std::function<void(const MsgType&)> m_Callback;
 };
 
-}
+}  // namespace msg
 
 class LYS_API MessageManager
 {
 public:
-    MessageManager() :  m_Reciever(), m_Mutex(), m_Recursive_Handling_Count(0) {}
+    MessageManager() : m_Reciever(), m_Mutex(), m_Recursive_Handling_Count(0) {}
     ~MessageManager() {}
 
     template<class MsgType, class C>
@@ -69,7 +71,8 @@ public:
     {
         mt_Lock("mt_Add_Receiver");
         auto& l_List = m_Reciever[typeid(MsgType).hash_code()];
-        auto l_it = std::find_if(l_List.begin(), l_List.end(), [&](const std::pair<void*, std::unique_ptr<msg::BaseMessageHandler>>& p){return p.first == receive;});
+        auto l_it    = std::find_if(l_List.begin(), l_List.end(),
+                                    [&](const std::pair<void*, std::unique_ptr<msg::BaseMessageHandler>>& p) { return p.first == receive; });
 
         if (l_it == l_List.end())
         {
@@ -86,15 +89,13 @@ public:
     {
         mt_Lock("mt_Remove_Receiver");
         auto& l_List = m_Reciever[typeid(MsgType).hash_code()];
-        l_List.erase(std::remove_if(l_List.begin(),
-                                    l_List.end(),
-                                    [&](const std::pair<void*, std::unique_ptr<msg::BaseMessageHandler>>& p)
-                                    {return p.first == receiver;}),
+        l_List.erase(std::remove_if(l_List.begin(), l_List.end(), [&](const std::pair<void*, std::unique_ptr<msg::BaseMessageHandler>>& p)
+                                    { return p.first == receiver; }),
                      l_List.end());
         mt_Unlock("mt_Remove_Receiver");
     }
 
-    template <class MsgType>
+    template<class MsgType>
     void mt_Send_Message(const MsgType& m)
     {
         std::string l_Str;
@@ -103,7 +104,7 @@ public:
 
         auto& l_Observer = m_Reciever[typeid(MsgType).hash_code()];
 
-        for (auto& l_Handle : l_Observer)
+        for (auto& l_Handle: l_Observer)
         {
             l_Handle.second->mt_On_Receive(m);
         }
@@ -119,10 +120,11 @@ public:
 
         if (l_List_It != m_Reciever.end())
         {
-            auto l_Object_It = std::find_if(l_List_It->second.begin(), l_List_It->second.end(), [&](const std::pair<void*, std::unique_ptr<msg::BaseMessageHandler>>& p){return p.first == object;});
+            auto l_Object_It =
+                std::find_if(l_List_It->second.begin(), l_List_It->second.end(),
+                             [&](const std::pair<void*, std::unique_ptr<msg::BaseMessageHandler>>& p) { return p.first == object; });
 
-            if (    (l_Object_It != l_List_It->second.end())
-                &&  (l_Object_It->second != nullptr))
+            if ((l_Object_It != l_List_It->second.end()) && (l_Object_It->second != nullptr))
             {
                 l_Object_It->second->mt_Set_Activation(active);
             }
@@ -158,7 +160,6 @@ protected:
     }
 };
 
-}
+}  // namespace lys
 
-#endif // _LYS_MESSAGE_MANAGER_HPP
-
+#endif  // _LYS_MESSAGE_MANAGER_HPP

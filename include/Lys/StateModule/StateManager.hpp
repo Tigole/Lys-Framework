@@ -1,11 +1,11 @@
 #ifndef _LYS_STATE_MANAGER_HPP
 #define _LYS_STATE_MANAGER_HPP 1
 
-#include "State.hpp"
-#include "Lys/WorkingModule/WorkingTask.hpp"
-
 #include <map>
 #include <memory>
+
+#include "Lys/WorkingModule/WorkingTask.hpp"
+#include "State.hpp"
 
 namespace lys
 {
@@ -25,7 +25,6 @@ public:
     void mt_OnUpdate(float elapsed_time);
     void mt_OnEvent(const Event& event);
 
-
 private:
     std::map<std::size_t, std::unique_ptr<State>> m_States;
     std::unique_ptr<State> m_Loading_State;
@@ -36,9 +35,6 @@ private:
     bool mt_Loading_Task(std::size_t& next_state);
 };
 
+}  // namespace lys
 
-
-}
-
-
-#endif // _LYS_STATE_MANAGER_HPP
+#endif  // _LYS_STATE_MANAGER_HPP

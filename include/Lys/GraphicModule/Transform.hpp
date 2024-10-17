@@ -1,18 +1,18 @@
 #ifndef _TRANSFORM_HPP
 #define _TRANSFORM_HPP 1
 
-#include "Lys/LysConfig.hpp"
+#include <cmath>
+#include <ostream>
+#include <utility>
 
+#include "Lys/LysConfig.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtx/transform.hpp"
 
-#include <utility>
-#include <ostream>
-
-#include <cmath>
-
-#define M_PI 3.14f
-#define M_PI_2 2*M_PI
+#if !defined(M_PI)
+#    define M_PI 3.14f
+#    define M_PI_2 2 * M_PI
+#endif
 
 std::ostream& operator<<(std::ostream& o, const glm::vec3& v);
 std::ostream& operator<<(std::ostream& o, const glm::vec2& v);
@@ -28,7 +28,7 @@ inline std::ostream& operator<<(std::ostream& o, const glm::mat4& m)
 namespace lys
 {
 
-inline float LYS_API fn_Deg_To_Rad(float angle_deg)
+inline float fn_Deg_To_Rad(float angle_deg)
 {
     return M_PI * angle_deg / 180.0f;
 }
@@ -41,60 +41,56 @@ inline glm::vec3 fn_Deg_To_Rad(glm::vec3 v)
     return v;
 }
 
-
 class LYS_API Transform
 {
 public:
-
-    Transform(const glm::vec3& pos = {0.0f, 0.0f, 0.0f}, const glm::vec3& rot = {0.0f, 0.0f, 0.0f}, const glm::vec3& scale = {1.0f, 1.0f, 1.0f})
-     :  m_origin(),
-        m_position(),
-        m_rotation(),
-        m_scale(),
-        m_model_matrix()
+    Transform(const glm::vec3& pos = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rot = { 0.0f, 0.0f, 0.0f },
+              const glm::vec3& scale = { 1.0f, 1.0f, 1.0f }) :
+        m_origin(), m_position(), m_rotation(), m_scale(), m_model_matrix()
     {
         mt_Reset(pos, rot, scale);
     }
 
-    void mt_Reset(const glm::vec3& pos = {0.0f, 0.0f, 0.0f}, const glm::vec3& rot = {0.0f, 0.0f, 0.0f}, const glm::vec3& scale = {1.0f, 1.0f, 1.0f})
+    void mt_Reset(const glm::vec3& pos = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rot = { 0.0f, 0.0f, 0.0f },
+                  const glm::vec3& scale = { 1.0f, 1.0f, 1.0f })
     {
-        m_origin = glm::vec3(0.0f);
-        m_position = pos;
-        m_rotation = rot;
-        m_scale = scale;
+        m_origin             = glm::vec3(0.0f);
+        m_position           = pos;
+        m_rotation           = rot;
+        m_scale              = scale;
         m_model_matrix.first = true;
     }
 
     void mt_Reset(const Transform& rhs)
     {
-        m_origin = rhs.m_origin;
-        m_position = rhs.m_position;
-        m_rotation = rhs.m_rotation;
-        m_scale = rhs.m_scale;
+        m_origin             = rhs.m_origin;
+        m_position           = rhs.m_position;
+        m_rotation           = rhs.m_rotation;
+        m_scale              = rhs.m_scale;
         m_model_matrix.first = true;
     }
 
     Transform& mt_Set_Position(const glm::vec3& position)
     {
-        m_position = position;
+        m_position           = position;
         m_model_matrix.first = true;
         return *this;
     }
     Transform& mt_Set_Rotation(const glm::vec3& rotation_rad)
     {
-        m_rotation = rotation_rad;
+        m_rotation           = rotation_rad;
         m_model_matrix.first = true;
         return *this;
     }
     Transform& mt_Set_Scale(const glm::vec3& scale)
     {
-        m_scale = scale;
+        m_scale              = scale;
         m_model_matrix.first = true;
         return *this;
     }
     Transform& mt_Set_Origin(const glm::vec3& origin)
     {
-        m_origin = origin;
+        m_origin             = origin;
         m_model_matrix.first = true;
         return *this;
     }
@@ -132,7 +128,7 @@ public:
     {
         if (m_model_matrix.first == true)
         {
-            glm::mat4 l_pos = glm::translate(m_position + m_origin);
+            glm::mat4 l_pos   = glm::translate(m_position + m_origin);
             glm::mat4 l_scale = glm::scale(m_scale);
             glm::mat4 l_rot_x = glm::rotate(m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
             glm::mat4 l_rot_y = glm::rotate(m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -159,7 +155,6 @@ private:
     mutable std::pair<bool, glm::mat4> m_model_matrix;
 };
 
-}
+}  // namespace lys
 
-
-#endif // _TRANSFORM_HPP
+#endif  // _TRANSFORM_HPP

@@ -1,35 +1,27 @@
 #include "Lys/GraphicModule/Renderer.hpp"
 
-#include "Lys/Application/Window.hpp"
-
-#include "Lys/Core/SFML_Conversion.hpp"
-
-#include "Lys/GraphicModule/EmbeddedFonts/JackInput.hpp"
-
-#include "Lys/Core/Log.hpp"
-
-#include "Lys/MathModule/HexGrid.hpp"
-
-#include <array>
-#include <SFML/Graphics/Vertex.hpp>
-
-#include "imgui-SFML.h"
-
-#include <array>
-#include <SFML/Graphics/Vertex.hpp>
-
-#include <GL/glew.h>
 #include <GL/gl.h>
+#include <GL/glew.h>
 
+#include <SFML/Graphics/Vertex.hpp>
+#include <array>
+
+#include "Lys/Application/Window.hpp"
+#include "Lys/Core/Log.hpp"
+#include "Lys/Core/SFML_Conversion.hpp"
+#include "Lys/GraphicModule/Camera.hpp"
+#include "Lys/GraphicModule/EmbeddedFonts/JackInput.hpp"
 #include "Lys/GraphicModule/Material.hpp"
 #include "Lys/GraphicModule/Shader.hpp"
 #include "Lys/GraphicModule/VertexArray.hpp"
-#include "Lys/GraphicModule/Camera.hpp"
+#include "Lys/MathModule/HexGrid.hpp"
+#include "imgui-SFML.h"
 
 namespace lys
 {
 
-static constexpr const char* g_Default_Vertex_Shader_Code = "#version 330 core \n\
+static constexpr const char* g_Default_Vertex_Shader_Code =
+    "#version 330 core \n\
 layout (location = 0) in vec3 aPos; \n\
 layout (location = 1) in vec2 aTexCoord; \n\
 layout (location = 2) in vec3 aNormal; \n\
@@ -53,7 +45,8 @@ void main() \n\
 	//FragPos = aPos; \n\
 }";
 
-static constexpr const char* g_Default_Fragment_Shader_Code = "#version 330 core \n\
+static constexpr const char* g_Default_Fragment_Shader_Code =
+    "#version 330 core \n\
  \n\
 out vec4 FragColor; \n\
  \n\
@@ -90,23 +83,19 @@ Renderer& Renderer::smt_Get(void)
     return *sm_Renderer;
 }
 
-
-
-Renderer::Renderer(Window* wnd) :
-    m_Wnd(&wnd->m_Wnd),
-    m_Default_Shader("uCameraMatrix", "aModelMatrix")
+Renderer::Renderer(Window* wnd) : m_Wnd(&wnd->m_Wnd), m_Default_Shader("uCameraMatrix", "aModelMatrix")
 {
-    constexpr const float l_Camera_Pitch = 0.0f;
-    constexpr const float l_Camera_Yaw = -90.0f;
+    constexpr const float l_Camera_Pitch   = 0.0f;
+    constexpr const float l_Camera_Yaw     = -90.0f;
     constexpr const glm::vec3 l_Camera_Pos = glm::vec3(0.0f, 0.0f, 10.0f);
 
-    m_Default_Font.loadFromMemory(font::jack_input, font::jack_input_length);
+    m_Default_Font.openFromMemory(font::jack_input, font::jack_input_length);
     m_Default_Shader.mt_Create_From_String(g_Default_Vertex_Shader_Code, g_Default_Fragment_Shader_Code);
-    m_Instanced_Buffer.reset(new VertexBuffer(VertexBufferLayout({VertexBufferLayoutElement(m_Default_Shader.mt_Get_Model_Matrix_Attribute_Name(), ShaderDataType::mat4, false)})));
+    m_Instanced_Buffer.reset(new VertexBuffer(VertexBufferLayout(
+        { VertexBufferLayoutElement(m_Default_Shader.mt_Get_Model_Matrix_Attribute_Name(), ShaderDataType::mat4, false) })));
 }
 
-Renderer::~Renderer()
-{}
+Renderer::~Renderer() {}
 
 void Renderer::mt_Set_Camera(Camera* camera)
 {
@@ -136,10 +125,9 @@ void Renderer::mt_End_Scene(void)
 
 void Renderer::mt_Draw_Line(const LineSettings& line_settings)
 {
-    std::array<sf::Vertex, 2> l_Line =
-    {
-        sf::Vertex(sf_To<float>(line_settings.m_Start_Pos), sf_To(line_settings.m_Start_Color)),
-        sf::Vertex(sf_To<float>(line_settings.m_End_Pos), sf_To(line_settings.m_End_Color))
+    std::array<sf::Vertex, 2> l_Line = {
+        { { sf_To<float>(line_settings.m_Start_Pos), sf_To(line_settings.m_Start_Color) },
+         { sf_To<float>(line_settings.m_End_Pos), sf_To(line_settings.m_End_Color) } }
     };
 
     m_Wnd->draw(l_Line.data(), l_Line.size(), sf::PrimitiveType::Lines);
@@ -182,11 +170,9 @@ void Renderer::mt_Draw_Hexagon(const HexagonSettings& hexagon_settings)
     auto l_fn_Coord_To_Pix = [](const sf::Vector2i& coord, bool center, const sf::Vector2f& tile_size)
     {
         lys::hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, 0.0f, 0.0f);
-        //hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, tile_size.x / 2.0f, tile_size.y / 2.0f);
-        lys::hex::Point l_Point = lys::hex::fn_Hex_To_Pixel(l_Layout,
-                                                            lys::hex::fn_From_Offset(lys::hex::OffsetCoordMode::Odd,
-                                                                                     lys::hex::OffsetCoordType::r,
-                                                                                     {coord.x, coord.y}));
+        // hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, tile_size.x / 2.0f, tile_size.y / 2.0f);
+        lys::hex::Point l_Point = lys::hex::fn_Hex_To_Pixel(
+            l_Layout, lys::hex::fn_From_Offset(lys::hex::OffsetCoordMode::Odd, lys::hex::OffsetCoordType::r, { coord.x, coord.y }));
 
         Vector2f l_Pix;
 
@@ -199,12 +185,12 @@ void Renderer::mt_Draw_Hexagon(const HexagonSettings& hexagon_settings)
             l_Pix.y += tile_size.y / 2.0f;
         }
 
-        //return sf::Vector2f(l_Point.xx, l_Point.yy);
+        // return sf::Vector2f(l_Point.xx, l_Point.yy);
         return l_Pix;
     };
     sf::CircleShape l_Hex;
     Vector2f l_Pos;
-    //sf::Vector2f l_Tile_Size;
+    // sf::Vector2f l_Tile_Size;
 
     l_Hex.setRadius(hexagon_settings.m_Radius);
     l_Hex.setPointCount(6);
@@ -216,7 +202,7 @@ void Renderer::mt_Draw_Hexagon(const HexagonSettings& hexagon_settings)
     l_Hex.setRadius(l_Tile_Size.y / 2.0f);*/
     l_Hex.setOrigin(sf::Vector2f(hexagon_settings.m_Radius, hexagon_settings.m_Radius));
 
-//    l_Pos = l_fn_Coord_To_Pix(pos[ii], true, ); Map::smt_Get().mt_Coord_To_Pix(pos[ii], true);
+    //    l_Pos = l_fn_Coord_To_Pix(pos[ii], true, ); Map::smt_Get().mt_Coord_To_Pix(pos[ii], true);
     l_Hex.setPosition(sf_To<float>(l_Pos));
     Window::smt_Get().m_Wnd.draw(l_Hex);
 }
@@ -228,18 +214,12 @@ Rectf Renderer::mt_Draw_Text(const char* text, const Vector2f& screen_pos, const
     sf::FloatRect l_Bound;
     auto l_fn_Handle_Mode = [](gui::TextOriginMode mode, float& f, float near, float far)
     {
-        switch(mode)
+        switch (mode)
         {
-        case gui::TextOriginMode::Centered:
-            f = (near + far) / 2.0f;
-            break;
-        case gui::TextOriginMode::Far:
-            f = far;
-            break;
-        case gui::TextOriginMode::Near:
-            f = near;
-        default:
-            break;
+        case gui::TextOriginMode::Centered: f = (near + far) / 2.0f; break;
+        case gui::TextOriginMode::Far:      f = far; break;
+        case gui::TextOriginMode::Near:     f = near;
+        default:                            break;
         }
     };
 
@@ -254,14 +234,14 @@ Rectf Renderer::mt_Draw_Text(const char* text, const Vector2f& screen_pos, const
     l_Text.setPosition(sf_To<float, float>(screen_pos));
 
     l_Bound = l_Text.getLocalBounds();
-    l_fn_Handle_Mode(text_settings.m_Horizontal_Align, l_Origin.x, l_Bound.left, l_Bound.left + l_Bound.width);
-    l_fn_Handle_Mode(text_settings.m_Vertical_Align, l_Origin.y, l_Bound.top, l_Bound.top + l_Bound.height);
+    l_fn_Handle_Mode(text_settings.m_Horizontal_Align, l_Origin.x, l_Bound.position.x, l_Bound.position.x + l_Bound.size.x);
+    l_fn_Handle_Mode(text_settings.m_Vertical_Align, l_Origin.y, l_Bound.position.y, l_Bound.position.y + l_Bound.size.y);
 
     l_Text.setOrigin(l_Origin);
 
     m_Wnd->draw(l_Text);
 
-    return Rectf(l_Bound.left, l_Bound.top, l_Bound.width, l_Bound.height);
+    return Rectf(l_Bound.position.x, l_Bound.position.y, l_Bound.size.x, l_Bound.size.y);
 }
 
 void Renderer::mt_Draw_VertexArray(VertexArray* va, Material* material, const glm::mat4& model_matrix)
@@ -277,7 +257,7 @@ void Renderer::mt_Draw_VertexArray(const sf::VertexArray& va, const Texture* tex
     if (texture != nullptr)
     {
         sf::RenderStates l_State = sf::RenderStates::Default;
-        l_State.texture = &texture->m_SFML_Texture;
+        l_State.texture          = &texture->m_SFML_Texture;
         m_Wnd->draw(va, l_State);
     }
     else
@@ -296,24 +276,23 @@ Shader& Renderer::mt_Get_Default_Shader(void)
     return m_Default_Shader;
 }
 
-
-
 void Renderer::mt_Set_Texture(sf::Shape& s, const TextureData& data)
 {
     if (data.m_Texture != nullptr)
     {
         s.setTexture(&data.m_Texture->m_SFML_Texture, true);
-        s.setTextureRect(sf_To<int>(data.m_Normalized_Texture_Area.mt_Get_Scale_XY(sf_From<float>(data.m_Texture->m_SFML_Texture.getSize()))));
+        s.setTextureRect(
+            sf_To<int>(data.m_Normalized_Texture_Area.mt_Get_Scale_XY(sf_From<float>(data.m_Texture->m_SFML_Texture.getSize()))));
     }
 }
 
 void Renderer::mt_Flush_Mesh_Material(void)
 {
-    constexpr const int l_Polygon_Mode = GL_FILL; // GL_FILL | GL_LINE | GL_POINT
+    constexpr const int l_Polygon_Mode = GL_FILL;  // GL_FILL | GL_LINE | GL_POINT
 
     if (m_Camera == nullptr)
     {
-        //LYS_LOG_CORE_ERROR("No camera set");
+        // LYS_LOG_CORE_ERROR("No camera set");
         return;
     }
 
@@ -321,12 +300,14 @@ void Renderer::mt_Flush_Mesh_Material(void)
     glPolygonMode(GL_FRONT_AND_BACK, l_Polygon_Mode);
     for (auto l_it = m_Mesh_Material_Render_Buffer.begin(); l_it != m_Mesh_Material_Render_Buffer.end() && true; l_it++)
     {
-        VertexArray* l_VA = l_it->first.first;
-        Material* l_Material = l_it->first.second;
+        VertexArray* l_VA                        = l_it->first.first;
+        Material* l_Material                     = l_it->first.second;
         const std::vector<glm::mat4>& l_Matrices = l_it->second;
 
         if (l_Matrices.empty())
+        {
             continue;
+        }
 
         l_Material->m_Shader->mt_Use();
         l_Material->m_Shader->mt_Set_Uniform(l_Material->m_Shader->mt_Get_Camera_Uniform_Name(), m_Camera->mt_Get_ViewProjection_Matrix());
@@ -347,7 +328,8 @@ void Renderer::mt_Flush_Mesh_Material(void)
 
         l_VA->mt_Bind();
 
-        l_VA->mt_Update_Data(l_Material->m_Shader->mt_Get_Model_Matrix_Attribute_Name(), &l_Matrices[0], l_Matrices.size() * sizeof(l_Matrices[0]), DrawingUsage::Dynamic);
+        l_VA->mt_Update_Data(l_Material->m_Shader->mt_Get_Model_Matrix_Attribute_Name(), &l_Matrices[0],
+                             l_Matrices.size() * sizeof(l_Matrices[0]), DrawingUsage::Dynamic);
 
         glDrawElementsInstanced(GL_TRIANGLES, l_VA->mt_Indice_Count(), GL_UNSIGNED_INT, nullptr, l_Matrices.size());
 
@@ -360,10 +342,10 @@ void Renderer::mt_Flush_Mesh_Material(void)
 template<typename T>
 inline void Renderer::mt_Send_To_Shader(Shader* s, std::map<std::string, T>& m)
 {
-    for (auto& v : m)
+    for (auto& v: m)
     {
         s->mt_Set_Uniform(v.first, v.second);
     }
 }
 
-}
+}  // namespace lys

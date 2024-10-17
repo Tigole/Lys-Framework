@@ -1,61 +1,59 @@
 #ifndef _LYS_EVENT_HPP
 #define _LYS_EVENT_HPP 1
 
-#include "Lys/LysConfig.hpp"
 #include <SFML/Window/Event.hpp>
+
+#include "Lys/LysConfig.hpp"
 
 namespace lys
 {
 
 struct LYS_API MouseButtonEvent
 {
-    sf::Event::MouseButtonEvent m_Mouse;
+    bool m_Is_Pressed                         = true;
+    sf::Event::MouseButtonPressed m_Pressed   = {};
+    sf::Event::MouseButtonReleased m_Released = {};
 };
 
 struct LYS_API MouseMoveEvent
 {
-    sf::Event::MouseMoveEvent m_Mouse;
+    sf::Event::MouseMoved m_Mouse = {};
 };
 
 struct LYS_API MouseWheelScrollEvent
 {
-    sf::Event::MouseWheelScrollEvent m_Scroll;
+    sf::Event::MouseWheelScrolled m_Scroll = {};
 };
-
-
 
 struct LYS_API KeyEvent
 {
-    sf::Event::KeyEvent m_Key;
+    bool m_Is_Pressed                 = true;
+    sf::Event::KeyPressed m_Pressed   = {};
+    sf::Event::KeyReleased m_Released = {};
 };
-
-
 
 struct LYS_API JoystickButtonEvent
 {
-    sf::Event::JoystickButtonEvent m_Button;
+    bool m_Is_Pressed                            = true;
+    sf::Event::JoystickButtonPressed m_Pressed   = {};
+    sf::Event::JoystickButtonReleased m_Released = {};
 };
 
 struct LYS_API JoystickMoveEvent
 {
-    sf::Event::JoystickMoveEvent m_Joystick;
+    sf::Event::JoystickMoved m_Joystick = {};
 };
-
-
 
 struct LYS_API TextEvent
 {
-    sf::Event::TextEvent m_Text;
+    sf::Event::TextEntered m_Text = {};
 };
-
-
 
 struct LYS_API Event
 {
-    sf::Event m_SFML;
+    sf::Event m_SFML = { sf::Event::Closed() };
 };
 
+}  // namespace lys
 
-}
-
-#endif // _LYS_EVENT_HPP
+#endif  // _LYS_EVENT_HPP

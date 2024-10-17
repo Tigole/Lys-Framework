@@ -1,21 +1,16 @@
 #include "Lys/Application/Application.hpp"
 
-#include "Lys/StateModule/StateLys.hpp"
-#include "Lys/MessageModule/MessageManager.hpp"
-#include "Lys/Core/Log.hpp"
-
-#include <GL/glew.h>
 #include <GL/gl.h>
+#include <GL/glew.h>
+
+#include "Lys/Core/Log.hpp"
+#include "Lys/MessageModule/MessageManager.hpp"
+#include "Lys/StateModule/StateLys.hpp"
 
 namespace lys
 {
 
-
-
-CommandLineArguments::CommandLineArguments(int argc, char** argv) :
-    m_Argc(argc),
-    m_Argv(argv)
-{}
+CommandLineArguments::CommandLineArguments(int argc, char** argv) : m_Argc(argc), m_Argv(argv) {}
 
 const char* CommandLineArguments::mt_Get_Arg(int index)
 {
@@ -29,16 +24,9 @@ const char* CommandLineArguments::mt_Get_Arg(int index)
     return l_Ret;
 }
 
-
-
-
-
 Application::Application(const char* title, const CommandLineArguments& cla) :
-    m_CLA(cla),
-    m_Window_Settings(title, sf::VideoMode::getDesktopMode(), false),
-    m_State_Manager()
+    m_CLA(cla), m_Window_Settings(title, sf::VideoMode::getDesktopMode(), false), m_State_Manager()
 {}
-
 
 int Application::mt_Run(void)
 {
@@ -65,17 +53,9 @@ int Application::mt_Run(void)
 
     l_Elapsed_Time = 0.0f;
     l_Clk.restart();
-    while(l_Run)
+    while (l_Run == true)
     {
-        while(Window::smt_Get().mt_Poll_Event(l_Event))
-        {
-            if (l_Event.m_SFML.type == sf::Event::Closed)
-            {
-                l_Run = false;
-            }
-
-            m_State_Manager.mt_OnEvent(l_Event);
-        }
+        l_Run = Window::smt_Get().mt_Handle_Events(m_State_Manager) == false;
 
         Renderer::smt_Get().mt_Begin_Scene(l_Elapsed_Time);
 
@@ -101,5 +81,4 @@ void Application::mt_On_Change_State(const Message_ChangeState& msg)
     m_State_Manager.mt_Change_State(msg.m_Next_State);
 }
 
-
-}
+}  // namespace lys
