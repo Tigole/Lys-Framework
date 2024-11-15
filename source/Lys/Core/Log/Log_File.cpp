@@ -7,21 +7,31 @@ namespace lys
 namespace log
 {
 
-File::File(const std::string& file) :
-    m_Stream()
-{
-    m_Stream.open(file);
+std::map<std::string, std::shared_ptr<std::ofstream>> File::sm_Stream_Pool;
 
-    if (m_Stream.is_open() == false)
+std::ofstream* File::smt_Get_Stream(const std::string& file)
+{
+    auto it = sm_Stream_Pool.find(file);
+    if (it == sm_Stream_Pool.end())
     {
-        LYS_LOG_CORE_ERROR("Could not open file: '%s'", file.c_str());
+        it = sm_Stream_Pool.emplace(file, std::make_shared<std::ofstream>()).first;
+        it->second->open(file);
+        if (it->second->is_open() == false)
+        {
+            LYS_LOG_CORE_ERROR("Could not open file: '%s'", file.c_str());
+        }
     }
+
+    return it->second.get();
 }
+
+File::File(const std::string& file) : m_Stream(smt_Get_Stream(file)) {}
 
 void File::mt_Log(const LogData& data)
 {
-    m_Stream << data.m_Header << data.m_Message << std::endl;
+    std::unique_lock l(m_Mutex);
+    (*m_Stream) << data.m_Header << data.m_Message << std::endl;
 }
 
-}
-}
+}  // namespace log
+}  // namespace lys
