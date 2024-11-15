@@ -1,13 +1,13 @@
 #ifndef _GRID_HPP
 #define _GRID_HPP 1
 
+#include <vector>
+
 #include "Lys/LysConfig.hpp"
 #include "glm/glm.hpp"
-#include <vector>
 
 namespace lys
 {
-
 
 struct CubeCoord;
 struct AxialCoord;
@@ -28,23 +28,23 @@ enum class HexTileMode
 struct LYS_API AxialCoord
 {
     AxialCoord() : q(0), r(0) {}
-    AxialCoord(int _q, int _r) : q(_q), r(_r){}
+    AxialCoord(int _q, int _r) : q(_q), r(_r) {}
     int q, r;
 
     CubeCoord mt_To_Cube(void) const;
 };
 
-inline bool LYS_API operator==(const AxialCoord& a, const AxialCoord& b)
+inline bool operator==(const AxialCoord& a, const AxialCoord& b)
 {
     return ((a.q == b.q) && (a.r == b.r));
 }
 
-inline AxialCoord LYS_API operator+(const AxialCoord& a, const AxialCoord& b)
+inline AxialCoord operator+(const AxialCoord& a, const AxialCoord& b)
 {
     return AxialCoord(a.q + b.q, a.r + b.r);
 }
 
-inline AxialCoord LYS_API operator-(const AxialCoord& a, const AxialCoord& b)
+inline AxialCoord operator-(const AxialCoord& a, const AxialCoord& b)
 {
     return AxialCoord(a.q - b.q, a.r - b.r);
 }
@@ -54,7 +54,7 @@ struct LYS_API CubeCoord
     CubeCoord() : x(0), y(0), z(0) {}
     CubeCoord(int _x, int _y, int _z) : x(_x), y(_y), z(_z)
     {
-        assert((x+y+z) == 0);
+        assert((x + y + z) == 0);
     }
     int x, y, z;
 
@@ -65,7 +65,7 @@ struct LYS_API CubeCoord
 
     int mt_Distance(const CubeCoord& c) const
     {
-        return (std::abs(x - c.x) + std::abs(y - c.y) + std::abs(z - c.z))/2;
+        return (std::abs(x - c.x) + std::abs(y - c.y) + std::abs(z - c.z)) / 2;
     }
 };
 
@@ -124,14 +124,9 @@ public:
 
     std::vector<HexTile> mt_Neighbours(void) const
     {
-        std::vector<HexTile> l_Ret =
-        {
-            HexTile(m_Coords - AxialCoord(1, 0)),
-            HexTile(m_Coords - AxialCoord(1, -1)),
-            HexTile(m_Coords - AxialCoord(0, -1)),
-            HexTile(m_Coords - AxialCoord(-1, 0)),
-            HexTile(m_Coords - AxialCoord(-1, 1)),
-            HexTile(m_Coords - AxialCoord(0, 1)),
+        std::vector<HexTile> l_Ret = {
+            HexTile(m_Coords - AxialCoord(1, 0)),  HexTile(m_Coords - AxialCoord(1, -1)), HexTile(m_Coords - AxialCoord(0, -1)),
+            HexTile(m_Coords - AxialCoord(-1, 0)), HexTile(m_Coords - AxialCoord(-1, 1)), HexTile(m_Coords - AxialCoord(0, 1)),
         };
 
         return l_Ret;
@@ -156,7 +151,7 @@ public:
         l_qr = sm_Pixel_To_Hex_Flat * px;
 
         l_Cube.x = l_qr.x;
-        l_Cube.y = -l_qr.x-l_qr.y;
+        l_Cube.y = -l_qr.x - l_qr.y;
         l_Cube.z = l_qr.y;
 
         l_Round_Cube.x = std::round(l_Cube.x);
@@ -199,44 +194,41 @@ private:
     static const glm::mat2 sm_Pixel_To_Hex_Flat;
 };
 
-inline bool LYS_API operator==(const HexTile& a, const HexTile& b)
+inline bool operator==(const HexTile& a, const HexTile& b)
 {
     return a.mt_Get_Axial() == b.mt_Get_Axial();
 }
 
-inline bool LYS_API operator!=(const HexTile& a, const HexTile& b)
+inline bool operator!=(const HexTile& a, const HexTile& b)
 {
     return !(a == b);
 }
 
-inline bool LYS_API operator<(const HexTile& a, const HexTile& b)
+inline bool operator<(const HexTile& a, const HexTile& b)
 {
     if (a.mt_Get_Axial().q < b.mt_Get_Axial().q)
+    {
         return true;
+    }
     return a.mt_Get_Axial().r < b.mt_Get_Axial().r;
 }
 
-inline HexTile LYS_API operator+(const HexTile& a, const HexTile& b)
+inline HexTile operator+(const HexTile& a, const HexTile& b)
 {
     return HexTile(a.mt_Get_Axial() + b.mt_Get_Axial());
 }
 
-inline HexTile LYS_API operator-(const HexTile& a, const HexTile& b)
+inline HexTile operator-(const HexTile& a, const HexTile& b)
 {
     return HexTile(a.mt_Get_Axial() - b.mt_Get_Axial());
 }
-
-
-
-
-
 
 namespace hex
 {
 
 enum class OffsetCoordMode
 {
-    Odd = -1,
+    Odd  = -1,
     Even = 1,
 };
 
@@ -248,84 +240,94 @@ enum class OffsetCoordType
 
 struct LYS_API Hex
 {
-    Hex(int qq, int rr, int ss) : q(qq), r(rr), s(ss) {assert((q + r + s) == 0);}
-    Hex(int axial_q, int axial_r) : q(axial_q), r(axial_r), s(-axial_q - axial_r) {assert((q + r + s) == 0);}
+    Hex(int qq, int rr, int ss) : q(qq), r(rr), s(ss)
+    {
+        assert((q + r + s) == 0);
+    }
+    Hex(int axial_q, int axial_r) : q(axial_q), r(axial_r), s(-axial_q - axial_r)
+    {
+        assert((q + r + s) == 0);
+    }
     explicit Hex(const glm::ivec3 vec) : v(vec) {}
 
     union
     {
         glm::ivec3 v;
-        struct {int q, r, s;};
+        struct
+        {
+            int q, r, s;
+        };
     };
 };
 
-inline bool LYS_API operator==(const Hex& aa, const Hex& bb)
+inline bool operator==(const Hex& aa, const Hex& bb)
 {
     return aa.q == bb.q && aa.r == bb.r && aa.s == bb.s;
 }
 
-inline bool LYS_API operator!=(const Hex& aa, const Hex& bb)
+inline bool operator!=(const Hex& aa, const Hex& bb)
 {
     return !(aa == bb);
 }
 
-inline Hex LYS_API operator+(const Hex& aa, const Hex& bb)
+inline Hex operator+(const Hex& aa, const Hex& bb)
 {
     return Hex(aa.v + bb.v);
 }
 
-inline Hex LYS_API operator-(const Hex& aa, const Hex& bb)
+inline Hex operator-(const Hex& aa, const Hex& bb)
 {
     return Hex(aa.v - bb.v);
 }
 
-inline Hex LYS_API operator*(const Hex& aa, int k)
+inline Hex operator*(const Hex& aa, int k)
 {
     return Hex(aa.v * k);
 }
 
-inline int LYS_API fn_Length(const Hex& hh)
+inline int fn_Length(const Hex& hh)
 {
     return (std::abs(hh.q) + std::abs(hh.r) + std::abs(hh.s)) / 2;
 }
 
-inline int LYS_API fn_Distance(const Hex& aa, const Hex& bb)
+inline int fn_Distance(const Hex& aa, const Hex& bb)
 {
     return fn_Length(aa - bb);
 }
 
 namespace priv
 {
-    LYS_API extern const Hex gs_Directions[6];
+LYS_API extern const Hex gs_Directions[6];
 }
 
-inline Hex LYS_API fn_Direction(int direction)
+inline Hex fn_Direction(int direction)
 {
     assert(direction >= 0 && direction < 6);
 
     return priv::gs_Directions[direction];
 }
 
-inline Hex LYS_API fn_Neighbour(const Hex& hh, int direction)
+inline Hex fn_Neighbour(const Hex& hh, int direction)
 {
     return hh + fn_Direction(direction);
 }
 
 namespace orient
 {
-    struct LYS_API Orientation
-    {
-        glm::mat2 f;
-        glm::mat2 b;
-        float start_angle;
-    };
+struct LYS_API Orientation
+{
+    glm::mat2 f;
+    glm::mat2 b;
+    float start_angle;
+};
 
-    LYS_API extern const Orientation gs_PointyTop/*{
-                                            {std::sqrt(3.0f), std::sqrt(3.0f) / 2.0f, 0.0f, 3.0f / 2.0f},
-                                            {std::sqrt(3.0f) / 3.0f, -1.0f / 3.0f, 0.0f, 2.0f / 3.0f},
-                                            0.5f}*/;
+LYS_API extern const Orientation gs_PointyTop /*{
+                                         {std::sqrt(3.0f), std::sqrt(3.0f) / 2.0f, 0.0f, 3.0f / 2.0f},
+                                         {std::sqrt(3.0f) / 3.0f, -1.0f / 3.0f, 0.0f, 2.0f / 3.0f},
+                                         0.5f}*/
+    ;
 
-}
+}  // namespace orient
 
 struct LYS_API Point
 {
@@ -361,15 +363,21 @@ std::vector<Hex> LYS_API fn_Line(const Hex& aa, const Hex& bb, int distance_limi
 struct LYS_API OffsetCoord
 {
     int col, row;
-    inline int x(void) {return col;}
-    inline int y(void) {return row;}
+    inline int x(void)
+    {
+        return col;
+    }
+    inline int y(void)
+    {
+        return row;
+    }
 };
 
-inline OffsetCoord LYS_API fn_To_Offset(OffsetCoordMode mode, OffsetCoordType type, const Hex& hh)
+inline OffsetCoord fn_To_Offset(OffsetCoordMode mode, OffsetCoordType type, const Hex& hh)
 {
     OffsetCoord l_Ret;
 
-    switch(type)
+    switch (type)
     {
     case OffsetCoordType::q:
         l_Ret.col = hh.q;
@@ -381,16 +389,15 @@ inline OffsetCoord LYS_API fn_To_Offset(OffsetCoordMode mode, OffsetCoordType ty
         break;
     }
     return l_Ret;
-
 }
 
-inline Hex LYS_API fn_From_Offset(OffsetCoordMode mode, OffsetCoordType type, const OffsetCoord& offset)
+inline Hex fn_From_Offset(OffsetCoordMode mode, OffsetCoordType type, const OffsetCoord& offset)
 {
     int q = 0;
     int r = 0;
     int s = 0;
 
-    switch(type)
+    switch (type)
     {
     case OffsetCoordType::q:
         q = offset.col;
@@ -400,30 +407,25 @@ inline Hex LYS_API fn_From_Offset(OffsetCoordMode mode, OffsetCoordType type, co
     case OffsetCoordType::r:
         q = offset.col - (offset.row + static_cast<int>(mode) * (offset.row & 1)) / 2;
         r = offset.row;
-        s = -q -r;
+        s = -q - r;
         break;
     }
 
     return Hex(q, r, s);
 }
 
-inline Hex LYS_API fn_Rotate_Left(const Hex& hh)
+inline Hex fn_Rotate_Left(const Hex& hh)
 {
     return Hex(-hh.s, -hh.q, -hh.r);
 }
 
-inline Hex LYS_API fn_Rotate_Right(const Hex& hh)
+inline Hex fn_Rotate_Right(const Hex& hh)
 {
     return Hex(-hh.r, -hh.s, -hh.q);
 }
 
+}  // namespace hex
 
+}  // namespace lys
 
-}
-
-
-
-
-}
-
-#endif // _GRID_HPP
+#endif  // _GRID_HPP

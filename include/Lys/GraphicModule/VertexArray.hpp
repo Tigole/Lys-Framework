@@ -1,18 +1,16 @@
 #ifndef _VERTEX_ARRAY_HPP
 #define _VERTEX_ARRAY_HPP 1
 
-#include "Lys/LysConfig.hpp"
-
 #include <cstdint>
-
-#include <vector>
 #include <initializer_list>
-#include <string>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
+#include "Lys/LysConfig.hpp"
 #include "glm/glm.hpp"
-//#include "ResourceManager/Resource.hpp"
+// #include "ResourceManager/Resource.hpp"
 #include "OpenGLTranslation.hpp"
 
 namespace lys
@@ -38,19 +36,20 @@ int LYS_API fn_ShaderDataType_To_Type(ShaderDataType type);
 struct LYS_API VertexBufferLayoutElement
 {
     VertexBufferLayoutElement() : m_Name(), m_Type(ShaderDataType::None), m_Offset(0), m_Byte_Size(0), m_Nomalized(false) {}
-    VertexBufferLayoutElement(const std::string& name, ShaderDataType type, bool normalized)
-     :  m_Name(name), m_Type(type), m_Offset(0), m_Byte_Size(fn_ShaderDataType_To_Size(type)), m_Nomalized(normalized)
+    VertexBufferLayoutElement(const std::string& name, ShaderDataType type, bool normalized) :
+        m_Name(name), m_Type(type), m_Offset(0), m_Byte_Size(fn_ShaderDataType_To_Size(type)), m_Nomalized(normalized)
     {}
 
     int mt_Get_Element_Count(void) const
     {
-        switch(m_Type)
+        switch (m_Type)
         {
-            case ShaderDataType::mat3: return 3 * 3;
-            case ShaderDataType::mat4: return 4 * 4;
-            case ShaderDataType::vec3: return 3;
-            case ShaderDataType::vec4: return 4;
-            case ShaderDataType::vec2: return 2;
+        case ShaderDataType::mat3: return 3 * 3;
+        case ShaderDataType::mat4: return 4 * 4;
+        case ShaderDataType::vec3: return 3;
+        case ShaderDataType::vec4: return 4;
+        case ShaderDataType::vec2: return 2;
+        case ShaderDataType::None: return 0;
         }
 
         return 0;
@@ -67,8 +66,14 @@ class LYS_API VertexBufferLayout
 {
 public:
     VertexBufferLayout() : m_Elements() {}
-    VertexBufferLayout(std::initializer_list<VertexBufferLayoutElement> elements) : m_Elements(elements) { mt_Setup(); }
-    VertexBufferLayout(const std::vector<VertexBufferLayoutElement>& elements) : m_Elements(elements) { mt_Setup(); }
+    VertexBufferLayout(std::initializer_list<VertexBufferLayoutElement> elements) : m_Elements(elements)
+    {
+        mt_Setup();
+    }
+    VertexBufferLayout(const std::vector<VertexBufferLayoutElement>& elements) : m_Elements(elements)
+    {
+        mt_Setup();
+    }
 
     void mt_Set_Elements(const std::vector<VertexBufferLayoutElement>& elements)
     {
@@ -86,8 +91,14 @@ public:
         return m_Elements;
     }
 
-    std::vector<VertexBufferLayoutElement>::iterator begin() {return m_Elements.begin();}
-    std::vector<VertexBufferLayoutElement>::iterator end() {return m_Elements.end();}
+    std::vector<VertexBufferLayoutElement>::iterator begin()
+    {
+        return m_Elements.begin();
+    }
+    std::vector<VertexBufferLayoutElement>::iterator end()
+    {
+        return m_Elements.end();
+    }
 
 private:
     void mt_Setup(void)
@@ -115,7 +126,10 @@ public:
     void mt_Bind(void);
     void mt_Unbind(void);
 
-    uint32_t mt_Get_Indices_Count(void) const {return m_Indices_Count;}
+    uint32_t mt_Get_Indices_Count(void) const
+    {
+        return m_Indices_Count;
+    }
 
 private:
     uint32_t m_Id;
@@ -165,7 +179,7 @@ class LYS_API VertexArray
 {
 public:
     VertexArray();
-    VertexArray(const VertexArray& rhs) = delete;
+    VertexArray(const VertexArray& rhs)            = delete;
     VertexArray& operator=(const VertexArray& rhs) = delete;
     ~VertexArray();
 
@@ -177,23 +191,22 @@ public:
 
     bool mt_Update_Data(const std::string& name, const glm::mat4& matrix);
     bool mt_Update_Data(const std::string& name, const void* data, std::size_t byte_count, DrawingUsage usage);
+
 private:
     std::map<std::string, VertexBuffer*> m_String_Data_Map;
     std::vector<VertexBuffer*> m_Vertex_Buffers;
     IndexBuffer* m_Index_Buffer;
     uint32_t m_Id;
 
-
     uint32_t m_Attrib_Index;
 
 public:
-
     uint32_t mt_Indice_Count(void) const
     {
         return m_Index_Buffer->mt_Get_Indices_Count();
     }
 };
 
-}
+}  // namespace lys
 
-#endif // _VERTEX_ARRAY_HPP
+#endif  // _VERTEX_ARRAY_HPP

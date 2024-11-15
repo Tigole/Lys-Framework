@@ -1,16 +1,14 @@
 #ifndef _MESH_HPP
 #define _MESH_HPP 1
 
-#include "Lys/LysConfig.hpp"
-
-#include "glm/glm.hpp"
-#include "Lys/GraphicModule/Transform.hpp"
-
-#include "VertexArray.hpp"
-
-#include <vector>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <vector>
+
+#include "Lys/GraphicModule/Transform.hpp"
+#include "Lys/LysConfig.hpp"
+#include "VertexArray.hpp"
+#include "glm/glm.hpp"
 
 namespace lys
 {
@@ -23,11 +21,10 @@ struct LYS_API Mesh
     std::vector<float> m_Vertices;
     std::vector<uint32_t> m_Indices;
 
-
     void mt_Load_Vertices(const std::vector<float> vertices, const std::vector<uint32_t> indices, const VertexBufferLayout& layout)
     {
         m_Vertices = vertices;
-        m_Indices = indices;
+        m_Indices  = indices;
 
         m_VB.reset(new VertexBuffer(m_Vertices, layout));
         m_IB.reset(new IndexBuffer(m_Indices));
@@ -38,8 +35,7 @@ bool LYS_API fn_Load_Mesh(const std::string& file_name, Mesh& mesh);
 bool LYS_API fn_Load_Mesh(const std::string& file_name, Mesh* mesh);
 bool LYS_API fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::unique_ptr<Mesh>>& mesh);
 
-
-class LYS_API ReferenceMesh : public Mesh
+class LYS_API ReferenceMesh: public Mesh
 {
 public:
     virtual ~ReferenceMesh() {}
@@ -47,13 +43,14 @@ public:
 protected:
     void mt_Hard_Transform(const Transform& t, const std::vector<std::string>& elements)
     {
-        const VertexBufferLayout& l_Layout = m_VB->mt_Get_Layout();
+        const VertexBufferLayout& l_Layout                       = m_VB->mt_Get_Layout();
         const std::vector<VertexBufferLayoutElement>& l_Elements = l_Layout.mt_Get_Elements();
         std::vector<const VertexBufferLayoutElement*> l_Tgt_Elements;
 
         for (std::size_t ii = 0; ii < elements.size(); ii++)
         {
-            auto l_it = std::find_if(l_Elements.begin(), l_Elements.end(), [&](const VertexBufferLayoutElement& e) {return e.m_Name == elements[ii];});
+            auto l_it = std::find_if(l_Elements.begin(), l_Elements.end(),
+                                     [&](const VertexBufferLayoutElement& e) { return e.m_Name == elements[ii]; });
             if (l_it != l_Elements.end())
             {
                 l_Tgt_Elements.push_back(&l_Elements[ii]);
@@ -79,7 +76,7 @@ protected:
 
                     l_Vec = t.mt_Transform(l_Vec);
 
-                    m_Vertices[l_Index] = l_Vec.x;
+                    m_Vertices[l_Index]     = l_Vec.x;
                     m_Vertices[l_Index + 1] = l_Vec.y;
                     m_Vertices[l_Index + 2] = l_Vec.z;
                 }
@@ -111,7 +108,7 @@ protected:
     }
 };
 
-class LYS_API ReferenceMesh_Cube : public ReferenceMesh
+class LYS_API ReferenceMesh_Cube: public ReferenceMesh
 {
 public:
     ReferenceMesh_Cube()
@@ -127,75 +124,327 @@ private:
     void mt_Set(const glm::vec3& origin, const glm::vec3& edge_size)
     {
         Transform l_Transform;
-        std::vector<float> l_Vertices =
-        {
+        std::vector<float> l_Vertices = {
             /// Front
-            -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,     0.0f, 0.0f, -1.0f,
-             0.5f, -0.5f, -0.5f,    1.0f, 0.0f,     0.0f, 0.0f, -1.0f,
-             0.5f,  0.5f, -0.5f,    1.0f, 1.0f,     0.0f, 0.0f, -1.0f,
-             0.5f,  0.5f, -0.5f,    1.0f, 1.0f,     0.0f, 0.0f, -1.0f,
-            -0.5f,  0.5f, -0.5f,    0.0f, 1.0f,     0.0f, 0.0f, -1.0f,
-            -0.5f, -0.5f, -0.5f,    0.0f, 0.0f,     0.0f, 0.0f, -1.0f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
 
             /// Back
-            -0.5f, -0.5f,  0.5f,    0.0f, 0.0f,     0.0f, 0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,    1.0f, 0.0f,     0.0f, 0.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,    1.0f, 1.0f,     0.0f, 0.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,    1.0f, 1.0f,     0.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,    0.0f, 1.0f,     0.0f, 0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,    0.0f, 0.0f,     0.0f, 0.0f, 1.0f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
 
             /// Left ?
-            -0.5f,  0.5f,  0.5f,    1.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,    1.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,    0.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,    1.0f, 0.0f,     -1.0f, 0.0f, 0.0f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            1.0f,
+            1.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
 
             /// Right ?
-             0.5f,  0.5f,  0.5f,    1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,    1.0f, 1.0f,     1.0f, 0.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     1.0f, 0.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     1.0f, 0.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,    0.0f, 0.0f,     1.0f, 0.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,    1.0f, 0.0f,     1.0f, 0.0f, 0.0f,
+            0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            1.0f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
 
             /// Bottom ?
-            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     0.0f, -1.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,    1.0f, 1.0f,     0.0f, -1.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,    1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,    1.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,    0.0f, 0.0f,     0.0f, -1.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,    0.0f, 1.0f,     0.0f, -1.0f, 0.0f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            1.0f,
+            1.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            -1.0f,
+            0.0f,
 
             /// Top ?
-            -0.5f,  0.5f, -0.5f,    0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,    1.0f, 1.0f,     0.0f, 1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,    1.0f, 0.0f,     0.0f, 1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,    1.0f, 0.0f,     0.0f, 1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,    0.0f, 0.0f,     0.0f, 1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,    0.0f, 1.0f,     0.0f, 1.0f, 0.0f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            1.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.5f,
+            0.5f,
+            0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            0.0f,
         };
         std::vector<uint32_t> l_Indices;
 
-        for (std::size_t ii = 0; ii < 6*6; ii++)
+        for (std::size_t ii = 0; ii < 6 * 6; ii++)
         {
             l_Indices.push_back(ii);
         }
 
-        //l_Transform.mt_Set_Origin(origin);
+        // l_Transform.mt_Set_Origin(origin);
         l_Transform.mt_Set_Position(origin);
         l_Transform.mt_Set_Scale(edge_size);
 
-        mt_Load_Vertices(l_Vertices, l_Indices, VertexBufferLayout({VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
-                                                                    VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
-                                                                    VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false)}));
-        mt_Hard_Transform(l_Transform, {"aPos", "aNormal"});
+        mt_Load_Vertices(l_Vertices, l_Indices,
+                         VertexBufferLayout({ VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
+                                              VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
+                                              VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false) }));
+        mt_Hard_Transform(l_Transform, { "aPos", "aNormal" });
     }
 };
 
-class LYS_API ReferenceMesh_HexagonPrism : public ReferenceMesh
+class LYS_API ReferenceMesh_HexagonPrism: public ReferenceMesh
 {
 public:
     ReferenceMesh_HexagonPrism()
@@ -215,7 +464,7 @@ private:
         glm::vec3 l_Normal;
         glm::vec2 l_TexCoord;
         float l_PI(3.1416f);
-        float l_2PI(2.0f*l_PI);
+        float l_2PI(2.0f * l_PI);
         std::vector<float> l_Vertices;
         std::vector<uint32_t> l_Indices;
 
@@ -225,127 +474,185 @@ private:
             /// Bottom
             l_TexCoord.x = 0.0f;
             l_TexCoord.y = 0.0f;
-            l_Pos.y = 0.0f;
-            l_Pos.x = 0.0f;
-            l_Pos.z = 0.0f;
+            l_Pos.y      = 0.0f;
+            l_Pos.x      = 0.0f;
+            l_Pos.z      = 0.0f;
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_TexCoord.x = 1.0f;
             l_TexCoord.y = 0.0f;
-            l_Pos.x = radius * cos(ii * l_2PI / 6);
-            l_Pos.z = radius * sin(ii * l_2PI / 6);
+            l_Pos.x      = radius * cos(ii * l_2PI / 6);
+            l_Pos.z      = radius * sin(ii * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
-            l_Pos.x = radius * cos((ii+1) * l_2PI / 6);
-            l_Pos.z = radius * sin((ii+1) * l_2PI / 6);
+            l_Pos.x = radius * cos((ii + 1) * l_2PI / 6);
+            l_Pos.z = radius * sin((ii + 1) * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
-#endif // 0
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
+#endif  // 0
 #if 1
             /// Top
             l_TexCoord.x = 0.0f;
             l_TexCoord.y = 0.0f;
-            l_Pos.y = height;
-            l_Pos.x = 0.0f;
-            l_Pos.z = 0.0f;
+            l_Pos.y      = height;
+            l_Pos.x      = 0.0f;
+            l_Pos.z      = 0.0f;
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_TexCoord.x = 1.0f;
             l_TexCoord.y = 0.0f;
-            l_Pos.x = radius * cos(ii * l_2PI / 6);
-            l_Pos.z = radius * sin(ii * l_2PI / 6);
+            l_Pos.x      = radius * cos(ii * l_2PI / 6);
+            l_Pos.z      = radius * sin(ii * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
-            l_Pos.x = radius * cos((ii+1) * l_2PI / 6);
-            l_Pos.z = radius * sin((ii+1) * l_2PI / 6);
+            l_Pos.x = radius * cos((ii + 1) * l_2PI / 6);
+            l_Pos.z = radius * sin((ii + 1) * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
-#endif // 0
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
+#endif  // 0
 #if 1
             /// Face
             l_TexCoord.x = 1.0f;
             l_TexCoord.y = 1.0f;
-            l_Pos.y = 0.0f;
-            l_Pos.x = radius * cos(ii * l_2PI / 6);
-            l_Pos.z = radius * sin(ii * l_2PI / 6);
+            l_Pos.y      = 0.0f;
+            l_Pos.x      = radius * cos(ii * l_2PI / 6);
+            l_Pos.z      = radius * sin(ii * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_Pos.y = 0.0f;
-            l_Pos.x = radius * cos((ii+1) * l_2PI / 6);
-            l_Pos.z = radius * sin((ii+1) * l_2PI / 6);
+            l_Pos.x = radius * cos((ii + 1) * l_2PI / 6);
+            l_Pos.z = radius * sin((ii + 1) * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_TexCoord.x = 0.0f;
             l_TexCoord.y = 1.0f;
-            l_Pos.y = height;
-            l_Pos.x = radius * cos((ii+1) * l_2PI / 6);
-            l_Pos.z = radius * sin((ii+1) * l_2PI / 6);
+            l_Pos.y      = height;
+            l_Pos.x      = radius * cos((ii + 1) * l_2PI / 6);
+            l_Pos.z      = radius * sin((ii + 1) * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
-
-
-
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_TexCoord.x = 1.0f;
             l_TexCoord.y = 1.0f;
-            l_Pos.y = 0.0f;
-            l_Pos.x = radius * cos(ii * l_2PI / 6);
-            l_Pos.z = radius * sin(ii * l_2PI / 6);
+            l_Pos.y      = 0.0f;
+            l_Pos.x      = radius * cos(ii * l_2PI / 6);
+            l_Pos.z      = radius * sin(ii * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_TexCoord.x = 0.0f;
             l_TexCoord.y = 1.0f;
-            l_Pos.y = height;
-            l_Pos.x = radius * cos(ii * l_2PI / 6);
-            l_Pos.z = radius * sin(ii * l_2PI / 6);
+            l_Pos.y      = height;
+            l_Pos.x      = radius * cos(ii * l_2PI / 6);
+            l_Pos.z      = radius * sin(ii * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
 
             l_Pos.y = height;
-            l_Pos.x = radius * cos((ii+1) * l_2PI / 6);
-            l_Pos.z = radius * sin((ii+1) * l_2PI / 6);
+            l_Pos.x = radius * cos((ii + 1) * l_2PI / 6);
+            l_Pos.z = radius * sin((ii + 1) * l_2PI / 6);
             l_Indices.push_back(l_Indices.size());
-            l_Vertices.push_back(l_Pos.x); l_Vertices.push_back(l_Pos.y); l_Vertices.push_back(l_Pos.z);
-            l_Vertices.push_back(l_TexCoord.x); l_Vertices.push_back(l_TexCoord.y);
-            l_Vertices.push_back(l_Normal.x); l_Vertices.push_back(l_Normal.y); l_Vertices.push_back(l_Normal.z);
-#endif // 0
+            l_Vertices.push_back(l_Pos.x);
+            l_Vertices.push_back(l_Pos.y);
+            l_Vertices.push_back(l_Pos.z);
+            l_Vertices.push_back(l_TexCoord.x);
+            l_Vertices.push_back(l_TexCoord.y);
+            l_Vertices.push_back(l_Normal.x);
+            l_Vertices.push_back(l_Normal.y);
+            l_Vertices.push_back(l_Normal.z);
+#endif  // 0
         }
-        mt_Load_Vertices(l_Vertices, l_Indices,  VertexBufferLayout({VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
-                                                                      VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
-                                                                      VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false)}));
+        mt_Load_Vertices(l_Vertices, l_Indices,
+                         VertexBufferLayout({ VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
+                                              VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
+                                              VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false) }));
     }
 };
 
-class LYS_API ReferenceMesh_Pane : public ReferenceMesh
+class LYS_API ReferenceMesh_Pane: public ReferenceMesh
 {
 public:
     ReferenceMesh_Pane(float w, float h)
@@ -359,12 +666,24 @@ private:
         std::vector<float> l_Vertices;
         std::vector<uint32_t> l_Indices;
 
-        l_Vertices.push_back(0.0f); l_Vertices.push_back(0.0f); l_Vertices.push_back(0.0f);
-        l_Vertices.push_back(w); l_Vertices.push_back(0.0f); l_Vertices.push_back(0.0f);
-        l_Vertices.push_back(w); l_Vertices.push_back(h); l_Vertices.push_back(0.0f);
-        l_Vertices.push_back(0.0f); l_Vertices.push_back(0.0f); l_Vertices.push_back(0.0f);
-        l_Vertices.push_back(0.0f); l_Vertices.push_back(h); l_Vertices.push_back(0.0f);
-        l_Vertices.push_back(w); l_Vertices.push_back(h); l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(w);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(w);
+        l_Vertices.push_back(h);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(h);
+        l_Vertices.push_back(0.0f);
+        l_Vertices.push_back(w);
+        l_Vertices.push_back(h);
+        l_Vertices.push_back(0.0f);
 
         l_Indices.push_back(0);
         l_Indices.push_back(1);
@@ -373,20 +692,21 @@ private:
         l_Indices.push_back(4);
         l_Indices.push_back(5);
 
-        mt_Load_Vertices(m_Vertices, l_Indices, VertexBufferLayout({VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
-                                                                      VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
-                                                                      VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false)}));
+        mt_Load_Vertices(m_Vertices, l_Indices,
+                         VertexBufferLayout({ VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
+                                              VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
+                                              VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false) }));
     }
 };
 
-class LYS_API ReferenceMesh_Plane : public ReferenceMesh
+class LYS_API ReferenceMesh_Plane: public ReferenceMesh
 {
 public:
     ReferenceMesh_Plane(float width, float height, int div_x, int div_y)
     {
         std::vector<float> l_Vertices;
         std::vector<uint32_t> l_Indices;
-        int l_Vertice_Count = width * div_x * height * div_y;
+        // int l_Vertice_Count = width * div_x * height * div_y;
         float l_Step_x, l_Step_z;
         float xx, zz;
         int ii = 0;
@@ -397,76 +717,76 @@ public:
         div_x = std::max(div_x, 2);
         div_y = std::max(div_x, 2);
 
-        l_Vertice_Count = width * div_x * height * div_y;
+        // l_Vertice_Count = width * div_x * height * div_y;
         l_Step_x = static_cast<float>(width) / static_cast<float>(div_x);
         l_Step_z = static_cast<float>(height) / static_cast<float>(div_y);
-        xx = 0.0f;
-        zz = 0.0f;
-        while(static_cast<int>(zz) < static_cast<int>(height))
+        xx       = 0.0f;
+        zz       = 0.0f;
+        while (static_cast<int>(zz) < static_cast<int>(height))
         {
             l_Vertices.push_back(xx);
             l_Vertices.push_back(0.0f);
-            l_Vertices.push_back(zz); /// z
-            l_Vertices.push_back(xx); /// texCoord x
-            l_Vertices.push_back(zz); /// texCoord y
-            l_Vertices.push_back(0.0f); /// Normal x
-            l_Vertices.push_back(-1.0f); /// Normal y
-            l_Vertices.push_back(0.0f); /// Normal z
+            l_Vertices.push_back(zz);     /// z
+            l_Vertices.push_back(xx);     /// texCoord x
+            l_Vertices.push_back(zz);     /// texCoord y
+            l_Vertices.push_back(0.0f);   /// Normal x
+            l_Vertices.push_back(-1.0f);  /// Normal y
+            l_Vertices.push_back(0.0f);   /// Normal z
 
             l_Indices.push_back(ii * 6 + 0);
 
             l_Vertices.push_back(xx);
             l_Vertices.push_back(0.0f);
-            l_Vertices.push_back(zz + l_Step_z); /// z
-            l_Vertices.push_back(xx); /// texCoord x
-            l_Vertices.push_back(zz + l_Step_z); /// texCoord y
-            l_Vertices.push_back(0.0f); /// Normal x
-            l_Vertices.push_back(-1.0f); /// Normal y
-            l_Vertices.push_back(0.0f); /// Normal z
+            l_Vertices.push_back(zz + l_Step_z);  /// z
+            l_Vertices.push_back(xx);             /// texCoord x
+            l_Vertices.push_back(zz + l_Step_z);  /// texCoord y
+            l_Vertices.push_back(0.0f);           /// Normal x
+            l_Vertices.push_back(-1.0f);          /// Normal y
+            l_Vertices.push_back(0.0f);           /// Normal z
 
             l_Indices.push_back(ii * 6 + 1);
 
             l_Vertices.push_back(xx + l_Step_x);
             l_Vertices.push_back(0.0f);
-            l_Vertices.push_back(zz); /// z
-            l_Vertices.push_back(xx + l_Step_x); /// texCoord x
-            l_Vertices.push_back(zz); /// texCoord y
-            l_Vertices.push_back(0.0f); /// Normal x
-            l_Vertices.push_back(-1.0f); /// Normal y
-            l_Vertices.push_back(0.0f); /// Normal z
+            l_Vertices.push_back(zz);             /// z
+            l_Vertices.push_back(xx + l_Step_x);  /// texCoord x
+            l_Vertices.push_back(zz);             /// texCoord y
+            l_Vertices.push_back(0.0f);           /// Normal x
+            l_Vertices.push_back(-1.0f);          /// Normal y
+            l_Vertices.push_back(0.0f);           /// Normal z
 
             l_Indices.push_back(ii * 6 + 2);
 
             l_Vertices.push_back(xx);
             l_Vertices.push_back(0.0f);
-            l_Vertices.push_back(zz + l_Step_z); /// z
-            l_Vertices.push_back(xx); /// texCoord x
-            l_Vertices.push_back(zz + l_Step_z); /// texCoord y
-            l_Vertices.push_back(0.0f); /// Normal x
-            l_Vertices.push_back(-1.0f); /// Normal y
-            l_Vertices.push_back(0.0f); /// Normal z
+            l_Vertices.push_back(zz + l_Step_z);  /// z
+            l_Vertices.push_back(xx);             /// texCoord x
+            l_Vertices.push_back(zz + l_Step_z);  /// texCoord y
+            l_Vertices.push_back(0.0f);           /// Normal x
+            l_Vertices.push_back(-1.0f);          /// Normal y
+            l_Vertices.push_back(0.0f);           /// Normal z
 
             l_Indices.push_back(ii * 6 + 3);
 
             l_Vertices.push_back(xx + l_Step_x);
             l_Vertices.push_back(0.0f);
-            l_Vertices.push_back(zz); /// z
-            l_Vertices.push_back(xx + l_Step_x); /// texCoord x
-            l_Vertices.push_back(zz); /// texCoord y
-            l_Vertices.push_back(0.0f); /// Normal x
-            l_Vertices.push_back(-1.0f); /// Normal y
-            l_Vertices.push_back(0.0f); /// Normal z
+            l_Vertices.push_back(zz);             /// z
+            l_Vertices.push_back(xx + l_Step_x);  /// texCoord x
+            l_Vertices.push_back(zz);             /// texCoord y
+            l_Vertices.push_back(0.0f);           /// Normal x
+            l_Vertices.push_back(-1.0f);          /// Normal y
+            l_Vertices.push_back(0.0f);           /// Normal z
 
             l_Indices.push_back(ii * 6 + 4);
 
             l_Vertices.push_back(xx + l_Step_x);
             l_Vertices.push_back(0.0f);
-            l_Vertices.push_back(zz + l_Step_z); /// z
-            l_Vertices.push_back(xx + l_Step_x); /// texCoord x
-            l_Vertices.push_back(zz + l_Step_z); /// texCoord y
-            l_Vertices.push_back(0.0f); /// Normal x
-            l_Vertices.push_back(-1.0f); /// Normal y
-            l_Vertices.push_back(0.0f); /// Normal z
+            l_Vertices.push_back(zz + l_Step_z);  /// z
+            l_Vertices.push_back(xx + l_Step_x);  /// texCoord x
+            l_Vertices.push_back(zz + l_Step_z);  /// texCoord y
+            l_Vertices.push_back(0.0f);           /// Normal x
+            l_Vertices.push_back(-1.0f);          /// Normal y
+            l_Vertices.push_back(0.0f);           /// Normal z
 
             l_Indices.push_back(ii * 6 + 5);
 
@@ -523,19 +843,19 @@ public:
         {
             l_Indices.push_back(ii);
         }
-#endif // 0
-        mt_Load_Vertices(l_Vertices, l_Indices, VertexBufferLayout({VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
-                                                                    VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
-                                                                    VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false)}));
+#endif  // 0
+        mt_Load_Vertices(l_Vertices, l_Indices,
+                         VertexBufferLayout({ VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
+                                              VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
+                                              VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false) }));
     }
 };
-
 
 void LYS_API fn_Create_Mesh_Square(Mesh& m, float x_edge, float y_edge, float z_edge);
 void LYS_API fn_Create_Mesh_Hexagon(Mesh& m, float radius);
 void LYS_API fn_Create_Mesh_Pane(Mesh& m, float x_edge, float y_edge);
 void LYS_API fn_Create_Mesh_Hexagon_Prism(Mesh& m, float radius, float height);
 
-}
+}  // namespace lys
 
-#endif // _MESH_HPP
+#endif  // _MESH_HPP
