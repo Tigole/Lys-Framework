@@ -4,20 +4,46 @@
 #include <SFML/Window/Event.hpp>
 
 #include "Lys/LysConfig.hpp"
+#include "Lys/MathModule/Vector2.hpp"
 
 namespace lys
 {
 
-struct LYS_API MouseButtonEvent
+/// @brief Based on SFML Buttons
+enum class MouseButtonType
 {
-    bool m_Is_Pressed                         = true;
-    sf::Event::MouseButtonPressed m_Pressed   = {};
-    sf::Event::MouseButtonReleased m_Released = {};
+    Left,      //!< The left mouse button
+    Right,     //!< The right mouse button
+    Middle,    //!< The middle (wheel) mouse button
+    XButton1,  //!< The first extra mouse button
+    XButton2,  //!< The second extra mouse button
+
+    ButtonCount  //!< Keep last -- the total number of mouse buttons
+};
+
+struct LYS_API WindowCloseRequestEvent
+{};
+
+/*struct LYS_API WindowResizeEvent
+{
+    lys::Vector2u m_New_Size = {};
+};*/
+
+struct LYS_API MouseButtonPressedEvent
+{
+    lys::MouseButtonType m_Button = {};
+    lys::Vector2i m_Position      = {};
+};
+
+struct LYS_API MouseButtonReleasedEvent
+{
+    lys::MouseButtonType m_Button = {};
+    lys::Vector2i m_Position      = {};
 };
 
 struct LYS_API MouseMoveEvent
 {
-    sf::Event::MouseMoved m_Mouse = {};
+    lys::Vector2i m_Position = {};
 };
 
 struct LYS_API MouseWheelScrollEvent
@@ -25,17 +51,33 @@ struct LYS_API MouseWheelScrollEvent
     sf::Event::MouseWheelScrolled m_Scroll = {};
 };
 
-struct LYS_API KeyEvent
+struct LYS_API KeyPressedEvent
 {
-    bool m_Is_Pressed                 = true;
-    sf::Event::KeyPressed m_Pressed   = {};
+    sf::Event::KeyPressed m_Pressed = {};
+};
+
+struct LYS_API KeyReleasedEvent
+{
     sf::Event::KeyReleased m_Released = {};
 };
 
-struct LYS_API JoystickButtonEvent
+struct LYS_API JoystickConnectedEvent
 {
-    bool m_Is_Pressed                            = true;
-    sf::Event::JoystickButtonPressed m_Pressed   = {};
+    sf::Event::JoystickConnected m_Connection = {};
+};
+
+struct LYS_API JoystickDisconnectedEvent
+{
+    sf::Event::JoystickDisconnected m_Disconnection = {};
+};
+
+struct LYS_API JoystickButtonPressedEvent
+{
+    sf::Event::JoystickButtonPressed m_Pressed = {};
+};
+
+struct LYS_API JoystickButtonReleasedEvent
+{
     sf::Event::JoystickButtonReleased m_Released = {};
 };
 
@@ -46,12 +88,7 @@ struct LYS_API JoystickMoveEvent
 
 struct LYS_API TextEvent
 {
-    sf::Event::TextEntered m_Text = {};
-};
-
-struct LYS_API Event
-{
-    sf::Event m_SFML = { sf::Event::Closed() };
+    std::uint32_t m_Unicode = {};
 };
 
 }  // namespace lys

@@ -75,28 +75,71 @@ void StateManager::mt_OnUpdate(float elapsed_time)
     }
 }
 
-void StateManager::mt_OnEvent(const Event& event)
+void StateManager::mt_On_Event_TextEntered(const TextEvent& event)
 {
-    LYS_PROFILE_FUNCTION;
-    if (m_Loading == true)
-    {
-        if (m_Loading_State != nullptr)
-        {
-            m_Loading_State->mt_On_Event(event);
-        }
-    }
-    else
-    {
-        m_States[m_Current_State]->mt_On_Event(event);
-    }
+    mt_On_Event(event, &State::mt_On_Event_TextEntered);
 }
 
+void StateManager::mt_On_Event_KeyPressed(const KeyPressedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_KeyPressed);
+}
+
+void StateManager::mt_On_Event_KeyReleased(const KeyReleasedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_KeyReleased);
+}
+
+void StateManager::mt_On_Event_MouseButtonPressed(const MouseButtonPressedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_MouseButtonPressed);
+}
+
+void StateManager::mt_On_Event_MouseButtonReleased(const MouseButtonReleasedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_MouseButtonReleased);
+}
+
+void StateManager::mt_On_Event_MouseMove(const MouseMoveEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_MouseMove);
+}
+
+void StateManager::mt_On_Event_MouseWheelScroll(const MouseWheelScrollEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_MouseWheelScroll);
+}
+
+void StateManager::mt_On_Event_JoystickConnected(const JoystickConnectedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_JoystickConnected);
+}
+
+void StateManager::mt_On_Event_JoystickDisconnected(const JoystickDisconnectedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_JoystickDisconnected);
+}
+
+void StateManager::mt_On_Event_JoystickButtonPressed(const JoystickButtonPressedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_JoystickButtonPressed);
+}
+
+void StateManager::mt_On_Event_JoystickButtonReleased(const JoystickButtonReleasedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_JoystickButtonReleased);
+}
+
+void StateManager::mt_On_Event_JoystickMove(const JoystickMoveEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_JoystickMove);
+}
 
 bool StateManager::mt_Loading_Task(std::size_t& next_state)
 {
-    bool l_b_Ret = true;
+    bool l_b_Ret         = true;
     auto l_Current_State = m_States.find(m_Current_State);
-    auto l_Next_State = m_States.find(next_state);
+    auto l_Next_State    = m_States.find(next_state);
 
     if (l_Current_State != m_States.end())
     {
@@ -111,6 +154,4 @@ bool StateManager::mt_Loading_Task(std::size_t& next_state)
     return l_b_Ret;
 }
 
-
-
-}
+}  // namespace lys

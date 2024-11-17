@@ -41,7 +41,7 @@ void LayerLys::mt_On_Render(void)
                                      l_Text_Settings);
 }
 
-LayerForward LayerLys::mt_On_Event_Key_Released(const KeyEvent& key_event)
+LayerForward LayerLys::mt_On_Event_KeyReleased(const KeyReleasedEvent& key_event)
 {
     if (key_event.m_Released.code == sf::Keyboard::Key::Space)
     {

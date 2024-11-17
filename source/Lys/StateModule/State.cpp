@@ -1,13 +1,13 @@
 #include "Lys/StateModule/State.hpp"
-#include "Lys/StateModule/Layer.hpp"
+
 #include "Lys/Application/Application.hpp"
 #include "Lys/Core/Profiler.hpp"
+#include "Lys/StateModule/Layer.hpp"
 
 namespace lys
 {
 
-State::~State()
-{}
+State::~State() {}
 
 bool State::mt_On_Create(void)
 {
@@ -29,15 +29,64 @@ bool State::mt_On_Exit(void)
     return true;
 }
 
-void State::mt_On_Event([[maybe_unused]] const Event& event)
+void State::mt_On_Event_TextEntered(const TextEvent& event)
 {
-    lys::LayerForward l_Forward;
+    mt_On_Event(event, &Layer::mt_On_Event_TextEntered);
+}
 
-    l_Forward = lys::LayerForward::Continue;
-    for (auto it = m_Active_Layers.rbegin(); (it != m_Active_Layers.rend()) && (l_Forward == lys::LayerForward::Continue); it++)
-    {
-        l_Forward = (*it)->mt_On_Event(event);
-    }
+void State::mt_On_Event_KeyPressed(const KeyPressedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_KeyPressed);
+}
+
+void State::mt_On_Event_KeyReleased(const KeyReleasedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_KeyReleased);
+}
+
+void State::mt_On_Event_MouseButtonPressed(const MouseButtonPressedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_MouseButtonPressed);
+}
+
+void State::mt_On_Event_MouseButtonReleased(const MouseButtonReleasedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_MouseButtonReleased);
+}
+
+void State::mt_On_Event_MouseMove(const MouseMoveEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_MouseMove);
+}
+
+void State::mt_On_Event_MouseWheelScroll(const MouseWheelScrollEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_MouseWheelScroll);
+}
+
+void State::mt_On_Event_JoystickConnected(const JoystickConnectedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_JoystickConnected);
+}
+
+void State::mt_On_Event_JoystickDisconnected(const JoystickDisconnectedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_JoystickDisconnected);
+}
+
+void State::mt_On_Event_JoystickButtonPressed(const JoystickButtonPressedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_JoystickButtonPressed);
+}
+
+void State::mt_On_Event_JoystickButtonReleased(const JoystickButtonReleasedEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_JoystickButtonReleased);
+}
+
+void State::mt_On_Event_JoystickMove(const JoystickMoveEvent& event)
+{
+    mt_On_Event(event, &Layer::mt_On_Event_JoystickMove);
 }
 
 void State::mt_On_Update(float elapsed_time)
@@ -126,4 +175,4 @@ void State::mt_On_Change_State(const Message_ChangeState& msg)
     m_State_Manager->mt_Change_State(msg.m_Next_State);
 }
 
-}
+}  // namespace lys

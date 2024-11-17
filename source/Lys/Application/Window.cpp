@@ -2,6 +2,7 @@
 
 #include "Lys/Core/Log.hpp"
 #include "Lys/Core/SFML_Conversion.hpp"
+#include "Lys/StateModule/StateManager.hpp"
 
 #if (PLATFORM == PLATFORM_WINDOWS)
 #    include <windows.h>
@@ -37,7 +38,11 @@ void Window::mt_Create(const WindowSettings& settings)
     }
 #endif
 
-    ImGui::SFML::Init(m_Wnd, true);
+    if (ImGui::SFML::Init(m_Wnd, true) == false)
+    {
+        LYS_LOG_CORE_FATAL("Failed to initialize imgui for SFML");
+        exit(-1);
+    }
 
     m_Wnd.setFramerateLimit(0);
     m_Wnd.setKeyRepeatEnabled(false);
@@ -52,12 +57,12 @@ void Window::mt_Destroy(void)
 
 bool Window::mt_Handle_Events(StateManager& state_manager)
 {
-    bool l_b_Ret = true;
+    bool l_b_Ret = false;
     m_Wnd.handleEvents(
         [&](const sf::Event::Closed& event)
     {
         LYS_LOG_CORE_DEBUG("Closed");
-        l_b_Ret = false;
+        l_b_Ret = true;
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
     },
         [&](const sf::Event::Resized& event)
@@ -85,36 +90,43 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
     {
         LYS_LOG_CORE_DEBUG("TextEntered");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_TextEntered(TextEvent { event.unicode });
     },
         [&](const sf::Event::KeyPressed& event)
     {
         LYS_LOG_CORE_DEBUG("KeyPressed");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_KeyPressed(KeyPressedEvent { event });
     },
         [&](const sf::Event::KeyReleased& event)
     {
         LYS_LOG_CORE_DEBUG("KeyReleased");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_KeyReleased(KeyReleasedEvent { event });
     },
         [&](const sf::Event::MouseWheelScrolled& event)
     {
         LYS_LOG_CORE_DEBUG("MouseWheelScrolled");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_MouseWheelScroll(MouseWheelScrollEvent { event });
     },
         [&](const sf::Event::MouseButtonPressed& event)
     {
         LYS_LOG_CORE_DEBUG("MouseButtonPressed");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_MouseButtonPressed(MouseButtonPressedEvent { sf_From(event.button), sf_From<int>(event.position) });
     },
         [&](const sf::Event::MouseButtonReleased& event)
     {
         LYS_LOG_CORE_DEBUG("MouseButtonReleased");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_MouseButtonReleased(MouseButtonReleasedEvent { sf_From(event.button), sf_From<int>(event.position) });
     },
         [&](const sf::Event::MouseMoved& event)
     {
         LYS_LOG_CORE_DEBUG("MouseMoved");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_MouseMove(MouseMoveEvent { sf_From<int>(event.position) });
     },
         [&](const sf::Event::MouseMovedRaw& event)
     {
@@ -135,26 +147,31 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
     {
         LYS_LOG_CORE_DEBUG("JoystickButtonPressed");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_JoystickButtonPressed(JoystickButtonPressedEvent { event });
     },
         [&](const sf::Event::JoystickButtonReleased& event)
     {
         LYS_LOG_CORE_DEBUG("JoystickButtonReleased");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_JoystickButtonReleased(JoystickButtonReleasedEvent { event });
     },
         [&](const sf::Event::JoystickMoved& event)
     {
         LYS_LOG_CORE_DEBUG("JoystickMoved");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_JoystickMove(JoystickMoveEvent { event });
     },
         [&](const sf::Event::JoystickConnected& event)
     {
         LYS_LOG_CORE_DEBUG("JoystickConnected");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_JoystickConnected(JoystickConnectedEvent { event });
     },
         [&](const sf::Event::JoystickDisconnected& event)
     {
         LYS_LOG_CORE_DEBUG("JoystickDisconnected");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_JoystickDisconnected(JoystickDisconnectedEvent { event });
     },
         [&](const sf::Event::TouchBegan& event)
     {
@@ -175,7 +192,7 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
         LYS_LOG_CORE_DEBUG("SensorChanged");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
     });
-    return false;
+    return l_b_Ret;
 }
 
 Vector2u Window::mt_Get_Size(void) const

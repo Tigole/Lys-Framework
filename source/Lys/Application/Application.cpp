@@ -31,7 +31,6 @@ Application::Application(const char* title, const CommandLineArguments& cla) :
 int Application::mt_Run(void)
 {
     int l_Return_Code = 0;
-    Event l_Event;
     sf::Clock l_Clk;
     float l_Elapsed_Time;
     bool l_Run(true);

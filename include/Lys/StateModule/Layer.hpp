@@ -1,19 +1,11 @@
 #ifndef _LYS_LAYER_HPP
 #define _LYS_LAYER_HPP 1
 
+#include "Lys/Application/Event.hpp"
 #include "Lys/MessageModule/MessageManager.hpp"
 
 namespace lys
 {
-
-struct Event;
-struct MouseButtonEvent;
-struct MouseMoveEvent;
-struct MouseWheelScrollEvent;
-struct KeyEvent;
-struct JoystickButtonEvent;
-struct JoystickMoveEvent;
-struct TextEvent;
 
 enum class LayerForward
 {
@@ -29,7 +21,6 @@ public:
     Layer& operator=(const Layer&) = delete;
     virtual ~Layer() {}
 
-    LayerForward mt_On_Event(const Event& event);
     virtual LayerForward mt_On_Update(float /*elapsed_time*/)
     {
         return LayerForward::Continue;
@@ -57,47 +48,54 @@ public:
         return m_Layer_Id;
     }
 
-protected:
-    virtual LayerForward mt_On_Event_Text_Entered([[maybe_unused]] const TextEvent& event)
+    virtual LayerForward mt_On_Event_TextEntered([[maybe_unused]] const TextEvent& event)
     {
         return LayerForward::Stop;
     }
 
-    virtual LayerForward mt_On_Event_Key_Pressed([[maybe_unused]] const KeyEvent& event)
+    virtual LayerForward mt_On_Event_KeyPressed([[maybe_unused]] const KeyPressedEvent& event)
     {
         return LayerForward::Stop;
     }
-    virtual LayerForward mt_On_Event_Key_Released([[maybe_unused]] const KeyEvent& event)
-    {
-        return LayerForward::Stop;
-    }
-
-    virtual LayerForward mt_On_Event_Mouse_Button_Pressed([[maybe_unused]] const MouseButtonEvent& event)
-    {
-        return LayerForward::Stop;
-    }
-    virtual LayerForward mt_On_Event_Mouse_Button_Released([[maybe_unused]] const MouseButtonEvent& event)
-    {
-        return LayerForward::Stop;
-    }
-    virtual LayerForward mt_On_Event_Mouse_Move([[maybe_unused]] const MouseMoveEvent& event)
-    {
-        return LayerForward::Stop;
-    }
-    virtual LayerForward mt_On_Event_Mouse_Wheel_Scroll([[maybe_unused]] const MouseWheelScrollEvent& event)
+    virtual LayerForward mt_On_Event_KeyReleased([[maybe_unused]] const KeyReleasedEvent& event)
     {
         return LayerForward::Stop;
     }
 
-    virtual LayerForward mt_On_Event_Joystick_Button_Pressed([[maybe_unused]] const JoystickButtonEvent& event)
+    virtual LayerForward mt_On_Event_MouseButtonPressed([[maybe_unused]] const MouseButtonPressedEvent& event)
     {
         return LayerForward::Stop;
     }
-    virtual LayerForward mt_On_Event_Joystick_Button_Released([[maybe_unused]] const JoystickButtonEvent& event)
+    virtual LayerForward mt_On_Event_MouseButtonReleased([[maybe_unused]] const MouseButtonReleasedEvent& event)
     {
         return LayerForward::Stop;
     }
-    virtual LayerForward mt_On_Event_Joystick_Move([[maybe_unused]] const JoystickMoveEvent& event)
+    virtual LayerForward mt_On_Event_MouseMove([[maybe_unused]] const MouseMoveEvent& event)
+    {
+        return LayerForward::Stop;
+    }
+    virtual LayerForward mt_On_Event_MouseWheelScroll([[maybe_unused]] const MouseWheelScrollEvent& event)
+    {
+        return LayerForward::Stop;
+    }
+
+    virtual LayerForward mt_On_Event_JoystickConnected([[maybe_unused]] const JoystickConnectedEvent& event)
+    {
+        return LayerForward::Continue;
+    }
+    virtual LayerForward mt_On_Event_JoystickDisconnected([[maybe_unused]] const JoystickDisconnectedEvent& event)
+    {
+        return LayerForward::Continue;
+    }
+    virtual LayerForward mt_On_Event_JoystickButtonPressed([[maybe_unused]] const JoystickButtonPressedEvent& event)
+    {
+        return LayerForward::Stop;
+    }
+    virtual LayerForward mt_On_Event_JoystickButtonReleased([[maybe_unused]] const JoystickButtonReleasedEvent& event)
+    {
+        return LayerForward::Stop;
+    }
+    virtual LayerForward mt_On_Event_JoystickMove([[maybe_unused]] const JoystickMoveEvent& event)
     {
         return LayerForward::Stop;
     }

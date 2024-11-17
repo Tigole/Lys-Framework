@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/Text.hpp>
 
+#include "Lys/Application/Event.hpp"
 #include "Lys/Core/Core.hpp"
 #include "Lys/GraphicModule/DrawCommandSettings.hpp"
 
@@ -54,6 +55,11 @@ inline uint32_t sf_To(gui::TextStyle style)
     }
 
     return l_Ret;
+}
+
+inline MouseButtonType sf_From(sf::Mouse::Button btn)
+{
+    return static_cast<MouseButtonType>(btn);
 }
 
 }  // namespace lys
