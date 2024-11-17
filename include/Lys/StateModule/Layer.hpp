@@ -48,6 +48,26 @@ public:
         return m_Layer_Id;
     }
 
+    virtual LayerForward mt_On_Event_Closed(const WindowCloseRequestEvent& event)
+    {
+        return LayerForward::Continue;
+    }
+
+    virtual LayerForward mt_On_Event_Resized(const WindowResizeEvent& event)
+    {
+        return LayerForward::Continue;
+    }
+
+    virtual LayerForward mt_On_Event_FocusLost(const WindowFocusLostEvent& event)
+    {
+        return LayerForward::Continue;
+    }
+
+    virtual LayerForward mt_On_Event_FocusGained(const WindowFocusGainedEvent& event)
+    {
+        return LayerForward::Continue;
+    }
+
     virtual LayerForward mt_On_Event_TextEntered([[maybe_unused]] const TextEvent& event)
     {
         return LayerForward::Stop;
@@ -70,11 +90,11 @@ public:
     {
         return LayerForward::Stop;
     }
-    virtual LayerForward mt_On_Event_MouseMove([[maybe_unused]] const MouseMoveEvent& event)
+    virtual LayerForward mt_On_Event_MouseMoved([[maybe_unused]] const MouseMovedEvent& event)
     {
         return LayerForward::Stop;
     }
-    virtual LayerForward mt_On_Event_MouseWheelScroll([[maybe_unused]] const MouseWheelScrollEvent& event)
+    virtual LayerForward mt_On_Event_MouseWheelScrolled([[maybe_unused]] const MouseWheelScrolledEvent& event)
     {
         return LayerForward::Stop;
     }
@@ -95,7 +115,7 @@ public:
     {
         return LayerForward::Stop;
     }
-    virtual LayerForward mt_On_Event_JoystickMove([[maybe_unused]] const JoystickMoveEvent& event)
+    virtual LayerForward mt_On_Event_JoystickMoved([[maybe_unused]] const JoystickMovedEvent& event)
     {
         return LayerForward::Stop;
     }
