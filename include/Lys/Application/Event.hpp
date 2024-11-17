@@ -24,10 +24,15 @@ enum class MouseButtonType
 struct LYS_API WindowCloseRequestEvent
 {};
 
-/*struct LYS_API WindowResizeEvent
+struct LYS_API WindowResizeEvent
 {
     lys::Vector2u m_New_Size = {};
-};*/
+};
+
+struct LYS_API WindowFocusLostEvent
+{};
+struct LYS_API WindowFocusGainedEvent
+{};
 
 struct LYS_API MouseButtonPressedEvent
 {
@@ -41,12 +46,12 @@ struct LYS_API MouseButtonReleasedEvent
     lys::Vector2i m_Position      = {};
 };
 
-struct LYS_API MouseMoveEvent
+struct LYS_API MouseMovedEvent
 {
     lys::Vector2i m_Position = {};
 };
 
-struct LYS_API MouseWheelScrollEvent
+struct LYS_API MouseWheelScrolledEvent
 {
     sf::Event::MouseWheelScrolled m_Scroll = {};
 };
@@ -81,7 +86,7 @@ struct LYS_API JoystickButtonReleasedEvent
     sf::Event::JoystickButtonReleased m_Released = {};
 };
 
-struct LYS_API JoystickMoveEvent
+struct LYS_API JoystickMovedEvent
 {
     sf::Event::JoystickMoved m_Joystick = {};
 };
