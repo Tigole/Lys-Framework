@@ -44,17 +44,17 @@ std::size_t StateManager::mt_Get_Current_State(void) const
     return m_Current_State;
 }
 
-void StateManager::mt_OnUpdate(float elapsed_time)
+void StateManager::mt_On_Update(float elapsed_time)
 {
     LYS_PROFILE_FUNCTION;
+    State* l_State = (m_Loading == true) ? m_Loading_State.get() : m_States.find(m_Current_State)->second.get();
+
+    l_State->mt_UpdateLogic(elapsed_time);
+    l_State->mt_UpdateRender();
+
     if (m_Loading == true)
     {
         std::size_t l_New_State;
-
-        if (m_Loading_State != nullptr)
-        {
-            m_Loading_State->mt_On_Update(elapsed_time);
-        }
 
         if (m_Loading_Task.mt_Pop_Result(l_New_State))
         {
@@ -68,11 +68,26 @@ void StateManager::mt_OnUpdate(float elapsed_time)
             m_Loading = false;
         }
     }
-    else
-    {
-        auto l_Current_State = m_States.find(m_Current_State)->second.get();
-        l_Current_State->mt_On_Update(elapsed_time);
-    }
+}
+
+void StateManager::mt_On_Event_Closed(const WindowCloseRequestEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_Closed);
+}
+
+void StateManager::mt_On_Event_Resized(const WindowResizeEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_Resized);
+}
+
+void StateManager::mt_On_Event_FocusLost(const WindowFocusLostEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_FocusLost);
+}
+
+void StateManager::mt_On_Event_FocusGained(const WindowFocusGainedEvent& event)
+{
+    mt_On_Event(event, &State::mt_On_Event_FocusGained);
 }
 
 void StateManager::mt_On_Event_TextEntered(const TextEvent& event)
@@ -100,14 +115,14 @@ void StateManager::mt_On_Event_MouseButtonReleased(const MouseButtonReleasedEven
     mt_On_Event(event, &State::mt_On_Event_MouseButtonReleased);
 }
 
-void StateManager::mt_On_Event_MouseMove(const MouseMoveEvent& event)
+void StateManager::mt_On_Event_MouseMoved(const MouseMovedEvent& event)
 {
-    mt_On_Event(event, &State::mt_On_Event_MouseMove);
+    mt_On_Event(event, &State::mt_On_Event_MouseMoved);
 }
 
-void StateManager::mt_On_Event_MouseWheelScroll(const MouseWheelScrollEvent& event)
+void StateManager::mt_On_Event_MouseWheelScrolled(const MouseWheelScrolledEvent& event)
 {
-    mt_On_Event(event, &State::mt_On_Event_MouseWheelScroll);
+    mt_On_Event(event, &State::mt_On_Event_MouseWheelScrolled);
 }
 
 void StateManager::mt_On_Event_JoystickConnected(const JoystickConnectedEvent& event)
@@ -130,9 +145,9 @@ void StateManager::mt_On_Event_JoystickButtonReleased(const JoystickButtonReleas
     mt_On_Event(event, &State::mt_On_Event_JoystickButtonReleased);
 }
 
-void StateManager::mt_On_Event_JoystickMove(const JoystickMoveEvent& event)
+void StateManager::mt_On_Event_JoystickMoved(const JoystickMovedEvent& event)
 {
-    mt_On_Event(event, &State::mt_On_Event_JoystickMove);
+    mt_On_Event(event, &State::mt_On_Event_JoystickMoved);
 }
 
 bool StateManager::mt_Loading_Task(std::size_t& next_state)

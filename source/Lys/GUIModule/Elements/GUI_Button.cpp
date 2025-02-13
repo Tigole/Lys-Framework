@@ -1,13 +1,13 @@
 #include "Lys/GUIModule/Elements/GUI_Button.hpp"
 #if 0
-#include "Lys/GraphicModule/DrawCommandSettings.hpp"
-#include "Lys/GraphicModule/Renderer.hpp"
+#    include "Lys/GraphicModule/DrawCommandSettings.hpp"
+#    include "Lys/GraphicModule/Renderer.hpp"
 
 namespace lys
 {
 namespace gui
 {
-#if LYS_USE_IMGUI
+#    if LYS_USE_IMGUI
 
 Button::Button(const std::string& text) :
     m_Text(text),
@@ -15,7 +15,7 @@ Button::Button(const std::string& text) :
     m_Is_Hovered(false)
 {}
 
-void Button::mt_OnUpdate(float elapsed_time)
+void Button::mt_On_Update(float elapsed_time)
 {
     if (m_Text.size() > 0)
     {
@@ -48,7 +48,7 @@ bool Button::mt_Is_Hovered(void) const
     return m_Is_Hovered;
 }*/
 
-#else
+#    else
 Button::Button(const std::string& id, const std::string& text, Element* owner) :
     Element(id, owner),
     m_Text()
@@ -76,7 +76,7 @@ void Button::mt_Set_Text(const std::string& text)
     m_Allocation.m_Width_Height = smt_Get_Text_Size(m_Text, mt_Get_Current_Style()->m_Text);
 }
 
-void Button::mt_OnUpdate(float delta_time_s)
+void Button::mt_On_Update(float delta_time_s)
 {
 	//
 }
@@ -104,7 +104,7 @@ Vector2f Button::mt_Get_Required_Space(void) const
 {
     return m_Required_Space;
 }
-#endif
+#    endif
 }
 
 }

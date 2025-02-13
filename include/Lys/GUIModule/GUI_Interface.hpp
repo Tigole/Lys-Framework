@@ -1,12 +1,12 @@
 #ifndef _GUI_INTERFACE_HPP
 #define _GUI_INTERFACE_HPP 1
 #if 0
-#include "GUI_Element.hpp"
+#    include <map>
+#    include <memory>
+#    include <string>
+#    include <vector>
 
-#include <map>
-#include <vector>
-#include <string>
-#include <memory>
+#    include "GUI_Element.hpp"
 
 namespace lys
 {
@@ -20,7 +20,7 @@ public:
     Interface(const std::string& id);
     virtual ~Interface();
 
-    virtual void mt_OnUpdate(float elapsed_time) = 0;
+    virtual void mt_On_Update(float elapsed_time) = 0;
 
     bool mt_Is_Active(void) const;
     void mt_Set_Active(bool active);
@@ -44,7 +44,7 @@ public:
     Interface_Predefined(const std::string& id);
     virtual ~Interface_Predefined();
 
-    void mt_OnUpdate(float elapsed_time) override;
+    void mt_On_Update(float elapsed_time) override;
 
     template<class El, typename... _Args>
     El* mt_Add_Element(const std::string& id, _Args&&... __args)
@@ -77,5 +77,5 @@ protected:
 }
 
 }
-#endif // 0
-#endif // !_GUI_INTERFACE_HPP
+#endif  // 0
+#endif  // !_GUI_INTERFACE_HPP

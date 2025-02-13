@@ -1,11 +1,11 @@
 #ifndef _GUI_LAYOUT_HPP
 #define _GUI_LAYOUT_HPP 1
 
-#include "Lys/GUIModule/GUI_Element.hpp"
-
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
 #include <vector>
+
+#include "Lys/GUIModule/GUI_Element.hpp"
 
 #if 0
 namespace lys
@@ -13,15 +13,15 @@ namespace lys
 
 namespace gui
 {
-#if LYS_USE_IMGUI
-#else
+#    if LYS_USE_IMGUI
+#    else
 class Interface;
 
 class LYS_API Layout : public Element
 {
 public:
 	Layout(const std::string& id, Interface* owner);
-	void mt_OnUpdate(float delta_time_s) override;
+	void mt_On_Update(float delta_time_s) override;
 	void mt_OnDraw(void) override;
 	void mt_Add_Element(const std::string& element, const Rectf& rect);
 	void mt_Redraw(void) override;
@@ -34,9 +34,9 @@ protected:
 	Interface* m_Interface;
 };
 
-#endif // 1
+#    endif  // 1
 }
 
 }
-#endif // 0
-#endif // !_GUI_LAYOUT_HPP
+#endif      // 0
+#endif      // !_GUI_LAYOUT_HPP

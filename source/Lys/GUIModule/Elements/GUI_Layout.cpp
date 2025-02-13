@@ -1,4 +1,5 @@
 #include "Lys/GUIModule/Elements/GUI_Layout.hpp"
+
 #include "Lys/GUIModule/GUI_Interface.hpp"
 #if 0
 namespace lys
@@ -6,15 +7,15 @@ namespace lys
 
 namespace gui
 {
-#if LYS_USE_IMGUI
+#    if LYS_USE_IMGUI
 
-#else
+#    else
 Layout::Layout(const std::string& id, Interface* owner) :
     Element(id, owner),
 	m_Interface(owner)
 {}
 
-void Layout::mt_OnUpdate(float delta_time_s)
+void Layout::mt_On_Update(float delta_time_s)
 {
 	//
 }
@@ -81,7 +82,7 @@ void Layout::mt_Set_Margin(const Vector2f& margin)
 	m_Margin = margin;
 }
 
-#endif // 1
+#    endif  // 1
 }
 
 }

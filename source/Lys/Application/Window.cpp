@@ -80,11 +80,13 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
     {
         LYS_LOG_CORE_DEBUG("FocusLost");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_FocusLost(WindowFocusLostEvent());
     },
         [&](const sf::Event::FocusGained& event)
     {
         LYS_LOG_CORE_DEBUG("FocusGained");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
+        state_manager.mt_On_Event_FocusGained(WindowFocusGainedEvent());
     },
         [&](const sf::Event::TextEntered& event)
     {
@@ -108,7 +110,7 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
     {
         LYS_LOG_CORE_DEBUG("MouseWheelScrolled");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
-        state_manager.mt_On_Event_MouseWheelScroll(MouseWheelScrollEvent { event });
+        state_manager.mt_On_Event_MouseWheelScrolled(MouseWheelScrolledEvent { event });
     },
         [&](const sf::Event::MouseButtonPressed& event)
     {
@@ -126,7 +128,7 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
     {
         LYS_LOG_CORE_DEBUG("MouseMoved");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
-        state_manager.mt_On_Event_MouseMove(MouseMoveEvent { sf_From<int>(event.position) });
+        state_manager.mt_On_Event_MouseMoved(MouseMovedEvent { sf_From<int>(event.position) });
     },
         [&](const sf::Event::MouseMovedRaw& event)
     {
@@ -159,7 +161,7 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
     {
         LYS_LOG_CORE_DEBUG("JoystickMoved");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
-        state_manager.mt_On_Event_JoystickMove(JoystickMoveEvent { event });
+        state_manager.mt_On_Event_JoystickMoved(JoystickMovedEvent { event });
     },
         [&](const sf::Event::JoystickConnected& event)
     {

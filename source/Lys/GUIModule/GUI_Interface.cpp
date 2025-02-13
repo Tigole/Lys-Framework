@@ -1,8 +1,8 @@
 #include "Lys/GUIModule/GUI_Interface.hpp"
-#include "Lys/GUIModule/GUI_Element.hpp"
-#include "Lys/GUIModule/GUI_Manager.hpp"
 
 #include "Lys/Core/SFML_Conversion.hpp"
+#include "Lys/GUIModule/GUI_Element.hpp"
+#include "Lys/GUIModule/GUI_Manager.hpp"
 #if 0
 namespace lys
 {
@@ -64,7 +64,7 @@ Interface_Predefined::Interface_Predefined(const std::string& id) :
 Interface_Predefined::~Interface_Predefined()
 {}
 
-void Interface_Predefined::mt_OnUpdate(float elapsed_time)
+void Interface_Predefined::mt_On_Update(float elapsed_time)
 {
     constexpr const ImGuiWindowFlags l_Flags = ImGuiWindowFlags_NoMove + ImGuiWindowFlags_NoSavedSettings + ImGuiWindowFlags_NoResize + ImGuiWindowFlags_NoTitleBar;
 
@@ -74,7 +74,7 @@ void Interface_Predefined::mt_OnUpdate(float elapsed_time)
         {
             if (e->mt_Is_Active() == true)
             {
-                e->mt_OnUpdate(elapsed_time);
+                e->mt_On_Update(elapsed_time);
             }
         }
 

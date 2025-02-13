@@ -29,74 +29,98 @@ bool State::mt_On_Exit(void)
     return true;
 }
 
+void State::mt_On_Event_Closed(const WindowCloseRequestEvent& event)
+{
+    m_Layer_Stack.mt_On_Event_Closed(event);
+}
+
+void State::mt_On_Event_Resized(const WindowResizeEvent& event)
+{
+    m_Layer_Stack.mt_On_Event_Resized(event);
+}
+
+void State::mt_On_Event_FocusLost(const WindowFocusLostEvent& event)
+{
+    m_Layer_Stack.mt_On_Event_FocusLost(event);
+}
+
+void State::mt_On_Event_FocusGained(const WindowFocusGainedEvent& event)
+{
+    m_Layer_Stack.mt_On_Event_FocusGained(event);
+}
+
 void State::mt_On_Event_TextEntered(const TextEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_TextEntered);
+    m_Layer_Stack.mt_On_Event_TextEntered(event);
 }
 
 void State::mt_On_Event_KeyPressed(const KeyPressedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_KeyPressed);
+    m_Layer_Stack.mt_On_Event_KeyPressed(event);
 }
 
 void State::mt_On_Event_KeyReleased(const KeyReleasedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_KeyReleased);
+    m_Layer_Stack.mt_On_Event_KeyReleased(event);
 }
 
 void State::mt_On_Event_MouseButtonPressed(const MouseButtonPressedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_MouseButtonPressed);
+    m_Layer_Stack.mt_On_Event_MouseButtonPressed(event);
 }
 
 void State::mt_On_Event_MouseButtonReleased(const MouseButtonReleasedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_MouseButtonReleased);
+    m_Layer_Stack.mt_On_Event_MouseButtonReleased(event);
 }
 
-void State::mt_On_Event_MouseMove(const MouseMoveEvent& event)
+void State::mt_On_Event_MouseMoved(const MouseMovedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_MouseMove);
+    m_Layer_Stack.mt_On_Event_MouseMoved(event);
 }
 
-void State::mt_On_Event_MouseWheelScroll(const MouseWheelScrollEvent& event)
+void State::mt_On_Event_MouseWheelScrolled(const MouseWheelScrolledEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_MouseWheelScroll);
+    m_Layer_Stack.mt_On_Event_MouseWheelScrolled(event);
 }
 
 void State::mt_On_Event_JoystickConnected(const JoystickConnectedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_JoystickConnected);
+    m_Layer_Stack.mt_On_Event_JoystickConnected(event);
 }
 
 void State::mt_On_Event_JoystickDisconnected(const JoystickDisconnectedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_JoystickDisconnected);
+    m_Layer_Stack.mt_On_Event_JoystickDisconnected(event);
 }
 
 void State::mt_On_Event_JoystickButtonPressed(const JoystickButtonPressedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_JoystickButtonPressed);
+    m_Layer_Stack.mt_On_Event_JoystickButtonPressed(event);
 }
 
 void State::mt_On_Event_JoystickButtonReleased(const JoystickButtonReleasedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_JoystickButtonReleased);
+    m_Layer_Stack.mt_On_Event_JoystickButtonReleased(event);
 }
 
-void State::mt_On_Event_JoystickMove(const JoystickMoveEvent& event)
+void State::mt_On_Event_JoystickMoved(const JoystickMovedEvent& event)
 {
-    mt_On_Event(event, &Layer::mt_On_Event_JoystickMove);
+    m_Layer_Stack.mt_On_Event_JoystickMoved(event);
 }
 
-void State::mt_On_Update(float elapsed_time)
+void State::mt_UpdateLogic([[maybe_unused]] float elapsed_time)
 {
     LYS_PROFILE_FUNCTION;
-
-    mt_Update_Active_Layers(elapsed_time);
-    mt_Render_Active_Layers();
     mt_Pop_Pending_Layers();
     mt_Push_Pending_Layers();
+    mt_Update_Active_Layers(elapsed_time);
+}
+
+void State::mt_UpdateRender(void)
+{
+    LYS_PROFILE_FUNCTION;
+    mt_Render_Active_Layers();
 }
 
 void State::mt_Push_Layer(Layer* layer)

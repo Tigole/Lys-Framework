@@ -6,11 +6,11 @@ namespace lys
 namespace gui
 {
 
-void Interface::mt_OnUpdate(float elapsed_time)
+void Interface::mt_On_Update(float elapsed_time)
 {
-    for (auto& child : m_Children)
+    for (auto& child: m_Children)
     {
-        child.second->mt_OnUpdate(elapsed_time);
+        child.second->mt_On_Update(elapsed_time);
     }
 }
 
@@ -21,10 +21,10 @@ void Interface::mt_Push_Child(const std::string& id, Element* child)
     child->mt_Set_Parent(this);
     m_Children.emplace(id, std::unique_ptr<Element>(child));
 
-    l_Area.m_Top_Left = Vector2f(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+    l_Area.m_Top_Left     = Vector2f(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
     l_Area.m_Width_Height = Vector2f(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
 
-    for (auto& c : m_Children)
+    for (auto& c: m_Children)
     {
         Rectf l_Child = c.second->mt_Get_Area();
 
@@ -42,13 +42,13 @@ void Interface::mt_Push_Child(const std::string& id, Element* child)
     }
 
     m_Position = l_Area.m_Top_Left;
-    m_Size = l_Area.m_Width_Height;
+    m_Size     = l_Area.m_Width_Height;
 }
 
 void Interface::mt_Set_Position(const Vector2f& pos)
 {
     m_Position = pos;
-    for (auto& c : m_Children)
+    for (auto& c: m_Children)
     {
         c.second->mt_Set_Position(pos);
     }
@@ -57,12 +57,12 @@ void Interface::mt_Set_Position(const Vector2f& pos)
 void Interface::mt_Set_Size(const Vector2f& size)
 {
     m_Size = size;
-    for (auto& c : m_Children)
+    for (auto& c: m_Children)
     {
         c.second->mt_Set_Size(size);
     }
 }
 
-}
+}  // namespace gui
 
-}
+}  // namespace lys

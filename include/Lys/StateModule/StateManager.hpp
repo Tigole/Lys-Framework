@@ -6,8 +6,8 @@
 
 #include "Lys/Application/Event.hpp"
 #include "Lys/Core/Profiler.hpp"
+#include "Lys/StateModule/State.hpp"
 #include "Lys/WorkingModule/WorkingTask.hpp"
-#include "State.hpp"
 
 namespace lys
 {
@@ -22,7 +22,12 @@ public:
     void mt_Change_State(std::size_t new_state_id);
     std::size_t mt_Get_Current_State(void) const;
 
-    void mt_OnUpdate(float elapsed_time);
+    void mt_On_Update(float elapsed_time);
+
+    void mt_On_Event_Closed(const WindowCloseRequestEvent& event);
+    void mt_On_Event_Resized(const WindowResizeEvent& event);
+    void mt_On_Event_FocusLost(const WindowFocusLostEvent& event);
+    void mt_On_Event_FocusGained(const WindowFocusGainedEvent& event);
 
     void mt_On_Event_TextEntered(const TextEvent& event);
 
@@ -31,14 +36,14 @@ public:
 
     void mt_On_Event_MouseButtonPressed(const MouseButtonPressedEvent& event);
     void mt_On_Event_MouseButtonReleased(const MouseButtonReleasedEvent& event);
-    void mt_On_Event_MouseMove(const MouseMoveEvent& event);
-    void mt_On_Event_MouseWheelScroll(const MouseWheelScrollEvent& event);
+    void mt_On_Event_MouseMoved(const MouseMovedEvent& event);
+    void mt_On_Event_MouseWheelScrolled(const MouseWheelScrolledEvent& event);
 
     void mt_On_Event_JoystickConnected(const JoystickConnectedEvent& event);
     void mt_On_Event_JoystickDisconnected(const JoystickDisconnectedEvent& event);
     void mt_On_Event_JoystickButtonPressed(const JoystickButtonPressedEvent& event);
     void mt_On_Event_JoystickButtonReleased(const JoystickButtonReleasedEvent& event);
-    void mt_On_Event_JoystickMove(const JoystickMoveEvent& event);
+    void mt_On_Event_JoystickMoved(const JoystickMovedEvent& event);
 
 private:
     std::map<std::size_t, std::unique_ptr<State>> m_States;

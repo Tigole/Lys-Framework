@@ -3,10 +3,8 @@
 namespace lys
 {
 
-
 namespace gui
 {
-
 
 bool Manager::mt_OnMouseMove(const Vector2f& screen_pos)
 {
@@ -44,12 +42,11 @@ bool Manager::mt_OnMouseRelease(const Vector2f& screen_pos)
     return l_b_Ret;
 }
 
-
-void Manager::mt_OnUpdate(float elapsed_time)
+void Manager::mt_On_Update(float elapsed_time)
 {
-    for (auto& i : m_Interfaces)
+    for (auto& i: m_Interfaces)
     {
-        i->mt_OnUpdate(elapsed_time);
+        i->mt_On_Update(elapsed_time);
     }
 }
 
@@ -68,7 +65,6 @@ void Manager::mt_Pop_Interface(Interface* interface)
     }
 }
 
+}  // namespace gui
 
-}
-
-}
+}  // namespace lys

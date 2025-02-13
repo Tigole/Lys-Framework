@@ -1,12 +1,12 @@
 #ifndef _GUI_MANAGER_HPP
 #define _GUI_MANAGER_HPP 1
 #if 0
-#include "Lys/Core/Singleton.hpp"
-#include "GUI_Event.hpp"
+#    include <queue>
+#    include <stack>
+#    include <unordered_map>
 
-#include <unordered_map>
-#include <stack>
-#include <queue>
+#    include "GUI_Event.hpp"
+#    include "Lys/Core/Singleton.hpp"
 
 namespace lys
 {
@@ -28,7 +28,7 @@ public:
 
     bool mt_Handled_Event(const Event& event);
 
-    void mt_OnUpdate(float elapsed_time);
+    void mt_On_Update(float elapsed_time);
 
     //bool mt_Poll_Event(GUIEvent& e);
 
@@ -50,5 +50,5 @@ private:
 }
 
 }
-#endif // 0
-#endif // !_GUI_MANAGER_HPP
+#endif  // 0
+#endif  // !_GUI_MANAGER_HPP

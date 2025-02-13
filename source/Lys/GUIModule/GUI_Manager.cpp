@@ -1,17 +1,16 @@
 #include "Lys/GUIModule/GUI_Manager.hpp"
 #if 0
 
-#include "Lys/GUIModule/GUI_Manager_Loader.hpp"
-#include "Lys/GUIModule/GUI_Interface.hpp"
-
-#include "Lys/Application/Event.hpp"
+#    include "Lys/Application/Event.hpp"
+#    include "Lys/GUIModule/GUI_Interface.hpp"
+#    include "Lys/GUIModule/GUI_Manager_Loader.hpp"
 
 namespace lys
 {
 
 namespace gui
 {
-#if LYS_USE_IMGUI
+#    if LYS_USE_IMGUI
 
 
 
@@ -50,7 +49,7 @@ bool Manager::mt_Handled_Event(const Event& event)
     return l_b_Ret;
 }
 
-void Manager::mt_OnUpdate(float elapsed_time)
+void Manager::mt_On_Update(float elapsed_time)
 {
     const ImGuiIO& io = ImGui::GetIO();
 
@@ -58,7 +57,7 @@ void Manager::mt_OnUpdate(float elapsed_time)
     {
         if (i.second->mt_Is_Active())
         {
-            i.second->mt_OnUpdate(elapsed_time);
+            i.second->mt_On_Update(elapsed_time);
         }
     }
 
@@ -86,9 +85,7 @@ void Manager::mt_OnUpdate(float elapsed_time)
     m_Events_Queue.push(GUIEvent(btn_clicked));
 }*/
 
-
-
-#else
+#    else
 
 int Manager::ms_mouse_elevation = 5000;
 
@@ -222,13 +219,13 @@ void Manager::mt_On_Key_Navigation(void)
 	//
 }
 
-void Manager::mt_OnUpdate(float delta_time_s)
+void Manager::mt_On_Update(float delta_time_s)
 {
     for (auto& l_interface : m_Interfaces)
     {
         if (l_interface.second->mt_Is_Active() == true)
         {
-            l_interface.second->mt_OnUpdate(delta_time_s);
+            l_interface.second->mt_On_Update(delta_time_s);
         }
     }
 }
@@ -270,7 +267,7 @@ void Manager::mt_OnDraw(void)
 
 	return l_b_ret;
 }*/
-#endif // LYS_USE_IMGUI
+#    endif  // LYS_USE_IMGUI
 
 }
 

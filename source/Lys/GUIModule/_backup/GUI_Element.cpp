@@ -1,32 +1,20 @@
 #include "GUI_Element.hpp"
 
-#include "MathModule/CollisionHandling.hpp"
-#include "Core/SFML_Conversion.hpp"
-
 #include <iostream>
 
-
 #include "Core/FormatHelpers.hpp"
+#include "Core/SFML_Conversion.hpp"
+#include "MathModule/CollisionHandling.hpp"
 
 namespace lys
 {
 
-
 namespace gui
 {
 
+Element::Element() : m_Parent(nullptr), m_Current_State(ElementState::Neutral), m_Styles(), m_Position(), m_Size(), m_Required_Size() {}
 
-
-Element::Element() :
-    m_Parent(nullptr),
-    m_Current_State(ElementState::Neutral),
-    m_Styles(),
-    m_Position(),
-    m_Size(),
-    m_Required_Size()
-{}
-
-void Element::mt_OnUpdate([[maybe_unused]]float elapsed_time)
+void Element::mt_On_Update([[maybe_unused]] float elapsed_time)
 {
     //
 }
@@ -47,7 +35,7 @@ bool Element::mt_OnMouseMove(const Vector2f& screen_pos)
         {
             mt_Set_State(ElementState::Neutral);
         }
-        //return true;
+        // return true;
     }
     return false;
 }
@@ -64,7 +52,6 @@ bool Element::mt_OnMouseRelease(const Vector2f& screen_pos)
     return false;
 }
 
-
 void Element::mt_Set_Position(const Vector2f& pos)
 {
     m_Position = pos;
@@ -80,8 +67,6 @@ void Element::mt_Set_Area(const Rectf& area)
     mt_Set_Position(area.m_Top_Left);
     mt_Set_Size(area.m_Width_Height);
 }
-
-
 
 Vector2f Element::mt_Get_Position(void) const
 {
@@ -108,15 +93,10 @@ void Element::mt_Redraw(void)
     //
 }
 
-
-
 void Element::mt_Set_Parent(Element* parent)
 {
     m_Parent = parent;
 }
-
-
-
 
 void Element::mt_Set_State(ElementState state)
 {
@@ -138,23 +118,22 @@ void Element::mt_Add_Style(ElementState state, const ElementStyle& style)
     m_Styles.emplace(state, style);
 }
 
-void Element::mt_Add_Style(ElementState state,
-                           TextOriginMode x_origin_mode, TextOriginMode y_origin_mode,
-                           TextStyle style, unsigned int character_size, const Color& fill_color, const Color& outline_color, float outline_thickness,
+void Element::mt_Add_Style(ElementState state, TextOriginMode x_origin_mode, TextOriginMode y_origin_mode, TextStyle style,
+                           unsigned int character_size, const Color& fill_color, const Color& outline_color, float outline_thickness,
                            const Color& background_fill_color, const Color& background_outline_color, float background_outline_thickness)
 {
     ElementStyle l_Style;
 
-    l_Style.m_Text.m_Origin.m_X_Mode = x_origin_mode;
-    l_Style.m_Text.m_Origin.m_Y_Mode = y_origin_mode;
-    l_Style.m_Text.m_Style.m_Style = style;
-    l_Style.m_Text.m_Style.m_Character_Size = character_size;
-    l_Style.m_Text.m_Style.m_Fill_Color = fill_color;
-    l_Style.m_Text.m_Style.m_Outline_Color = outline_color;
+    l_Style.m_Text.m_Origin.m_X_Mode           = x_origin_mode;
+    l_Style.m_Text.m_Origin.m_Y_Mode           = y_origin_mode;
+    l_Style.m_Text.m_Style.m_Style             = style;
+    l_Style.m_Text.m_Style.m_Character_Size    = character_size;
+    l_Style.m_Text.m_Style.m_Fill_Color        = fill_color;
+    l_Style.m_Text.m_Style.m_Outline_Color     = outline_color;
     l_Style.m_Text.m_Style.m_Outline_Thickness = outline_thickness;
 
-    l_Style.m_Background.m_Fill_Color = background_fill_color;
-    l_Style.m_Background.m_Outline_Color = background_outline_color;
+    l_Style.m_Background.m_Fill_Color        = background_fill_color;
+    l_Style.m_Background.m_Outline_Color     = background_outline_color;
     l_Style.m_Background.m_Outline_Thickness = background_outline_thickness;
 
     mt_Add_Style(state, l_Style);
@@ -177,7 +156,6 @@ ElementStyle Element::mt_Get_Style(void) const
     return ElementStyle();
 }
 
-
 Vector2f Element::smt_Get_Text_Size(const std::string& text, const TextSettings& style)
 {
     sf::Text l_Text;
@@ -193,8 +171,6 @@ Vector2f Element::smt_Get_Text_Size(const std::string& text, const TextSettings&
     return Vector2f(l_Bounds.width, l_Bounds.height);
 }
 
+}  // namespace gui
 
-}
-
-
-}
+}  // namespace lys

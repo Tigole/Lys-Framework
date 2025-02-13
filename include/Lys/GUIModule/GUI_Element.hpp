@@ -1,24 +1,23 @@
 #ifndef _GUI_ELEMENT_HPP
 #define _GUI_ELEMENT_HPP 1
 #if 0
-#include "GUI_Styles.hpp"
-#include "Lys/MathModule/Rect.hpp"
-#include "GUI_Manager.hpp"
+#    include <map>
+#    include <string>
 
-#include <string>
-#include <map>
+#    include "GUI_Manager.hpp"
+#    include "GUI_Styles.hpp"
+#    include "Lys/MathModule/Rect.hpp"
 
-
-#if LYS_USE_IMGUI
-#include "imgui.h"
-#endif // LYS_USE_IMGUI
+#    if LYS_USE_IMGUI
+#        include "imgui.h"
+#    endif  // LYS_USE_IMGUI
 
 namespace lys
 {
 
 namespace gui
 {
-#if LYS_USE_IMGUI
+#    if LYS_USE_IMGUI
 
 class Interface_Predefined;
 
@@ -27,7 +26,7 @@ class Element
     friend Interface_Predefined;
 public:
 
-    virtual void mt_OnUpdate(float elapsed_time) = 0;
+    virtual void mt_On_Update(float elapsed_time) = 0;
 
     bool mt_Is_Active(void) const;
     void mt_Set_Active(bool active);
@@ -40,7 +39,7 @@ protected:
     bool m_Is_Active = true;
 };
 
-#else
+#    else
 
 class Interface;
 
@@ -68,7 +67,7 @@ public:
 	Element(const Element&) = delete;
 	Element& operator=(const Element&) = delete;
 
-	virtual void mt_OnUpdate(float delta_time_s) = 0;
+	virtual void mt_On_Update(float delta_time_s) = 0;
 	virtual void mt_OnDraw(void) = 0;
 
 	void mt_Set_Style(const Element_State& state, const Style& style);
@@ -110,15 +109,15 @@ protected:
 
     static Vector2f smt_Get_Text_Size(const std::string& text, const TextSettings& style);
 };
-#endif // 1
+#    endif  // 1
 }
 
 }
 
-#if LYS_USE_IMGUI
-#else
+#    if LYS_USE_IMGUI
+#    else
 std::string fn_GUIElementState_ToString(const lys::gui::Element_State& state);
 lys::gui::Element_State fn_GUIElementState_ToEnum(const std::string& state);
-#endif // LYS_USE_IMGUI
-#endif // 0
-#endif // !_GUI_ELEMENT_HPP
+#    endif  // LYS_USE_IMGUI
+#endif      // 0
+#endif      // !_GUI_ELEMENT_HPP

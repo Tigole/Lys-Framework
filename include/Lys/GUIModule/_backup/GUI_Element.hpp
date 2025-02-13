@@ -1,12 +1,12 @@
 #ifndef _LYS_GUI_ELEMENT_HPP
 #define _LYS_GUI_ELEMENT_HPP 1
 
-#include "GUI_Style.hpp"
-#include "Lys/MathModule/Rect.hpp"
-#include "Lys/GraphicModule/Renderer.hpp"
-#include "Lys/GraphicModule/DrawCommandSettings.hpp"
-
 #include <map>
+
+#include "GUI_Style.hpp"
+#include "Lys/GraphicModule/DrawCommandSettings.hpp"
+#include "Lys/GraphicModule/Renderer.hpp"
+#include "Lys/MathModule/Rect.hpp"
 
 namespace lys
 {
@@ -39,7 +39,7 @@ class Element
 public:
     Element();
 
-    virtual void mt_OnUpdate(float elapsed_time);
+    virtual void mt_On_Update(float elapsed_time);
 
     bool mt_OnMouseMove(const Vector2f& screen_pos);
     bool mt_OnMouseClick(const Vector2f& screen_pos);
@@ -65,9 +65,8 @@ protected:
     ElementState m_Current_State;
 
     void mt_Add_Style(ElementState state, const ElementStyle& style);
-    void mt_Add_Style(ElementState state,
-                      TextOriginMode x_origin_mode, TextOriginMode y_origin_mode,
-                      TextStyle style, unsigned int character_size, const Color& fill_color, const Color& outline_color, float outline_thickness,
+    void mt_Add_Style(ElementState state, TextOriginMode x_origin_mode, TextOriginMode y_origin_mode, TextStyle style,
+                      unsigned int character_size, const Color& fill_color, const Color& outline_color, float outline_thickness,
                       const Color& background_fill_color, const Color& background_outline_color, float background_outline_thickness);
     void mt_Apply_Style(const ElementStyle& style);
     ElementStyle mt_Get_Style(void) const;
@@ -83,8 +82,8 @@ protected:
     static Vector2f smt_Get_Text_Size(const std::string& text, const TextSettings& style);
 };
 
-}
+}  // namespace gui
 
-}
+}  // namespace lys
 
-#endif // _LYS_GUI_ELEMENT_HPP
+#endif  // _LYS_GUI_ELEMENT_HPP

@@ -58,7 +58,7 @@ int Application::mt_Run(void)
 
         Renderer::smt_Get().mt_Begin_Scene(l_Elapsed_Time);
 
-        m_State_Manager.mt_OnUpdate(l_Elapsed_Time);
+        m_State_Manager.mt_On_Update(l_Elapsed_Time);
 
         Renderer::smt_Get().mt_End_Scene();
 

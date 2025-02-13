@@ -19,34 +19,10 @@ public:
     Layer(const char* layer_id) : m_Layer_Id(layer_id) {}
     Layer(const Layer&)            = delete;
     Layer& operator=(const Layer&) = delete;
-    virtual ~Layer() {}
+    virtual ~Layer()               = default;
 
-    virtual LayerForward mt_On_Update(float /*elapsed_time*/)
-    {
-        return LayerForward::Continue;
-    }
-    virtual void mt_On_Render(void) {}
-    virtual LayerForward mt_Get_Rendering_Forward_Strategy(void) const
-    {
-        return LayerForward::Stop;
-    }
-
-    template<typename MessageType>
-    void mt_Send_Message(const MessageType& msg)
-    {
-        m_Message_Manager.mt_Send_Message(msg);
-    }
-
-    template<typename MessageType, class C>
-    void mt_Add_Receiver(void (C::*pmt_Callback)(const MessageType&), C* receiver)
-    {
-        m_Message_Manager.mt_Add_Receiver(pmt_Callback, receiver, true);
-    }
-
-    const char* mt_Get_Layer_Id(void) const
-    {
-        return m_Layer_Id;
-    }
+    virtual void mt_On_Activate(void) {}
+    virtual void mt_On_Deactivate(void) {}
 
     virtual LayerForward mt_On_Event_Closed(const WindowCloseRequestEvent& event)
     {
@@ -118,6 +94,34 @@ public:
     virtual LayerForward mt_On_Event_JoystickMoved([[maybe_unused]] const JoystickMovedEvent& event)
     {
         return LayerForward::Stop;
+    }
+
+    virtual LayerForward mt_On_Update(float /*elapsed_time*/)
+    {
+        return LayerForward::Continue;
+    }
+    virtual void mt_On_Render(void) {}
+
+    virtual LayerForward mt_Get_Rendering_Forward_Strategy(void) const
+    {
+        return LayerForward::Stop;
+    }
+
+    template<typename MessageType>
+    void mt_Send_Message(const MessageType& msg)
+    {
+        m_Message_Manager.mt_Send_Message(msg);
+    }
+
+    template<typename MessageType, class C>
+    void mt_Add_Receiver(void (C::*pmt_Callback)(const MessageType&), C* receiver)
+    {
+        m_Message_Manager.mt_Add_Receiver(pmt_Callback, receiver, true);
+    }
+
+    const char* mt_Get_Layer_Id(void) const
+    {
+        return m_Layer_Id;
     }
 
 protected:
