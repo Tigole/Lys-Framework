@@ -39,7 +39,7 @@ public:
 private:
     Window();
 
-    sf::RenderWindow m_Wnd;
+    std::unique_ptr<sf::RenderWindow> m_Wnd;
 };
 
 }  // namespace lys

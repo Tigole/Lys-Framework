@@ -24,12 +24,13 @@ Window& Window::smt_Get(void)
     return ls_Singleton;
 }
 
-Window::Window() : m_Wnd() {}
+Window::Window() : m_Wnd(nullptr) {}
 
 void Window::mt_Create(const WindowSettings& settings)
 {
-    m_Wnd.create(settings.m_VideoMode, settings.m_Title, sf::Style::Default,
-                 (settings.m_Full_Screen == true) ? sf::State::Fullscreen : sf::State::Windowed);
+    m_Wnd = std::make_unique<sf::RenderWindow>();
+    m_Wnd->create(settings.m_VideoMode, settings.m_Title, sf::Style::Default,
+                  (settings.m_Full_Screen == true) ? sf::State::Fullscreen : sf::State::Windowed);
 
 #if (PLATFORM == PLATFORM_WINDOWS)
     if (settings.m_VideoMode == sf::VideoMode::getDesktopMode())
@@ -44,8 +45,8 @@ void Window::mt_Create(const WindowSettings& settings)
         exit(-1);
     }
 
-    m_Wnd.setFramerateLimit(0);
-    m_Wnd.setKeyRepeatEnabled(false);
+    m_Wnd->setFramerateLimit(0);
+    m_Wnd->setKeyRepeatEnabled(false);
 }
 
 void Window::mt_Destroy(void)
@@ -53,12 +54,14 @@ void Window::mt_Destroy(void)
     LYS_LOG_CORE_DEBUG("Closing window");
     ImGui::SFML::Shutdown();
     m_Wnd.close();
+    m_Wnd->close();
+    m_Wnd.reset(nullptr);
 }
 
 bool Window::mt_Handle_Events(StateManager& state_manager)
 {
     bool l_b_Ret = false;
-    m_Wnd.handleEvents(
+    m_Wnd->handleEvents(
         [&](const sf::Event::Closed& event)
     {
         LYS_LOG_CORE_DEBUG("Closed");
@@ -70,11 +73,11 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
         LYS_LOG_CORE_DEBUG("Resized");
         ImGui::SFML::ProcessEvent(m_Wnd, sf::Event(event));
         sf::Vector2f l_Size(event.size.x, event.size.y);
-        sf::View l_Default_View = m_Wnd.getDefaultView();
+        sf::View l_Default_View = m_Wnd->getDefaultView();
 
         LYS_LOG_CORE_TRACE("Window size: [%.0f %.0f]", l_Size.x, l_Size.y);
 
-        m_Wnd.setView(sf::View({ l_Size.x / 2, l_Size.y / 2 }, l_Size));
+        m_Wnd->setView(sf::View({ l_Size.x / 2, l_Size.y / 2 }, l_Size));
     },
         [&](const sf::Event::FocusLost& event)
     {
@@ -199,7 +202,7 @@ bool Window::mt_Handle_Events(StateManager& state_manager)
 
 Vector2u Window::mt_Get_Size(void) const
 {
-    return sf_From<uint32_t, unsigned int>(m_Wnd.getSize());
+    return sf_From<uint32_t, unsigned int>(m_Wnd->getSize());
 }
 
 }  // namespace lys
