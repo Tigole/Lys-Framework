@@ -15,7 +15,7 @@
 #include "Lys/GraphicModule/Shader.hpp"
 #include "Lys/GraphicModule/VertexArray.hpp"
 #include "Lys/MathModule/HexGrid.hpp"
-#include "imgui-SFML.h"
+// #include "imgui-SFML.h"
 
 namespace lys
 {
@@ -83,13 +83,13 @@ Renderer& Renderer::smt_Get(void)
     return *sm_Renderer;
 }
 
-Renderer::Renderer(Window* wnd) : m_Wnd(&wnd->m_Wnd), m_Default_Shader("uCameraMatrix", "aModelMatrix")
+Renderer::Renderer(Window* wnd) : m_Wnd(wnd->m_Wnd.get()), m_Default_Shader("uCameraMatrix", "aModelMatrix")
 {
     constexpr const float l_Camera_Pitch   = 0.0f;
     constexpr const float l_Camera_Yaw     = -90.0f;
     constexpr const glm::vec3 l_Camera_Pos = glm::vec3(0.0f, 0.0f, 10.0f);
 
-    m_Default_Font.openFromMemory(font::jack_input, font::jack_input_length);
+    (void)m_Default_Font.openFromMemory(font::jack_input, font::jack_input_length);
     m_Default_Shader.mt_Create_From_String(g_Default_Vertex_Shader_Code, g_Default_Fragment_Shader_Code);
     m_Instanced_Buffer.reset(new VertexBuffer(VertexBufferLayout(
         { VertexBufferLayoutElement(m_Default_Shader.mt_Get_Model_Matrix_Attribute_Name(), ShaderDataType::mat4, false) })));
@@ -106,7 +106,7 @@ void Renderer::mt_Begin_Scene(float elapsed_time)
 {
     sf::Color l_Clear_Color(sf::Color::Black);
 
-    ImGui::SFML::Update(*m_Wnd, sf::Time(sf::seconds(elapsed_time)));
+    // ImGui::SFML::Update(*m_Wnd, sf::Time(sf::seconds(elapsed_time)));
 
     m_Wnd->clear(l_Clear_Color);
 }
@@ -118,7 +118,7 @@ void Renderer::mt_End_Scene(void)
 
     mt_Flush_Mesh_Material();
 
-    ImGui::SFML::Render(*m_Wnd);
+    // ImGui::SFML::Render(*m_Wnd);
 
     m_Wnd->display();
 }
@@ -204,7 +204,7 @@ void Renderer::mt_Draw_Hexagon(const HexagonSettings& hexagon_settings)
 
     //    l_Pos = l_fn_Coord_To_Pix(pos[ii], true, ); Map::smt_Get().mt_Coord_To_Pix(pos[ii], true);
     l_Hex.setPosition(sf_To<float>(l_Pos));
-    Window::smt_Get().m_Wnd.draw(l_Hex);
+    Window::smt_Get().m_Wnd->draw(l_Hex);
 }
 
 Rectf Renderer::mt_Draw_Text(const char* text, const Vector2f& screen_pos, const gui::TextSettings& text_settings)

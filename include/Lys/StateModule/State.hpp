@@ -22,10 +22,14 @@ class LYS_API State
 public:
     virtual ~State();
 
+    /// Should not take a lot of time (frame friendly)
     [[nodiscard]] virtual bool mt_On_Create(void);
+    /// Should not take a lot of time (frame friendly)
     [[nodiscard]] virtual bool mt_On_Destroy(void);
 
+    /// May take a lot of time (mya be called inside dedicated thread)
     [[nodiscard]] virtual bool mt_On_Entry(void);
+    /// May take a lot of time (mya be called inside dedicated thread)
     [[nodiscard]] virtual bool mt_On_Exit(void);
 
     void mt_On_Event_Closed(const WindowCloseRequestEvent& event);

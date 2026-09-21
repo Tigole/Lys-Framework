@@ -1,40 +1,32 @@
 #include "Lys/Core/FileManagement.hpp"
 
 #include <unistd.h>
-#if (PLATFORM == PLATFORM_WINDOWS)
-    #include <dir.h>
-    #include <windows.h>
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+#include <dir.h>
+#include <windows.h>
 #endif
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <fstream>
 #include <filesystem>
-
+#include <fstream>
 
 #include "Lys/Core/Log.hpp"
 
 namespace lys
 {
 
-File::File() :
-    m_Path(), m_Name(), m_Extension()
-{}
+File::File() : m_Path(), m_Name(), m_Extension() {}
 
-File::File(const File& rhs) :
-    File(rhs.m_Path, rhs.m_Name, rhs.m_Extension)
-{}
+File::File(const File& rhs) : File(rhs.m_Path, rhs.m_Name, rhs.m_Extension) {}
 
-File::File(const std::string& full_path) :
-    m_Path(), m_Name(), m_Extension()
+File::File(const std::string& full_path) : m_Path(), m_Name(), m_Extension()
 {
     smt_Cut_Path(full_path, *this);
 }
 
-File::File(const std::string& path, const std::string& name, const std::string& ext) :
-    m_Path(path), m_Name(name), m_Extension(ext)
-{}
+File::File(const std::string& path, const std::string& name, const std::string& ext) : m_Path(path), m_Name(name), m_Extension(ext) {}
 
 File& File::operator=(const std::string& f)
 {
@@ -44,8 +36,8 @@ File& File::operator=(const std::string& f)
 
 File& File::operator=(const File& f)
 {
-    m_Path = f.m_Path;
-    m_Name = f.m_Name;
+    m_Path      = f.m_Path;
+    m_Name      = f.m_Name;
     m_Extension = f.m_Extension;
     return *this;
 }
@@ -161,16 +153,15 @@ std::vector<std::string> File::mt_Get_Sub_Sequence_Path(void) const
 
 bool File::smt_Cut_Path(const std::string& full_path, std::string& path, std::string& name, std::string& ext)
 {
-    bool l_b_Ret = true;
-    std::size_t l_Dot_Pos = full_path.rfind('.');
-    std::size_t l_Slash_Pos = full_path.rfind('/');
+    bool l_b_Ret                 = true;
+    std::size_t l_Dot_Pos        = full_path.rfind('.');
+    std::size_t l_Slash_Pos      = full_path.rfind('/');
     std::size_t l_Back_Slash_Pos = full_path.rfind('\\');
     std::size_t l_Last_Separator = std::string::npos;
 
     l_b_Ret = true;
 
-    if (    (l_Slash_Pos == std::string::npos)
-        &&  (l_Back_Slash_Pos == std::string::npos))
+    if ((l_Slash_Pos == std::string::npos) && (l_Back_Slash_Pos == std::string::npos))
     {
         l_Last_Separator = 0;
     }
@@ -198,7 +189,7 @@ bool File::smt_Cut_Path(const std::string& full_path, std::string& path, std::st
 
         path = full_path.substr(0, l_Last_Separator);
         name = full_path.substr(l_Last_Separator, l_Dot_Pos - l_Last_Separator);
-        ext = full_path.substr(l_Dot_Pos + 1);
+        ext  = full_path.substr(l_Dot_Pos + 1);
 
         for (std::size_t ii = 0; ii < path.size(); ii++)
         {
@@ -208,7 +199,8 @@ bool File::smt_Cut_Path(const std::string& full_path, std::string& path, std::st
             }
         }
 
-        LYS_LOG_CORE_TRACE("\nfull path: '%s'\npath: '%s'\nname: '%s'\next: '%s'", full_path.c_str(), path.c_str(), name.c_str(), ext.c_str());
+        LYS_LOG_CORE_TRACE("\nfull path: '%s'\npath: '%s'\nname: '%s'\next: '%s'", full_path.c_str(), path.c_str(), name.c_str(),
+                           ext.c_str());
     }
     else
     {
@@ -223,14 +215,12 @@ bool File::smt_Cut_Path(const std::string& full_path, File& file)
     return smt_Cut_Path(full_path, file.m_Path, file.m_Name, file.m_Extension);
 }
 
-
-
 bool fn_Is_File(const std::string& path)
 {
-#if (PLATFORM == PLATFORM_WINDOWS)
-	std::ifstream l_Stream;
-	l_Stream.open(path);
-	return l_Stream.is_open();
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+    std::ifstream l_Stream;
+    l_Stream.open(path);
+    return l_Stream.is_open();
 #else
     struct stat l_Stat;
     if (stat(path.c_str(), &l_Stat) == 0)
@@ -241,30 +231,28 @@ bool fn_Is_File(const std::string& path)
 #endif
 }
 
-
-
 std::vector<File> fn_Get_Files(const std::string& path, int depth)
 {
     std::vector<File> l_Ret;
 #if 0
     DIR *dir;
     struct dirent *ent;
-#endif // 0
+#endif  // 0
     std::string l_str;
     std::string l_File_Name;
     std::string l_File_Ext;
     std::string l_File_Path;
-    std::string l_Current_Dir = getcwd(nullptr, 0);
+    std::string l_Current_Dir    = getcwd(nullptr, 0);
     std::filesystem::path l_Path = std::filesystem::absolute(path);
 
-    for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator(l_Path))
+    for (const std::filesystem::directory_entry& entry: std::filesystem::recursive_directory_iterator(l_Path))
     {
         if (entry.is_regular_file() == true)
         {
-            l_File_Name = entry.path().stem().string();// l_str.substr(0, l_str.find_last_of('.'));
-            l_File_Ext = entry.path().extension().string();//l_str.substr(l_str.find_last_of('.') + 1);
+            l_File_Name = entry.path().stem().string();       // l_str.substr(0, l_str.find_last_of('.'));
+            l_File_Ext  = entry.path().extension().string();  // l_str.substr(l_str.find_last_of('.') + 1);
             l_File_Path = entry.path().parent_path().string() + '/';
-            l_File_Ext = l_File_Ext.substr(1);
+            l_File_Ext  = l_File_Ext.substr(1);
             LYS_LOG_CORE_TRACE("Pushing file: '%s%s.%s'", l_File_Path.c_str(), l_File_Name.c_str(), l_File_Ext.c_str());
             l_Ret.push_back(File(l_File_Path, l_File_Name, l_File_Ext));
         }
@@ -314,15 +302,15 @@ std::vector<File> fn_Get_Files(const std::string& path, int depth)
 
         chdir(l_Current_Dir.c_str());
     }
-#endif // 0
+#endif  // 0
     return l_Ret;
 }
 
 std::vector<std::string> fn_Get_Directories(std::string path, int depth)
 {
     std::vector<std::string> l_Ret;
-    DIR *dir;
-    struct dirent *ent;
+    DIR* dir;
+    struct dirent* ent;
     std::string l_str;
 
     if ((path.back() != '/') && (path.back() != '\\'))
@@ -333,7 +321,7 @@ std::vector<std::string> fn_Get_Directories(std::string path, int depth)
     if ((dir = opendir(path.c_str())) != NULL)
     {
         /* print all the files and directories within directory */
-        while ((ent = readdir (dir)) != NULL)
+        while ((ent = readdir(dir)) != NULL)
         {
             l_str = ent->d_name;
             if ((l_str != ".") && (l_str != ".."))
@@ -356,7 +344,7 @@ std::vector<std::string> fn_Get_Directories(std::string path, int depth)
                 }
             }
         }
-        closedir (dir);
+        closedir(dir);
     }
 
     return l_Ret;
@@ -375,7 +363,7 @@ bool fn_Create_Directory(const std::string& path)
 
     return std::filesystem::create_directories(std::filesystem::absolute(path));
 
-#if (PLATFORM == PLATFORM_WINDOWS)
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
     bool l_Creation_Succeded = CreateDirectory(l_File.mt_Get_Path().c_str(), nullptr);
 
     if (l_Creation_Succeded == true)
@@ -396,7 +384,7 @@ bool fn_Create_Directory(const std::string& path)
     }
     return l_Creation_Succeded;
 #else
-    struct stat st = {0};
+    struct stat st = { 0 };
     if (stat(l_File.mt_Get_Path().c_str(), &st) == -1)
     {
         return mkdir(l_File.mt_Get_Path().c_str(), 0700) == 0;
@@ -419,8 +407,8 @@ std::string fn_Get_Relative_Path(const std::string& absolute_root_directory, con
     std::string l_Ret;
     std::size_t l_Diff_Char_Pos = 0;
 
-    for (; l_Diff_Char_Pos < absolute_root_directory.size()
-            && (absolute_root_directory[l_Diff_Char_Pos] == absolute_path[l_Diff_Char_Pos]); l_Diff_Char_Pos++)
+    for (; l_Diff_Char_Pos < absolute_root_directory.size() && (absolute_root_directory[l_Diff_Char_Pos] == absolute_path[l_Diff_Char_Pos]);
+         l_Diff_Char_Pos++)
     {}
 
     if (l_Diff_Char_Pos < absolute_root_directory.size())
@@ -435,4 +423,4 @@ std::string fn_Get_Relative_Path(const std::string& absolute_root_directory, con
     return l_Ret;
 }
 
-}
+}  // namespace lys

@@ -16,14 +16,8 @@ struct Face
     std::size_t m_Count;
 };
 
-
-
-
-void fn_Convert_Faces_Into_Mesh(const std::vector<glm::vec3>& pos,
-                                const std::vector<glm::vec3>& normals,
-                                const std::vector<glm::vec2>& tex_coords,
-                                const std::vector<priv::Face>& faces,
-                                Mesh& mesh)
+void fn_Convert_Faces_Into_Mesh(const std::vector<glm::vec3>& pos, const std::vector<glm::vec3>& normals,
+                                const std::vector<glm::vec2>& tex_coords, const std::vector<priv::Face>& faces, Mesh& mesh)
 {
     std::vector<float> l_Vertices;
     std::vector<unsigned int> l_Indices;
@@ -82,41 +76,30 @@ void fn_Convert_Faces_Into_Mesh(const std::vector<glm::vec3>& pos,
     }
 
     std::cout << "Mesh vertices: " << l_Vertices.size() << '\n';
-    for (std::size_t ii = 0; ii < l_Vertices.size() && false; ii += (3+2+3))
+    for (std::size_t ii = 0; ii < l_Vertices.size() && false; ii += (3 + 2 + 3))
     {
-        std::cout   << l_Vertices[ii + 0] << ' ' << l_Vertices[ii + 1] << ' ' << l_Vertices[ii + 2] << ' '
-                    << l_Vertices[ii + 3] << ' ' << l_Vertices[ii + 4] << ' '
-                    << l_Vertices[ii + 5] << ' ' << l_Vertices[ii + 6] << ' ' << l_Vertices[ii + 7] << '\n';
+        std::cout << l_Vertices[ii + 0] << ' ' << l_Vertices[ii + 1] << ' ' << l_Vertices[ii + 2] << ' ' << l_Vertices[ii + 3] << ' '
+                  << l_Vertices[ii + 4] << ' ' << l_Vertices[ii + 5] << ' ' << l_Vertices[ii + 6] << ' ' << l_Vertices[ii + 7] << '\n';
     }
     std::cout << "Mesh indices: " << l_Indices.size() << '\n';
     for (std::size_t ii = 0; ii < l_Indices.size() && false; ii += 3)
     {
-        std::cout << l_Indices[ii+0] << ' ' << l_Indices[ii+1] << ' ' << l_Indices[ii+2] << '\n';
+        std::cout << l_Indices[ii + 0] << ' ' << l_Indices[ii + 1] << ' ' << l_Indices[ii + 2] << '\n';
     }
 
-    mesh.mt_Load_Vertices(l_Vertices, l_Indices, VertexBufferLayout({
-                                                                     VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
-                                                                     VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
-                                                                     VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false)
-                                                                    }));
+    mesh.mt_Load_Vertices(l_Vertices, l_Indices,
+                          VertexBufferLayout({ VertexBufferLayoutElement("aPos", ShaderDataType::vec3, false),
+                                               VertexBufferLayoutElement("aTexCoord", ShaderDataType::vec2, false),
+                                               VertexBufferLayoutElement("aNormal", ShaderDataType::vec3, false) }));
 }
 
-bool fn_Extract_Data(std::istream& input,
-                     std::vector<glm::vec3>& pos,
-                     std::vector<glm::vec3>& normals,
-                     std::vector<glm::vec2>& tex_coords,
+bool fn_Extract_Data(std::istream& input, std::vector<glm::vec3>& pos, std::vector<glm::vec3>& normals, std::vector<glm::vec2>& tex_coords,
                      std::vector<Face>& faces)
 {
     return true;
 }
 
-
-}
-
-
-
-
-
+}  // namespace priv
 
 bool fn_Load_Mesh(const std::string& file_name, Mesh& mesh)
 {
@@ -129,7 +112,7 @@ bool fn_Load_Mesh(const std::string& file_name, Mesh& mesh)
     float l_f0, l_f1, l_f2;
 
     /** Get info from file **/
-    while(std::getline(l_input_stream, l_line, '\n'))
+    while (std::getline(l_input_stream, l_line, '\n'))
     {
         std::stringstream l_ss;
         if (l_line.size() != 0 && l_line[0] != '#')
@@ -137,7 +120,7 @@ bool fn_Load_Mesh(const std::string& file_name, Mesh& mesh)
             l_ss << l_line.substr(2, std::string::npos);
             if (l_line[0] == 'v')
             {
-                //l_ss >> l_f0;
+                // l_ss >> l_f0;
                 l_ss >> l_f0 >> l_f1 >> l_f2;
 
                 if (l_line[1] == 'n')
@@ -157,7 +140,7 @@ bool fn_Load_Mesh(const std::string& file_name, Mesh& mesh)
             {
                 priv::Face l_face;
                 std::size_t l_current_index;
-                l_line = l_line.substr(2, std::string::npos);
+                l_line                      = l_line.substr(2, std::string::npos);
                 auto l_fn_Extract_Face_Part = [&](std::string line_part, priv::Face& face, std::size_t current_index)
                 {
                     std::stringstream l_ss;
@@ -171,7 +154,7 @@ bool fn_Load_Mesh(const std::string& file_name, Mesh& mesh)
                 };
 
                 l_current_index = 0;
-                while(std::getline(l_ss, l_line, ' '))
+                while (std::getline(l_ss, l_line, ' '))
                 {
                     l_fn_Extract_Face_Part(l_line, l_face, l_current_index);
                     l_current_index++;
@@ -209,15 +192,11 @@ bool fn_Load_Mesh(const std::string& file_name, Mesh& mesh)
         std::cout << '\n';
     }*/
 
-
     /** Convert info to mesh **/
     priv::fn_Convert_Faces_Into_Mesh(l_pos, l_normals, l_tex_coords, l_faces, mesh);
 
     return true;
 }
-
-
-
 
 bool fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::unique_ptr<Mesh>>& mesh)
 {
@@ -232,7 +211,7 @@ bool fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::uniqu
     Mesh* l_mesh;
 
     /** Get info from file **/
-    while(std::getline(l_input_stream, l_line, '\n'))
+    while (std::getline(l_input_stream, l_line, '\n'))
     {
         std::stringstream l_ss;
         if (l_line.size() != 0 && l_line[0] != '#')
@@ -240,7 +219,7 @@ bool fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::uniqu
             l_ss << l_line.substr(2, std::string::npos);
             if (l_line[0] == 'v')
             {
-                //l_ss >> l_f0;
+                // l_ss >> l_f0;
                 l_ss >> l_f0 >> l_f1 >> l_f2;
 
                 if (l_line[1] == 'n')
@@ -260,7 +239,7 @@ bool fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::uniqu
             {
                 priv::Face l_face;
                 std::size_t l_current_index;
-                l_line = l_line.substr(2, std::string::npos);
+                l_line                      = l_line.substr(2, std::string::npos);
                 auto l_fn_Extract_Face_Part = [&](std::string line_part, priv::Face& face, std::size_t current_index)
                 {
                     std::stringstream l_ss;
@@ -274,7 +253,7 @@ bool fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::uniqu
                 };
 
                 l_current_index = 0;
-                while(std::getline(l_ss, l_line, ' '))
+                while (std::getline(l_ss, l_line, ' '))
                 {
                     l_fn_Extract_Face_Part(l_line, l_face, l_current_index);
                     l_current_index++;
@@ -324,11 +303,9 @@ bool fn_Load_Mesh(const std::string& file_name, std::map<std::string, std::uniqu
     return true;
 }
 
-
 bool fn_Load_Mesh(const std::string& file_name, Mesh* mesh)
 {
-    //
+    return false;
 }
 
-
-}
+}  // namespace lys

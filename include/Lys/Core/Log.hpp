@@ -1,25 +1,30 @@
 #ifndef _LYS_LOG_HPP
 #define _LYS_LOG_HPP 1
 
-#include "Lys/LysConfig.hpp"
-#include "Log/Log_Sink.hpp"
-
-#include <string>
 #include <sys/time.h>
-#include <vector>
-#include <memory>
+
 #include <cstring>
-#include <unordered_map>
+#include <memory>
 #include <mutex>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
+#include "Log/Log_Sink.hpp"
+#include "Lys/LysConfig.hpp"
 
-#define LYS_LOG_TRACE(token, ...)       lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Trace,   __VA_ARGS__)
-#define LYS_LOG_DEBUG(token, ...)       lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Debug,   __VA_ARGS__)
-#define LYS_LOG_INFORMATION(token, ...) lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Info,    __VA_ARGS__)
-#define LYS_LOG_WARNING(token, ...)     lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Warning, __VA_ARGS__)
-#define LYS_LOG_ERROR(token, ...)       lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Error,   __VA_ARGS__)
-#define LYS_LOG_FATAL(token, ...)       lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Fatal,   __VA_ARGS__)
-
+#define LYS_LOG_TRACE(token, fmt, ...) \
+    lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Trace, fmt, ##__VA_ARGS__)
+#define LYS_LOG_DEBUG(token, fmt, ...) \
+    lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Debug, fmt, ##__VA_ARGS__)
+#define LYS_LOG_INFORMATION(token, fmt, ...) \
+    lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Info, fmt, ##__VA_ARGS__)
+#define LYS_LOG_WARNING(token, fmt, ...) \
+    lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Warning, fmt, ##__VA_ARGS__)
+#define LYS_LOG_ERROR(token, fmt, ...) \
+    lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Error, fmt, ##__VA_ARGS__)
+#define LYS_LOG_FATAL(token, fmt, ...) \
+    lys::log::LoggerPool::smt_Get().mt_Log(token, __FILE__, __LINE__, lys::log::LogLevel::Fatal, fmt, ##__VA_ARGS__)
 
 namespace lys
 {
@@ -29,18 +34,18 @@ namespace log
 
 enum class LogLevel
 {
-    Trace,      /// Used to hunt bugs
-    Debug,      /// Used to log debug information
-    Info,       /// Used to log application information
-    Warning,    /// Used to log recovered issues
-    Error,      /// Used to log things that should not happen
-    Fatal,      /// Used to log assert
+    Trace,    /// Used to hunt bugs
+    Debug,    /// Used to log debug information
+    Info,     /// Used to log application information
+    Warning,  /// Used to log recovered issues
+    Error,    /// Used to log things that should not happen
+    Fatal,    /// Used to log assert
     COUNT
 };
 
 struct LYS_API LogData
 {
-    LogData() : m_Level(LogLevel::Trace), m_Header(), m_Message(){}
+    LogData() : m_Level(LogLevel::Trace), m_Header(), m_Message() {}
     LogLevel m_Level;
     char m_Header[128];
     std::string m_Message;
@@ -59,7 +64,7 @@ public:
 private:
     std::vector<std::unique_ptr<Sink>> m_Sinks;
     LogLevel m_Level;
-	std::mutex m_Mutex;
+    std::mutex m_Mutex;
 };
 
 class LYS_API LoggerPool
@@ -92,15 +97,15 @@ private:
 };
 
 #define LYS_LOG_TOKEN "LYS"
-#define LYS_LOG_CORE_TRACE(...)        LYS_LOG_TRACE(LYS_LOG_TOKEN, __VA_ARGS__)
-#define LYS_LOG_CORE_DEBUG(...)        LYS_LOG_DEBUG(LYS_LOG_TOKEN, __VA_ARGS__)
-#define LYS_LOG_CORE_INFORMATION(...)  LYS_LOG_INFORMATION(LYS_LOG_TOKEN, __VA_ARGS__)
-#define LYS_LOG_CORE_WARNING(...)      LYS_LOG_WARNING(LYS_LOG_TOKEN, __VA_ARGS__)
-#define LYS_LOG_CORE_ERROR(...)        LYS_LOG_ERROR(LYS_LOG_TOKEN, __VA_ARGS__)
-#define LYS_LOG_CORE_FATAL(...)        LYS_LOG_FATAL(LYS_LOG_TOKEN, __VA_ARGS__)
+#define LYS_LOG_CORE_TRACE(fmt, ...) LYS_LOG_TRACE(LYS_LOG_TOKEN, fmt, ##__VA_ARGS__)
+#define LYS_LOG_CORE_DEBUG(fmt, ...) LYS_LOG_DEBUG(LYS_LOG_TOKEN, fmt, ##__VA_ARGS__)
+#define LYS_LOG_CORE_INFORMATION(fmt, ...) LYS_LOG_INFORMATION(LYS_LOG_TOKEN, fmt, ##__VA_ARGS__)
+#define LYS_LOG_CORE_WARNING(fmt, ...) LYS_LOG_WARNING(LYS_LOG_TOKEN, fmt, ##__VA_ARGS__)
+#define LYS_LOG_CORE_ERROR(fmt, ...) LYS_LOG_ERROR(LYS_LOG_TOKEN, fmt, ##__VA_ARGS__)
+#define LYS_LOG_CORE_FATAL(fmt, ...) LYS_LOG_FATAL(LYS_LOG_TOKEN, fmt, ##__VA_ARGS__)
 
-}
+}  // namespace log
 
-}
+}  // namespace lys
 
-#endif // _LYS_LOG_HPP
+#endif  // _LYS_LOG_HPP

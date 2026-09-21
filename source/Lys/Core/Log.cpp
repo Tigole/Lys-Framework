@@ -8,8 +8,8 @@
 #include <iostream>
 
 #include "Lys/Core/Log/Log_Console.hpp"
-#if (PLATFORM == PLATFORM_WINDOWS)
-#    include <windows.h>
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+#include <windows.h>
 #endif
 
 namespace lys
@@ -94,7 +94,7 @@ void LoggerPool::mt_Log_Formated(const char* token, const char* file, int line_n
     }
 
     ///"[date - level - thread - file:line]:"
-#if (PLATFORM == PLATFORM_WINDOWS)
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
     sprintf_s(l_Data.m_Header, sizeof(l_Data.m_Header), "[%s:%03d - %s - %02d - %s - %s:%d] ", l_Time, l_Time_Val.tv_usec / 1000,
               sg_Levels[static_cast<std::size_t>(level)], mt_Get_Thread_Id(), token, l_Short_File_Name, line_number);
 #else
@@ -112,10 +112,10 @@ void LoggerPool::mt_Log(const char* token, const LogData& data)
     mt_Get_Logger(token).mt_Log(data);
 }
 
-#if (PLATFORM == PLATFORM_WINDOWS)
-#    define FUNC_GET_CURRENT_THREAD_IS GetCurrentThreadId
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+#define FUNC_GET_CURRENT_THREAD_IS GetCurrentThreadId
 #else
-#    define FUNC_GET_CURRENT_THREAD_IS pthread_self
+#define FUNC_GET_CURRENT_THREAD_IS pthread_self
 #endif
 
 int LoggerPool::mt_Get_Thread_Id(void)

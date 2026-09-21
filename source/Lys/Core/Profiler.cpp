@@ -2,8 +2,8 @@
 
 #include <SFML/System/Time.hpp>
 
-#if (PLATFORM == PLATFORM_WINDOWS)
-    #include <windows.h>
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+#include <windows.h>
 #endif
 
 namespace lys
@@ -73,10 +73,10 @@ void Profiler::mt_End_File(void)
     }
 }
 
-#if (PLATFORM == PLATFORM_WINDOWS)
-    #define GET_CURRENT_THREAD_ID GetCurrentThreadId
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+#define GET_CURRENT_THREAD_ID GetCurrentThreadId
 #else
-    #define GET_CURRENT_THREAD_ID pthread_self
+#define GET_CURRENT_THREAD_ID pthread_self
 #endif
 
 void Profiler::mt_Write_Function(const char* function_name, const char* phase)
@@ -97,25 +97,13 @@ void Profiler::mt_Write_Function(const char* function_name, const char* phase)
         m_Stream << ",\n\t";
     }
 
-    m_Stream << "{\"name\": \""
-             << function_name
-             << "\", \"cat\": \"PERF\", \"ph\": \""
-             << phase
-             << "\", \"pid\": "
-             << l_PID
-             << ", \"tid\": "
-             << l_PID
-             << ", \"ts\": "
-             << l_Milliseconds
-             << "}";
+    m_Stream << "{\"name\": \"" << function_name << "\", \"cat\": \"PERF\", \"ph\": \"" << phase << "\", \"pid\": " << l_PID
+             << ", \"tid\": " << l_PID << ", \"ts\": " << l_Milliseconds << "}";
 
     m_Mutex.unlock();
 }
 
-
-
-ProfilerHelper::ProfilerHelper(const char* function_name) :
-    m_Function_Name(function_name)
+ProfilerHelper::ProfilerHelper(const char* function_name) : m_Function_Name(function_name)
 {
     Profiler::smt_Get().mt_Start_Function(m_Function_Name);
 }
@@ -125,14 +113,12 @@ ProfilerHelper::~ProfilerHelper()
     Profiler::smt_Get().mt_Stop_Function(m_Function_Name);
 }
 
-
-
 void fn_Initialize_Profiler(const char* file_name)
 {
     Profiler::sm_File_Name = file_name;
     Profiler::smt_Get();
 }
 
-}
+}  // namespace profiler
 
-}
+}  // namespace lys

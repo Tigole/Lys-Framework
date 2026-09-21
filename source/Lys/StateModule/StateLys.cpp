@@ -1,12 +1,14 @@
 #include "Lys/StateModule/StateLys.hpp"
+
 #include "Lys/Core/Log.hpp"
 
 namespace lys
 {
 
-
 State_Lys::State_Lys() : m_Layer()
-{}
+{
+    LYS_LOG_CORE_INFORMATION("hello");
+}
 
 bool State_Lys::mt_On_Entry(void)
 {
@@ -29,5 +31,4 @@ void State_Lys::mt_Set_Next_State(std::size_t next_state)
     m_Layer.m_Next_State = next_state;
 }
 
-
-}
+}  // namespace lys

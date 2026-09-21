@@ -9,8 +9,8 @@ namespace lys
 namespace log
 {
 
-#if (PLATFORM == PLATFORM_WINDOWS)
-#    define CONSOLE_TYPE ConsoleWindows
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+#define CONSOLE_TYPE ConsoleWindows
 class LYS_API ConsoleWindows: public Sink
 {
 public:
@@ -28,7 +28,7 @@ private:
 };
 
 #else
-#    define CONSOLE_TYPE ConsoleLinux
+#define CONSOLE_TYPE ConsoleLinux
 class LYS_API ConsoleLinux: public Sink
 {
 public:

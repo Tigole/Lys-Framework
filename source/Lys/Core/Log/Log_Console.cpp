@@ -9,7 +9,7 @@ namespace lys
 namespace log
 {
 
-#if (PLATFORM == PLATFORM_WINDOWS)
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
 
 ConsoleWindows::ConsoleWindows() : m_Handle(nullptr)
 {
