@@ -8,18 +8,14 @@
 namespace lys
 {
 
-WorkingThread& WorkingThread::smt_Get(void)
-{
-    static WorkingThread ls_Singleton;
-
-    return ls_Singleton;
-}
-
 WorkingThread::WorkingThread() :
     m_Mutex(), m_Thread(&WorkingThread::Thread, this), m_Run(true), m_Condition_Mutex(), m_Condition_Variable(), m_Pending_Tasks()
 {}
 
-WorkingThread::~WorkingThread() {}
+WorkingThread::~WorkingThread()
+{
+    Stop_Thread();
+}
 
 void WorkingThread::Add_Task(AWorkingTask* task)
 {
@@ -43,12 +39,15 @@ void WorkingThread::Stop_Thread(void)
 #if 0
     LYS_LOG_CORE_DEBUG("Stopping WorkingThread: %p", this);
 #endif
-    m_Mutex.lock();
-    m_Run = false;
-    m_Condition_Variable.notify_one();
-    m_Mutex.unlock();
+    if (m_Thread.joinable())
+    {
+        m_Mutex.lock();
+        m_Run = false;
+        m_Condition_Variable.notify_one();
+        m_Mutex.unlock();
 
-    m_Thread.join();
+        m_Thread.join();
+    }
 #if 0
     LYS_LOG_CORE_DEBUG("Stopped WorkingThread");
 #endif

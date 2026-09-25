@@ -17,6 +17,7 @@ add_requires("raylib", {configs = { debug = true}})
 set_languages("c++20")
 
 includes("xmake-working-thread.lua")
+includes("xmake-application-states.lua")
 
 --target("Lys")
 --    set_kind("shared")

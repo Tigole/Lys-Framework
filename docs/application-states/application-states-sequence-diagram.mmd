@@ -1,0 +1,70 @@
+
+
+sequenceDiagram
+
+rect rgb(235, 235, 235)
+    note over Application,ApplicationStateManager: Initialization
+    note over Application: Register your states to the manager
+    Application->>ApplicationStateManager: Register_State<StateA>(0)
+    Application->>ApplicationStateManager: Register_State<StateB>(1)
+    note over Application: Set the init state for the application
+    Application->>+ApplicationStateManager: Set_Initial_State(0, optional init function)
+        create participant StateA
+        ApplicationStateManager->>StateA: std::make_unique<StateA>()
+        create participant LayerA
+        StateA->>LayerA: Created as attribute of StateA
+        ApplicationStateManager->>+StateA: On_Create()
+        note over StateA: Register yours layers as they should be updated and displayed (0 = first rendered and last updated)
+        StateA->>StateA: Register_Layer(0, LayerA)
+        StateA->>StateA: Activate_Layer(0)
+        StateA->>-ApplicationStateManager: On_Create()
+    ApplicationStateManager->>-Application: return
+end
+
+rect rgb(235, 235, 235)
+    note over Application,ApplicationStateManager: Main loop
+    Application->>+Application: First Frame()
+        %%Application->>+ApplicationStateManager: On_Handle_Inputs()
+        %%    ApplicationStateManager->>StateA: On_Handle_Inputs()
+        %%ApplicationStateManager->>-Application: 
+        Application->>+ApplicationStateManager: Update_Logic(dt)
+            ApplicationStateManager->>+StateA: Update_Logic(dt)
+                StateA->>LayerA: On_Activate()
+                StateA->>LayerA: On_Update(dt)
+            StateA->>-ApplicationStateManager: Update_Logic(dt)
+        ApplicationStateManager->>-Application: 
+        Application->>+ApplicationStateManager: Update_Render()
+            ApplicationStateManager->>+StateA: Update_Render()
+                StateA->>LayerA: On_Render()
+            StateA->>-ApplicationStateManager: Update_Render()
+        ApplicationStateManager->>-Application: 
+    Application->>-Application: 
+    Application->>+Application: On some frame
+    note over Application: At some point, you want to change the current state
+    note over ApplicationStateManager: This may be done by a layer (the state changement wil be delayed to the next update)
+    Application->>ApplicationStateManager: Change_State(1)
+    Application->>+ApplicationStateManager: Update_Logic(dt)
+        create participant StateB
+        ApplicationStateManager->>StateB: std::make_unique<StateB>()
+        create participant LayerB0
+        StateB->>LayerB0: Created as attribute of StateB
+        create participant LayerB1
+        StateB->>LayerB1: Created as attribute of StateB
+        ApplicationStateManager->>+StateB: On_Create()
+            StateB->>StateB: Register_Layer(0, LayerB0)
+            StateB->>StateB: Register_Layer(1, LayerB1)
+        StateB->>-ApplicationStateManager: On_Create()
+        ApplicationStateManager->>+StateA: On_Exit()
+            StateA->>LayerA: On_Deactivate()
+        StateA->>-ApplicationStateManager: On_Exit()
+        ApplicationStateManager->>+StateB: On_Entry()
+        StateB->>-ApplicationStateManager: On_Entry()
+        ApplicationStateManager->>+StateA: On_Destroy()
+        StateA->>-ApplicationStateManager: On_Destroy()
+        destroy LayerA
+        LayerA->>StateA: deleted
+        destroy StateA
+        StateA->>ApplicationStateManager: deleted
+    ApplicationStateManager->>-Application: Change_State(1)
+    Application->>-Application: 
+end
