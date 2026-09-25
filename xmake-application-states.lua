@@ -1,14 +1,15 @@
-
 target("lys-application-states")
     set_kind("static")
     add_files("source/lys/lys-application-states/**.cpp")
-    add_headerfiles("include/lys/(lys-application-states/**.hpp)", {public = true})
-    add_headerfiles("include/lys/lys-module-application-states.hpp", {public = true})
-    add_headerfiles("include/lys/lys-config.hpp", {public = true})
+    add_headerfiles(
+        "include/lys/(lys-application-states/**.hpp)", 
+        "include/lys/lys-module-application-states.hpp",
+        "include/lys/lys-config.hpp", 
+        {public = true})
     add_includedirs("include/lys/lys-application-states")
     add_includedirs("include/lys/", {public = true})
-    add_deps("lys-working-thread")
     add_defines("LYS_BUILD_STATIC", {public = true})
+    add_deps("lys-working-thread")
     
 for _, testfile in ipairs(os.files("tests/application-states/**.cpp")) do
     local name = path.basename(testfile)
