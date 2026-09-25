@@ -2,7 +2,7 @@
 target("lys-application-states")
     set_kind("static")
     add_files("source/lys/lys-application-states/**.cpp")
-    add_headerfiles("include/lys/lys-application-states/(**.hpp)", {public = true})
+    add_headerfiles("include/lys/(lys-application-states/**.hpp)", {public = true})
     add_headerfiles("include/lys/lys-module-application-states.hpp", {public = true})
     add_headerfiles("include/lys/lys-config.hpp", {public = true})
     add_includedirs("include/lys/lys-application-states")
