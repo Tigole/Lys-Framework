@@ -2,7 +2,7 @@
 target("lys-working-thread")
     set_kind("static")
     add_files("source/lys/lys-working-thread/**.cpp")
-    add_headerfiles("include/lys/lys-working-thread/**.hpp", {public = true})
+    add_headerfiles("include/lys/lys-working-thread/(**.hpp)", {public = true})
     add_headerfiles("include/lys/lys-module-working-thread.hpp", {public = true})
     add_headerfiles("include/lys/lys-config.hpp", {public = true})
     add_includedirs("include/lys/lys-working-thread")
