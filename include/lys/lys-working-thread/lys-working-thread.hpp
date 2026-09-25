@@ -15,11 +15,9 @@ class AWorkingTask;
 
 class LYS_API WorkingThread
 {
+public:
     WorkingThread();
     ~WorkingThread();
-
-public:
-    static WorkingThread& smt_Get(void);
 
     void Add_Task(AWorkingTask* task);
 

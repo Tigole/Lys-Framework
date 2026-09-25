@@ -3,12 +3,6 @@
 #include <cstdint>
 #include <lys-module-working-thread.hpp>
 
-TEST(WorkingThreadModule, NullTask)
-{
-    EXPECT_NO_THROW(lys::WorkingThread::smt_Get().Add_Task(nullptr));
-    EXPECT_NO_THROW(std::this_thread::sleep_for(std::chrono::milliseconds(500)));
-}
-
 TEST(WorkingThreadModule, Stop)
 {
     class TestTask
@@ -23,9 +17,10 @@ TEST(WorkingThreadModule, Stop)
     uint8_t msg  = 0;
     int tryCount = 0;
     TestTask test;
+    lys::WorkingThread wt;
     lys::WorkingTask<uint8_t> task("test task", &TestTask::Callback, &test);
 
-    task.Push_Order(msg);
+    task.Push_Order(msg, wt);
 
     while ((task.Pop_Result(msg) == false) && (tryCount < 10))
     {

@@ -1,12 +1,12 @@
 
 target("lys-working-thread")
-    set_kind("shared")
+    set_kind("static")
     add_files("source/lys/lys-working-thread/**.cpp")
     add_headerfiles("include/lys/lys-working-thread/**.hpp", {public = true})
     add_headerfiles("include/lys/lys-module-working-thread.hpp", {public = true})
     add_includedirs("include/lys/lys-working-thread")
     add_includedirs("include/lys/", {public = true})
-    add_defines("LYS_BUILD_DLL")
+    add_defines("LYS_BUILD_STATIC", {public = true})
     
 for _, testfile in ipairs(os.files("tests/working-thread/**.cpp")) do
     local name = path.basename(testfile)

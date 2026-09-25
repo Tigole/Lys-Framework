@@ -44,13 +44,13 @@ public:
         AWorkingTask(name), m_Host_Job(std::bind(callback, obj, std::placeholders::_1)), m_Host_Mutex(), m_Orders(), m_Results()
     {}
 
-    void Push_Order(const MsgType& order)
+    void Push_Order(const MsgType& order, WorkingThread& working_thread)
     {
         m_Host_Mutex.lock();
 
         m_Orders.push(order);
 
-        WorkingThread::smt_Get().Add_Task(this);
+        working_thread.Add_Task(this);
 
         m_Host_Mutex.unlock();
     }
