@@ -1,0 +1,44 @@
+name: windows-msys2
+
+on:
+  push:
+    branches: [ci/**]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        msystem: [mingw64]
+        os: [windows-latest]
+        arch: [x86_64]
+        modes: [debug, release]
+
+    runs-on: ${{matrix.os}}
+
+    defaults:
+        run:
+            shell: msys2 {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      
+      - uses: msys2/setup-msys2@v2
+        with:
+            msystem: ${{ matrix.msystem }}
+            install: base-devel git mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-xmake
+            update: true
+          
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        
+      - name: Configure xmake and install dependencies
+        run: xmake config --arch=${{ matrix.arch }} --mode=${{ matrix.modes }} --yes
+
+      - name: Build executable
+        run: xmake --yes
+      
+      - name: Run tests
+        run: xmake test

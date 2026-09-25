@@ -1,0 +1,38 @@
+name: linux
+
+on:
+  push:
+    branches: [ci/**]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        arch: [x86_64]
+        modes: [debug, release]
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install mesa-common-dev
+          
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        
+      - name: Configure xmake and install dependencies
+        run: xmake config --arch=${{ matrix.arch }} --mode=${{ matrix.modes }} --yes
+
+      - name: Build executable
+        run: xmake --yes
+      
+      - name: Run tests
+        run: xmake test
