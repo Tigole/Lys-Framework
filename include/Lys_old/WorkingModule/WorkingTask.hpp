@@ -2,9 +2,9 @@
 #define _LYS_WORKING_TASK_HPP 1
 
 #include <functional>
+#include <mutex>
 #include <queue>
 #include <vector>
-#include <mutex>
 
 #include "Lys/Core/Core.hpp"
 #include "WorkingThread.hpp"
@@ -17,49 +17,45 @@ class LYS_API AWorkingTask
     LYS_CLASS_NO_COPY(AWorkingTask)
 
     friend WorkingThread;
+
 public:
     AWorkingTask(const char* name);
     virtual ~AWorkingTask();
 
-    void mt_Call_Thread_Task(void);
+    void Call_Thread_Task(void);
 
-    const char* mt_Get_Name(void) const;
+    const char* Get_Name(void) const;
 
 private:
-
-    virtual void mt_Call_Task(void) = 0;
-    void mt_Stop(void);
+    virtual void Call_Task(void) = 0;
+    void Stop(void);
 
     bool m_Working;
     std::mutex m_Mutex;
     const char* m_Name;
 };
 
-template <typename MsgType>
-class WorkingTask : public AWorkingTask
+template<typename MsgType>
+class WorkingTask: public AWorkingTask
 {
 public:
     template<class C>
-    WorkingTask(const char* name, bool (C::*pmt_Callback)(MsgType&), C* obj)
-     :  AWorkingTask(name),
-        m_Host_Job(std::bind(pmt_Callback, obj, std::placeholders::_1)),
-        m_Host_Mutex(),
-        m_Orders(),
-        m_Results()
+    WorkingTask(const char* name, bool (C::*pmt_Callback)(MsgType&), C* obj) :
+        AWorkingTask(name), m_Host_Job(std::bind(pmt_Callback, obj, std::placeholders::_1)), m_Host_Mutex(), m_Orders(), m_Results()
     {}
 
-    void mt_Push_Order(const MsgType& order)
+    void Push_Order(const MsgType& order)
     {
         m_Host_Mutex.lock();
 
         m_Orders.push(order);
 
-        WorkingThread::smt_Get().mt_Add_Task(this);
+        WorkingThread::smt_Get().Add_Task(this);
 
         m_Host_Mutex.unlock();
     }
 
-    bool mt_Pop_Result(MsgType& result)
+    bool Pop_Result(MsgType& result)
     {
         bool l_b_Ret = false;
 
@@ -77,7 +73,7 @@ public:
         return l_b_Ret;
     }
 
-    void mt_Call_Task(void) override
+    void Call_Task(void) override
     {
         MsgType l_Data;
         bool l_Work = false;
@@ -110,7 +106,6 @@ private:
     std::queue<MsgType> m_Results;
 };
 
-}
+}  // namespace lys
 
-
-#endif // _LYS_WORKING_TASK_HPP
+#endif  // _LYS_WORKING_TASK_HPP

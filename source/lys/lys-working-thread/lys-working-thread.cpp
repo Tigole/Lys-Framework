@@ -1,7 +1,9 @@
-#include "Lys/WorkingModule/WorkingThread.hpp"
+#include "lys-working-thread.hpp"
 
-#include "Lys/Core/Log.hpp"
-#include "Lys/WorkingModule/WorkingTask.hpp"
+#if 0
+#include "Lys/Log/Log.hpp"
+#endif
+#include "lys-working-task.hpp"
 
 namespace lys
 {
@@ -14,38 +16,45 @@ WorkingThread& WorkingThread::smt_Get(void)
 }
 
 WorkingThread::WorkingThread() :
-    m_Mutex(), m_Thread(&WorkingThread::mt_Thread, this), m_Run(true), m_Condition_Mutex(), m_Condition_Variable(), m_Pending_Tasks()
+    m_Mutex(), m_Thread(&WorkingThread::Thread, this), m_Run(true), m_Condition_Mutex(), m_Condition_Variable(), m_Pending_Tasks()
 {}
 
 WorkingThread::~WorkingThread() {}
 
-void WorkingThread::mt_Add_Task(AWorkingTask* task)
+void WorkingThread::Add_Task(AWorkingTask* task)
 {
-    m_Mutex.lock();
+    if (task != nullptr)
+    {
+        m_Mutex.lock();
 
-    LYS_LOG_CORE_DEBUG("Adding task '%s'", task->mt_Get_Name());
-    m_Pending_Tasks.push_back(task);
+#if 0
+        LYS_LOG_CORE_DEBUG("Adding task '%s'", task->Get_Name());
+#endif
+        m_Pending_Tasks.push_back(task);
 
-    m_Condition_Variable.notify_one();
+        m_Condition_Variable.notify_one();
 
-    m_Mutex.unlock();
+        m_Mutex.unlock();
+    }
 }
 
-void WorkingThread::mt_Stop_Thread(void)
+void WorkingThread::Stop_Thread(void)
 {
+#if 0
     LYS_LOG_CORE_DEBUG("Stopping WorkingThread: %p", this);
+#endif
     m_Mutex.lock();
-    LYS_LOG_CORE_DEBUG("locked");
     m_Run = false;
     m_Condition_Variable.notify_one();
     m_Mutex.unlock();
-    LYS_LOG_CORE_DEBUG("unlocked");
 
     m_Thread.join();
+#if 0
     LYS_LOG_CORE_DEBUG("Stopped WorkingThread");
+#endif
 }
 
-void WorkingThread::mt_Thread(void)
+void WorkingThread::Thread(void)
 {
     bool l_Run = true;
     std::vector<AWorkingTask*> l_Tasks;
@@ -71,7 +80,7 @@ void WorkingThread::mt_Thread(void)
 
         for (std::size_t ii = 0; ii < l_Tasks.size(); ii++)
         {
-            l_Tasks[ii]->mt_Call_Thread_Task();
+            l_Tasks[ii]->Call_Thread_Task();
         }
     }
 }

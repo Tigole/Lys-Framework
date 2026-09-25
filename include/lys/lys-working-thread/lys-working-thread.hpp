@@ -1,12 +1,12 @@
 #ifndef _LYS_WORKING_THREAD_HPP
 #define _LYS_WORKING_THREAD_HPP 1
 
-#include <vector>
+#include <condition_variable>
 #include <mutex>
 #include <thread>
-#include <condition_variable>
+#include <vector>
 
-#include "Lys/LysConfig.hpp"
+#include "lys-config.hpp"
 
 namespace lys
 {
@@ -17,25 +17,25 @@ class LYS_API WorkingThread
 {
     WorkingThread();
     ~WorkingThread();
-public:
 
+public:
     static WorkingThread& smt_Get(void);
 
-    void mt_Add_Task(AWorkingTask* task);
+    void Add_Task(AWorkingTask* task);
 
-    void mt_Stop_Thread(void);
+    void Stop_Thread(void);
 
 private:
     std::mutex m_Mutex;
     std::thread m_Thread;
     bool m_Run;
-    void mt_Thread(void);
+    void Thread(void);
 
     std::mutex m_Condition_Mutex;
     std::condition_variable m_Condition_Variable;
     std::vector<AWorkingTask*> m_Pending_Tasks;
 };
 
-}
+}  // namespace lys
 
-#endif // _LYS_WORKING_THREAD_HPP
+#endif  // _LYS_WORKING_THREAD_HPP

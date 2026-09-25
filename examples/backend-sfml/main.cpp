@@ -1,3 +1,4 @@
+#if 0
 #include "Lys/Lys.hpp"
 
 constexpr const char* TOKEN = "APP";
@@ -82,3 +83,4 @@ int main(int argc, char** argv)
 
     return l_Application.mt_Run();
 }
+#endif
