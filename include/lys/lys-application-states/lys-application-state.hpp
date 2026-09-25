@@ -63,15 +63,14 @@ class SingleApplicationLayerState: public ApplicationState
 public:
     SingleApplicationLayerState() : m_Layer() {}
 
-    bool On_Entry(void) override
+    void On_Entry(void) override
     {
         Push_Layer(&m_Layer);
-        return true;
     }
-    bool On_Exit(void) override
+
+    void On_Exit(void) override
     {
         Pop_Layer(&m_Layer);
-        return true;
     }
 
 private:
