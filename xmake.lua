@@ -7,7 +7,7 @@ add_rules("mode.debug", "mode.release")
 set_policy("build.ccache", false)
 
 --add_requires("sfml master", { configs = { shared = true }})
---add_requires("gtest", {system = false, configs = {main = true, gmock = false, shared = false}})
+add_requires("gtest", {system = false, configs = {main = true, gmock = false, shared = false}})
 --add_requires("magic_enum", "glm", "fmt")
 --add_requires("glew", "opengl")
 --add_requires("clay")
@@ -16,8 +16,9 @@ set_policy("build.ccache", false)
 
 set_languages("c++20")
 
-includes("xmake-working-thread.lua")
 includes("xmake-application-states.lua")
+includes("xmake-particle-system.lua")
+includes("xmake-working-thread.lua")
 
 --target("Lys")
 --    set_kind("shared")
