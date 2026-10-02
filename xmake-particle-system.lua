@@ -3,7 +3,7 @@ target("lys-particle-system")
     --add_files("source/lys/lys-particle-system/**.cpp")
     add_headerfiles(
         "include/lys/(lys-particle-system/**.hpp)",
-        "include/lys/(lys-particle-system/**.inl)",
+        --"include/lys/(lys-particle-system/**.inl)",
         "include/lys/lys-module-particle-system.hpp",
         "include/lys/lys-config.hpp", 
         {public = true})

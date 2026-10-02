@@ -19,6 +19,7 @@ set_languages("c++20")
 includes("xmake-application-states.lua")
 includes("xmake-log.lua")
 includes("xmake-particle-system.lua")
+includes("xmake-random.lua")
 includes("xmake-types.lua")
 includes("xmake-working-thread.lua")
 
