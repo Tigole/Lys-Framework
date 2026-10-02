@@ -6,19 +6,7 @@
 namespace lys
 {
 namespace log
-{
+{}
+}  // namespace lys
 
-struct LogData;
-
-class LYS_API Sink
-{
-public:
-    virtual ~Sink(){}
-
-    virtual void mt_Log(const LogData& data) = 0;
-};
-
-}
-}
-
-#endif // _LYS_LOG_SINK_HPP
+#endif  // _LYS_LOG_SINK_HPP

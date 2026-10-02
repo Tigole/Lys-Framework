@@ -17,6 +17,7 @@ add_requires("gtest", {system = false, configs = {main = true, gmock = false, sh
 set_languages("c++20")
 
 includes("xmake-application-states.lua")
+includes("xmake-log.lua")
 includes("xmake-particle-system.lua")
 includes("xmake-working-thread.lua")
 

@@ -1,0 +1,91 @@
+#include <windows.h>
+
+#include <iostream>
+#include <lys-log/lys-log-sink-console.hpp>
+
+namespace lys
+{
+namespace log
+{
+
+#if (LYS_PLATFORM == LYS_PLATFORM_WINDOWS)
+
+ConsoleWindows::ConsoleWindows() : m_Handle(nullptr)
+{
+    CONSOLE_SCREEN_BUFFER_INFO infos;
+
+    m_Handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    GetConsoleScreenBufferInfo(m_Handle, &infos);
+}
+
+ConsoleWindows::~ConsoleWindows() {}
+
+void ConsoleWindows::Log(const LogData& data)
+{
+    constexpr const WORD Default_Attribute = 0;
+    Set_Attribute(data.m_Level);
+
+    std::cout << data.m_Header;
+    SetConsoleTextAttribute(m_Handle, Default_Attribute);
+    std::cout << data.m_Message << std::endl;
+}
+
+void ConsoleWindows::Set_Attribute(LogLevel level)
+{
+    WORD attribute;
+
+    switch (level)
+    {
+    case LogLevel::Trace:   attribute = FOREGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED; break;
+    case LogLevel::Debug:   attribute = FOREGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_GREEN; break;
+    case LogLevel::Info:    attribute = FOREGROUND_INTENSITY | FOREGROUND_GREEN; break;
+    case LogLevel::Warning: attribute = FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED; break;
+    case LogLevel::Error:   attribute = FOREGROUND_INTENSITY | FOREGROUND_RED; break;
+    case LogLevel::Fatal:   attribute = FOREGROUND_INTENSITY | BACKGROUND_RED; break;
+    default:                attribute = 0; break;
+    }
+
+    SetConsoleTextAttribute(m_Handle, attribute);
+}
+
+#else
+
+ConsoleLinux::ConsoleLinux() {}
+
+ConsoleLinux::~ConsoleLinux() {}
+
+void ConsoleLinux::Log(const LogData& data)
+{
+    std::cout << Get_Level_String(data.m_Level);
+    std::cout << data.m_Header;
+    std::cout << Get_Reset_String();
+    std::cout << data.m_Message << std::endl;
+}
+
+const char* ConsoleLinux::Get_Level_String(LogLevel level)
+{
+    switch (level)
+    {
+    case LogLevel::Trace:   return "\033[39m";
+    case LogLevel::Debug:   return "\033[36m";
+    case LogLevel::Info:    return "\033[32m";
+    case LogLevel::Warning: return "\033[33m";
+    case LogLevel::Error:   return "\033[31m";
+    case LogLevel::Fatal:   return "\033[31m";
+    case LogLevel::COUNT:   return "";
+    default:                return "";
+    }
+    return "";
+}
+
+const char* ConsoleLinux::Get_Reset_String(void)
+{
+    return "\033[0m";
+}
+
+#endif
+
+}  // namespace log
+
+}  // namespace lys
