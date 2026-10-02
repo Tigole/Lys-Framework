@@ -3,6 +3,7 @@ target("lys-types")
     --add_files("source/lys/lys-types/**.cpp")
     add_headerfiles(
         "include/lys/(lys-types/**.hpp)",
+        "include/lys/(lys-types/**.inl)",
         "include/lys/lys-module-types.hpp",
         "include/lys/lys-config.hpp", 
         {public = true})
