@@ -22,8 +22,3 @@ for _, testfile in ipairs(os.files("tests/log/**.cpp")) do
         add_tests("lys-log", {timeout = 5})
         set_group("test")
 end
-
-target("examples")
-    set_kind("binary")
-    add_deps("lys-log")
-    add_files("examples/log/**.cpp")
