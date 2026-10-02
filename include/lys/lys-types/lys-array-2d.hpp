@@ -61,6 +61,6 @@ private:
 
 }  // namespace lys
 
-#include "lys-array-2d.inl"
+#include <lys-types/lys-array-2d.inl>
 
 #endif  // _LYS_ARRAY_2D_HPP
