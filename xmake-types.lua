@@ -1,6 +1,6 @@
 target("lys-types")
     set_kind("headeronly")
-    add_includedirs("include", {public = true})
+    --add_files("source/lys/lys-types/**.cpp")
     add_headerfiles(
         "include/lys/(lys-types/**.hpp)",
         "include/lys/lys-module-types.hpp",
