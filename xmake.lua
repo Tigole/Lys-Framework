@@ -13,6 +13,7 @@ add_requires("gtest", {system = false, configs = {main = true, gmock = false, sh
 --add_requires("clay")
 --add_requires("tinyxml-boosted")
 --add_requires("raylib", {configs = { debug = true}})
+add_requires("tinyxml-boosted")
 
 set_languages("c++20")
 
@@ -20,6 +21,7 @@ includes("xmake-application-states.lua")
 includes("xmake-log.lua")
 includes("xmake-particle-system.lua")
 includes("xmake-random.lua")
+includes("xmake-tiled-map-loading.lua")
 includes("xmake-types.lua")
 includes("xmake-working-thread.lua")
 
