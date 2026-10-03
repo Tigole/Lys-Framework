@@ -34,6 +34,12 @@
 #endif  // LYS_BUILD_DLL
 #endif  // LYS_BUILD_STATIC
 
+#if LYS_OPTION_BACKEND_SFML
+#include <SFML/Graphics.hpp>
+#elif LYS_OPTION_BACKEND_RAYLIB
+#error "todo"
+#endif
+
 #define LYS_CLASS_NO_COPY(class_type)                  \
 private:                                               \
     class_type& operator=(const class_type&) = delete; \

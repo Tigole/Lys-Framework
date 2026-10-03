@@ -17,12 +17,18 @@ add_requires("tinyxml-boosted")
 
 set_languages("c++20")
 
+option("backend-sfml")
+    set_values("sfml", "raylib")
+    --add_defines("LYS_OPTION_BACKEND_SFML")
+    set_description("Enable sfml support")
+
 includes("xmake-application-states.lua")
 includes("xmake-log.lua")
 includes("xmake-particle-system.lua")
 includes("xmake-random.lua")
 includes("xmake-tiled-map-loading.lua")
 includes("xmake-types.lua")
+includes("xmake-window-inputs.lua")
 includes("xmake-working-thread.lua")
 
 --target("Lys")
