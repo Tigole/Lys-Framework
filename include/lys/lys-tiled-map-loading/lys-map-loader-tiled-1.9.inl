@@ -1,6 +1,7 @@
 #include <lys-module-log.hpp>
 #include <lys-tiled-map-loading/lys-map-layout.hpp>
 #include <lys-tiled-map-loading/lys-map-loader-tiled-1.9.hpp>
+#include <lys-types/lys-color-traits.hpp>
 #include <lys-types/lys-vec2-traits.hpp>
 
 namespace lys
@@ -284,7 +285,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object_Property(const
     int l_Int_Value     = 0;
     float l_Float_Value = 0.0f;
     std::string l_String_Value;
-    Color l_Color;
+    __Color l_Color;
 
     if (property.mt_Get_Attribute("name", l_Property_Name) == false)
     {
@@ -313,7 +314,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object_Property(const
         else if (l_Property_Type == "color")
         {
             property.mt_Get_Attribute("value", l_String_Value);
-            m_Object.objectPropertiesColor.emplace(l_Property_Name, l_Color);
+            m_Object.objectPropertiesColor.emplace(l_Property_Name, ColorTraits<__Color>::ParseWebColor(l_String_Value));
             return true;
         }
         else if (l_Property_Type == "file")

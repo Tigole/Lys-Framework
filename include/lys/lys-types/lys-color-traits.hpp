@@ -14,6 +14,31 @@ struct ColorTraits
         return ColorType { r, g, b, a };  // Par défaut, on suppose un constructeur simple
     }
 
+    static constexpr ColorType ParseWebColor(std::string_view str)
+    {
+        if (str.empty() || str[0] != '#')
+        {
+            throw std::invalid_argument("Color string must start with '#'");
+        }
+
+        if (str.size() != 7 && str.size() != 9)
+        {
+            throw std::invalid_argument("Color string must be in format #RRGGBB or #RRGGBBAA");
+        }
+
+        uint8_t r = hexToByte(str[1], str[2]);
+        uint8_t g = hexToByte(str[3], str[4]);
+        uint8_t b = hexToByte(str[5], str[6]);
+        uint8_t a = 255;
+
+        if (str.size() == 9)
+        {
+            a = hexToByte(str[7], str[8]);
+        }
+
+        return ColorTraits<ColorType>::Construct(r, g, b, a);
+    }
+
     static constexpr uint8_t r(const ColorType& c)
     {
         return c.r;
@@ -29,6 +54,28 @@ struct ColorTraits
     static constexpr uint8_t a(const ColorType& c)
     {
         return c.a;
+    }
+
+    // Conversion hex -> byte
+    static constexpr uint8_t hexToByte(char high, char low)
+    {
+        auto hexVal = [](char c) -> uint8_t
+        {
+            if (c >= '0' && c <= '9')
+            {
+                return c - '0';
+            }
+            if (c >= 'a' && c <= 'f')
+            {
+                return c - 'a' + 10;
+            }
+            if (c >= 'A' && c <= 'F')
+            {
+                return c - 'A' + 10;
+            }
+            throw std::invalid_argument("Invalid hex character");
+        };
+        return static_cast<uint8_t>((hexVal(high) << 4) | hexVal(low));
     }
 };
 
