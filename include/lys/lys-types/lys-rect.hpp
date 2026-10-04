@@ -1,6 +1,8 @@
 #ifndef _LYS_RECT_HPP
 #define _LYS_RECT_HPP 1
 
+#include <cstdint>
+
 #include "lys-vec2.hpp"
 
 namespace lys

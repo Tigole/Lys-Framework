@@ -1,6 +1,8 @@
 #ifndef _LYS_COLOR_TRAIT_HPP
 #define _LYS_COLOR_TRAIT_HPP 1
 
+#include <cstdint>
+
 namespace lys
 {
 
