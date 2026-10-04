@@ -93,7 +93,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
             return false;
         }
 
-        if (LoadTileset(file_path / l_Source_File, l_Tileset_Data) == false)
+        if (Load_Tileset(file_path / l_Source_File, l_Tileset_Data) == false)
         {
             return false;
         }
@@ -103,8 +103,8 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
 
         return true;
     });
-    l_Loader.mt_Add_On_Entry_Callback("/map/layer", [&](const XML_Element& layer) { return LoadLayer(layer); });
-    l_Loader.mt_Add_On_Entry_Callback("/map/layer/data", [&](const XML_Element& layer) { return LoadLayerData(layer); });
+    l_Loader.mt_Add_On_Entry_Callback("/map/layer", [&](const XML_Element& layer) { return Load_Layer(layer); });
+    l_Loader.mt_Add_On_Entry_Callback("/map/layer/data", [&](const XML_Element& layer) { return Load_Layer_Data(layer); });
     l_Loader.mt_Add_On_Exit_Callback("/map/layer", [&](const XML_Element&)
     {
         map_data.m_Tiles_Layers.mt_Add_Element(m_Tile_Layer, m_Tile_Layer.m_Tile_Layer_Id, m_Tile_Layer.m_Tile_Layer_Name);
@@ -113,7 +113,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
     });
     l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup", [&](const XML_Element& objectgroup)
     {
-        m_Object_Layer = __MapData<__Vec2f, __Vec2u, __Color>::ObjectLayer();
+        m_Object_Layer = __MapData<__Vec2f, __Vec2u, __Color>::Object_Layer();
 
         if (objectgroup.mt_Get_Attribute("name", m_Object_Layer.m_Object_Layer_Name) == false)
         {
@@ -126,11 +126,11 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
 
         return true;
     });
-    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object", [&](const XML_Element& object) { return LoadObject(object); });
+    l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object", [&](const XML_Element& object) { return Load_Object(object); });
     l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/polygon",
-                                      [&](const XML_Element& polygon) { return LoadObjectPolygon(polygon); });
+                                      [&](const XML_Element& polygon) { return Load_Object_Polygon(polygon); });
     l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup/object/properties/property",
-                                      [&](const XML_Element& object) { return LoadObjectProperty(object); });
+                                      [&](const XML_Element& object) { return Load_Object_Property(object); });
     l_Loader.mt_Add_On_Exit_Callback("/map/objectgroup/object", [&](const XML_Element&)
     {
         m_Object_Layer.m_Objects.mt_Add_Element(m_Object, m_Object.m_Object_Id, m_Object.m_Object_Name);
@@ -170,7 +170,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadLayer(const XML_Element& layer)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Layer(const XML_Element& layer)
 {
     if (layer.mt_Get_Attribute("name", m_Tile_Layer.m_Tile_Layer_Name) == false)
     {
@@ -195,7 +195,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadLayer(const XML_Elemen
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadLayerData(const XML_Element& data)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Layer_Data(const XML_Element& data)
 {
     std::string l_Data_Encoding_Type;
 
@@ -213,14 +213,14 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadLayerData(const XML_El
             return false;
         }
 
-        return LoadLayerDataCSV(l_CSV_Content.c_str());
+        return Load_Layer_Data_CSV(l_CSV_Content.c_str());
     }
 
     return false;
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadLayerDataCSV(const char* csv_encoded_data)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Layer_Data_CSV(const char* csv_encoded_data)
 {
     bool l_b_Ret          = false;
     uint32_t l_Tile_Index = 0;
@@ -251,7 +251,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadLayerDataCSV(const cha
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadObject(const XML_Element& object)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object(const XML_Element& object)
 {
     m_Object = MapData::Object();
 
@@ -279,7 +279,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadObject(const XML_Eleme
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadObjectProperty(const XML_Element& property)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object_Property(const XML_Element& property)
 {
     std::string l_Property_Name;
     std::string l_Property_Type;
@@ -345,7 +345,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadObjectProperty(const X
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadObjectPolygon(const XML_Element& polygon)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object_Polygon(const XML_Element& polygon)
 {
     std::stringstream l_ss;
     std::string l_Polygon_Points;
@@ -373,8 +373,8 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadObjectPolygon(const XM
 }
 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
-bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::LoadTileset(const char* file_path,
-                                                                  typename __MapData<__Vec2f, __Vec2u, __Color>::TilesetData& tileset_data)
+bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Tileset(const char* file_path,
+                                                                   typename __MapData<__Vec2f, __Vec2u, __Color>::TilesetData& tileset_data)
 {
     XMLFileLoader l_Loader;
 

@@ -53,7 +53,7 @@ struct __MapData
         float objectRotationDegres = 0.0f;
 
         template<typename T>
-        bool GetProperty(const std::string& property_name, T& property_value, const std::map<std::string, T>& object_properties_pool) const
+        bool Get_Property(const std::string& property_name, T& property_value, const std::map<std::string, T>& object_properties_pool) const
         {
             auto it = object_properties_pool.find(property_name);
             if (it != object_properties_pool.end())
@@ -64,29 +64,29 @@ struct __MapData
             return false;
         }
 
-        bool GetProperty(const std::string& property_name, bool& property_value) const
+        bool Get_Property(const std::string& property_name, bool& property_value) const
         {
-            return GetProperty(property_name, property_value, objectPropertiesBool);
+            return Get_Property(property_name, property_value, objectPropertiesBool);
         }
 
-        bool GetProperty(const std::string& property_name, int& property_value) const
+        bool Get_Property(const std::string& property_name, int& property_value) const
         {
-            return GetProperty(property_name, property_value, objectPropertiesInt);
+            return Get_Property(property_name, property_value, objectPropertiesInt);
         }
 
-        bool GetProperty(const std::string& property_name, float& property_value) const
+        bool Get_Property(const std::string& property_name, float& property_value) const
         {
-            return GetProperty(property_name, property_value, objectPropertiesFloat);
+            return Get_Property(property_name, property_value, objectPropertiesFloat);
         }
 
-        bool GetProperty(const std::string& property_name, __Color& property_value) const
+        bool Get_Property(const std::string& property_name, __Color& property_value) const
         {
-            return GetProperty(property_name, property_value, objectPropertiesColor);
+            return Get_Property(property_name, property_value, objectPropertiesColor);
         }
 
-        bool GetProperty(const std::string& property_name, std::string& property_value) const
+        bool Get_Property(const std::string& property_name, std::string& property_value) const
         {
-            return GetProperty(property_name, property_value, objectPropertiesString);
+            return Get_Property(property_name, property_value, objectPropertiesString);
         }
 
         std::map<std::string, bool> objectPropertiesBool          = {};

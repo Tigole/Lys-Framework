@@ -19,15 +19,15 @@ public:
               std::unique_ptr<__MapLayout<___Vec2f, ___Vec2i>>& map_layout);
 
 private:
-    bool LoadLayer(const XML_Element& layer);
-    bool LoadLayerData(const XML_Element& data);
-    bool LoadLayerDataCSV(const char* csv_encoded_data);
+    bool Load_Layer(const XML_Element& layer);
+    bool Load_Layer_Data(const XML_Element& data);
+    bool Load_Layer_Data_CSV(const char* csv_encoded_data);
 
-    bool LoadObject(const XML_Element& object);
-    bool LoadObjectProperty(const XML_Element& property);
-    bool LoadObjectPolygon(const XML_Element& polygon);
+    bool Load_Object(const XML_Element& object);
+    bool Load_Object_Property(const XML_Element& property);
+    bool Load_Object_Polygon(const XML_Element& polygon);
 
-    bool LoadTileset(const char* file_path, typename __MapData<__Vec2f, __Vec2u, __Color>::TilesetData& tileset_data);
+    bool Load_Tileset(const char* file_path, typename __MapData<__Vec2f, __Vec2u, __Color>::TilesetData& tileset_data);
 
     typename __MapData<__Vec2f, __Vec2u, __Color>::TileLayer m_Tile_Layer     = {};
     typename __MapData<__Vec2f, __Vec2u, __Color>::ObjectLayer m_Object_Layer = {};

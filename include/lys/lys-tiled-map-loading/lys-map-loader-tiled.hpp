@@ -3,6 +3,7 @@
 
 #include <lys-tiled-map-loading/lys-map-data.hpp>
 #include <lys-tiled-map-loading/lys-map-layout.hpp>
+#include <memory>
 #include <string>
 
 namespace lys
@@ -13,8 +14,8 @@ class __MapLoaderTiled
 {
 public:
     template<typename ___Vec2f, typename ___Vec2u, typename ___Color>
-    bool LoadMap(const char* file_path, __MapData<___Vec2f, ___Vec2u, ___Color>& map_data,
-                 std::unique_ptr<__MapLayout<___Vec2f, __Vec2i>>& map_layout);
+    bool Load_Map(const char* file_path, __MapData<___Vec2f, ___Vec2u, ___Color>& map_data,
+                  std::unique_ptr<__MapLayout<___Vec2f, __Vec2i>>& map_layout);
 
 private:
     struct TiledHeader

@@ -7,7 +7,7 @@ namespace lys
 {
 
 template<typename __Vec2f, typename __Vec2i>
-__Vec2f __MapLayout_Hexagonal<__Vec2f, __Vec2i>::CoordToNormalizedSpace(__Vec2i coord, bool center) const
+__Vec2f __MapLayout_Hexagonal<__Vec2f, __Vec2i>::Coord_To_Normalized_Space(__Vec2i coord, bool center) const
 {
     hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, 0.0f, 0.0f);
     // hex::Layout l_Layout(HexTileMode::Pointy_Top, 52.0f, 52.0f, tile_size.x / 2.0f, tile_size.y / 2.0f);
@@ -25,11 +25,11 @@ __Vec2f __MapLayout_Hexagonal<__Vec2f, __Vec2i>::CoordToNormalizedSpace(__Vec2i 
         l_Pix.y += 0.5f;
     }
 
-    return l_Pix * mt_Get_Cell_Size_Normalized_Space();
+    return l_Pix * Get_Cell_Size_Normalized_Space();
 }
 
 template<typename __Vec2f, typename __Vec2i>
-__Vec2f __MapLayout_Hexagonal<__Vec2f, __Vec2i>::GetCellSizeNormalizedSpace(void) const
+__Vec2f __MapLayout_Hexagonal<__Vec2f, __Vec2i>::Get_Cell_Size_Normalized_Space(void) const
 {
     return __Vec2f(sqrt(3) / 2.0f, 1.0f);
 }

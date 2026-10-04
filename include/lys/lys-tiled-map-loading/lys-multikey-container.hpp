@@ -14,13 +14,13 @@ template<typename ElementType>
 class MultiKeyContainer
 {
 public:
-    void AddElement(const ElementType& element, uint32_t element_id, const std::string& element_name);
+    void Add_Element(const ElementType& element, uint32_t element_id, const std::string& element_name);
     void Clear(void);
 
-    const ElementType* GetElementByName(const std::string& element_name) const;
-    const ElementType* GetElementById(uint32_t element_id) const;
+    const ElementType* Get_Element_By_Name(const std::string& element_name) const;
+    const ElementType* Get_Element_By_Id(uint32_t element_id) const;
 
-    bool IterateOverElements(std::function<bool(const ElementType&)> callback) const;
+    bool Iterate_Over_Elements(std::function<bool(const ElementType&)> callback) const;
 
 private:
     std::vector<ElementType> elements {};

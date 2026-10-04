@@ -1,6 +1,3 @@
-#ifndef _MAP_LOADER_TILED_HPP
-#define _MAP_LOADER_TILED_HPP 1
-
 #include <lys-tiled-map-loading/lys-map-loader-tiled-1.9.hpp>
 #include <lys-tiled-map-loading/lys-map-loader-tiled.hpp>
 
@@ -13,8 +10,8 @@ namespace lys
 
 template<typename __Vec2i>
 template<typename ___Vec2f, typename ___Vec2u, typename ___Color>
-bool __MapLoader<__Vec2i>::LoadMap(const char* file_path, __MapData<___Vec2f, ___Vec2u, ___Color>& map_data,
-                                   std::unique_ptr<__MapLayout<___Vec2f, __Vec2i>>& map_layout)
+bool __MapLoaderTiled<__Vec2i>::Load_Map(const char* file_path, __MapData<___Vec2f, ___Vec2u, ___Color>& map_data,
+                                         std::unique_ptr<__MapLayout<___Vec2f, __Vec2i>>& map_layout)
 {
     XMLFileLoader l_Loader;
     TiledHeader l_Tiled_Header;
@@ -57,7 +54,7 @@ bool __MapLoader<__Vec2i>::LoadMap(const char* file_path, __MapData<___Vec2f, __
         return true;
     });
 
-    if (l_Loader.mt_Load(file_path.mt_Get_Path_Name_Ext()) == false)
+    if (l_Loader.mt_Load(file_path) == false)
     {
         return false;
     }
@@ -69,7 +66,7 @@ bool __MapLoader<__Vec2i>::LoadMap(const char* file_path, __MapData<___Vec2f, __
         map_data.m_Tiles_Layers.mt_Clear();
         map_data.m_Objects_Layers.mt_Clear();
 
-        return l_Map_Loader.mt_Load<___Vec2f, __Vec2i>(file_path, map_data, map_layout);
+        return l_Map_Loader.template Load<___Vec2f, __Vec2i>(file_path, map_data, map_layout);
     }
 
     LYS_LOG_CORE_ERROR("Tiled version not handled: '%s'", l_Tiled_Header.m_Version.c_str());
@@ -78,5 +75,3 @@ bool __MapLoader<__Vec2i>::LoadMap(const char* file_path, __MapData<___Vec2f, __
 }
 
 }  // namespace lys
-
-#endif  // _MAP_LOADER_TILED_HPP
