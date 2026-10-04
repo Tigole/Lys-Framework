@@ -81,11 +81,11 @@ public:
     template<typename... Args>
     void Log(const char* token, const char* file, int line_number, LogLevel level, const char* fmt, Args... args)
     {
-        char l_Msg[1024];
+        std::unique_lock l(m_Mutex);
 
-        snprintf(l_Msg, sizeof(l_Msg), fmt, args...);
+        snprintf(m_Buffer, sizeof(m_Buffer), fmt, args...);
 
-        Log_Formated(token, file, line_number, level, l_Msg);
+        Log_Formated(token, file, line_number, level, m_Buffer);
     }
 
     Logger& Get_Logger(const char* token);
@@ -97,6 +97,8 @@ private:
     std::unordered_map<std::string, std::unique_ptr<Logger>> m_Loggers;
     std::vector<int> m_Threads;
     int Get_Thread_Id(void);
+    char m_Buffer[1024];
+    std::mutex m_Mutex;
 
 private:
     LoggerPool();
