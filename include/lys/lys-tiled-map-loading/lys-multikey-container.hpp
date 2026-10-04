@@ -2,6 +2,7 @@
 #define _LYS_MULTIKEY_CONTAINER_HPP 1
 
 #include <cstdint>
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
