@@ -12,6 +12,7 @@ target("lys-tiled-map-loading")
     add_defines("LYS_BUILD_STATIC", {public = true})
     add_packages("tinyxml-boosted", {public = true})
     add_deps("lys-types")
+    add_deps("lys-log")
 
 for _, testfile in ipairs(os.files("tests/tiled-map-loading/**.cpp")) do 
     local name = path.basename(testfile)

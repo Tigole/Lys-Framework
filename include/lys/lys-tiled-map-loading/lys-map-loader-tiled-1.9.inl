@@ -1,10 +1,7 @@
+#include <lys-module-log.hpp>
 #include <lys-tiled-map-loading/lys-map-layout.hpp>
 #include <lys-tiled-map-loading/lys-map-loader-tiled-1.9.hpp>
 #include <lys-types/lys-vec2-traits.hpp>
-
-#ifndef LYS_LOG_CORE_ERROR
-#define LYS_LOG_CORE_ERROR(...)
-#endif
 
 namespace lys
 {
@@ -253,7 +250,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Layer_Data_CSV(const 
 template<typename __Vec2f, typename __Vec2u, typename __Color>
 bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object(const XML_Element& object)
 {
-    m_Object = MapData::Object();
+    m_Object = typename __MapData<__Vec2f, __Vec2u, __Color>::Object();
 
     if (object.mt_Get_Attribute("id", m_Object.objectId) == false)
     {
