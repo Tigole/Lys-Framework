@@ -24,10 +24,12 @@ public:
     __Vec2f Get_Cell_Size_Normalized_Space(void) const override;
 };
 
+using MapLayout = __MapLayout<lys::Vec2f32, lys::Vec2i32>;
+
 // using MapLayout_Hexagonal = __MapLayout_Hexagonal<lys::Vec2f32, lys::Vec2i32>;
 
 }  // namespace lys
 
-#include <lys-tiled-map-loading/lys-map-layout.hpp>
+#include <lys-tiled-map-loading/lys-map-layout.inl>
 
 #endif  // _LYS_MAP_LAYOUT_HPP

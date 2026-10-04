@@ -61,17 +61,17 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
 
     l_Loader.mt_Add_On_Entry_Callback("/map", [&](const XML_Element& map)
     {
-        if (map.mt_Get_Attribute("orientation", map_data.m_Tile_Type, l_fn_Orientation) == false)
+        if (map.mt_Get_Attribute("orientation", map_data.tileType, l_fn_Orientation) == false)
         {
             return false;
         }
-        if (map_data.m_Tile_Type == TiledTypes::TileType::Hexagonal)
+        if (map_data.tileType == TiledTypes::TileType::Hexagonal)
         {
-            if (map.mt_Get_Attribute("staggeraxis", map_data.m_Stagger_Axis, l_fn_Axis) == false)
+            if (map.mt_Get_Attribute("staggeraxis", map_data.staggerAxis, l_fn_Axis) == false)
             {
                 return false;
             }
-            if (map.mt_Get_Attribute("staggerindex", map_data.m_Stagger_Index, l_fn_Index) == false)
+            if (map.mt_Get_Attribute("staggerindex", map_data.staggerIndex, l_fn_Index) == false)
             {
                 return false;
             }
@@ -93,13 +93,13 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
             return false;
         }
 
-        if (Load_Tileset(file_path / l_Source_File, l_Tileset_Data) == false)
+        if (Load_Tileset(std::filesystem::path(file_path / l_Source_File).string().c_str(), l_Tileset_Data) == false)
         {
             return false;
         }
 
         /// fixme multiple images
-        map_data.m_Tileset_Data.push_back(l_Tileset_Data);
+        map_data.tilesetData.push_back(l_Tileset_Data);
 
         return true;
     });
@@ -107,19 +107,19 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
     l_Loader.mt_Add_On_Entry_Callback("/map/layer/data", [&](const XML_Element& layer) { return Load_Layer_Data(layer); });
     l_Loader.mt_Add_On_Exit_Callback("/map/layer", [&](const XML_Element&)
     {
-        map_data.m_Tiles_Layers.mt_Add_Element(m_Tile_Layer, m_Tile_Layer.m_Tile_Layer_Id, m_Tile_Layer.m_Tile_Layer_Name);
+        map_data.tilesLayers.Add_Element(m_Tile_Layer, m_Tile_Layer.tileLayerId, m_Tile_Layer.tileLayerName);
 
         return true;
     });
     l_Loader.mt_Add_On_Entry_Callback("/map/objectgroup", [&](const XML_Element& objectgroup)
     {
-        m_Object_Layer = __MapData<__Vec2f, __Vec2u, __Color>::Object_Layer();
+        m_Object_Layer = typename __MapData<__Vec2f, __Vec2u, __Color>::ObjectLayer();
 
-        if (objectgroup.mt_Get_Attribute("name", m_Object_Layer.m_Object_Layer_Name) == false)
+        if (objectgroup.mt_Get_Attribute("name", m_Object_Layer.objectLayerName) == false)
         {
             return false;
         }
-        if (objectgroup.mt_Get_Attribute("id", m_Object_Layer.m_Object_Layer_Id) == false)
+        if (objectgroup.mt_Get_Attribute("id", m_Object_Layer.objectLayerId) == false)
         {
             return false;
         }
@@ -133,12 +133,12 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
                                       [&](const XML_Element& object) { return Load_Object_Property(object); });
     l_Loader.mt_Add_On_Exit_Callback("/map/objectgroup/object", [&](const XML_Element&)
     {
-        m_Object_Layer.m_Objects.mt_Add_Element(m_Object, m_Object.m_Object_Id, m_Object.m_Object_Name);
+        m_Object_Layer.objects.Add_Element(m_Object, m_Object.objectId, m_Object.objectName);
         return true;
     });
     l_Loader.mt_Add_On_Exit_Callback("/map/objectgroup", [&](const XML_Element&)
     {
-        map_data.m_Objects_Layers.mt_Add_Element(m_Object_Layer, m_Object_Layer.m_Object_Layer_Id, m_Object_Layer.m_Object_Layer_Name);
+        map_data.objectsLayers.Add_Element(m_Object_Layer, m_Object_Layer.objectLayerId, m_Object_Layer.objectLayerName);
         return true;
     });
     /*l_Loader.mt_Add_On_Entry_Callback("", [&](const XML_Element& )
@@ -160,10 +160,10 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
         return false;
     }
 
-    if (map_data.m_Tile_Type == TiledTypes::TileType::Hexagonal)
+    if (map_data.tileType == TiledTypes::TileType::Hexagonal)
     {
         /// fixme Multiple layouts (1 by tileset ?) ?
-        map_layout.reset(new __MapLayout<___Vec2f, ___Vec2i>());
+        map_layout.reset(new __MapLayout_Hexagonal<___Vec2f, ___Vec2i>());
     }
 
     return true;
@@ -172,24 +172,24 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load(std::filesystem::path
 template<typename __Vec2f, typename __Vec2u, typename __Color>
 bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Layer(const XML_Element& layer)
 {
-    if (layer.mt_Get_Attribute("name", m_Tile_Layer.m_Tile_Layer_Name) == false)
+    if (layer.mt_Get_Attribute("name", m_Tile_Layer.tileLayerName) == false)
     {
         return false;
     }
-    if (layer.mt_Get_Attribute("id", m_Tile_Layer.m_Tile_Layer_Id) == false)
+    if (layer.mt_Get_Attribute("id", m_Tile_Layer.tileLayerId) == false)
     {
         return false;
     }
-    if (layer.mt_Get_Attribute("width", m_Tile_Layer.m_Tile_Layer_Size.x) == false)
+    if (layer.mt_Get_Attribute("width", m_Tile_Layer.tileLayerSize.x) == false)
     {
         return false;
     }
-    if (layer.mt_Get_Attribute("height", m_Tile_Layer.m_Tile_Layer_Size.y) == false)
+    if (layer.mt_Get_Attribute("height", m_Tile_Layer.tileLayerSize.y) == false)
     {
         return false;
     }
 
-    m_Tile_Layer.m_Tiles.mt_Resize(m_Tile_Layer.m_Tile_Layer_Size.x, m_Tile_Layer.m_Tile_Layer_Size.y, 0);
+    m_Tile_Layer.tiles.Resize(m_Tile_Layer.tileLayerSize.x, m_Tile_Layer.tileLayerSize.y, 0);
 
     return true;
 }
@@ -228,13 +228,13 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Layer_Data_CSV(const 
 
     if (csv_encoded_data != nullptr)
     {
-        while ((*csv_encoded_data != '\0') && (m_Tile_Layer.m_Tiles.mt_Is_Index_Valid(l_Tile_Array_Index)))
+        while ((*csv_encoded_data != '\0') && (m_Tile_Layer.tiles.Is_Index_Valid(l_Tile_Array_Index)))
         {
             if (*csv_encoded_data == ',')
             {
-                m_Tile_Layer.m_Tiles[l_Tile_Array_Index] = l_Tile_Index;
-                l_Tile_Index                             = 0;
-                m_Tile_Layer.m_Tiles.mt_Increment_Index(l_Tile_Array_Index);
+                m_Tile_Layer.tiles[l_Tile_Array_Index] = l_Tile_Index;
+                l_Tile_Index                           = 0;
+                m_Tile_Layer.tiles.Increment_Index(l_Tile_Array_Index);
             }
             else if (*csv_encoded_data != ' ')
             {
@@ -255,25 +255,25 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object(const XML_Elem
 {
     m_Object = MapData::Object();
 
-    if (object.mt_Get_Attribute("id", m_Object.m_Object_Id) == false)
+    if (object.mt_Get_Attribute("id", m_Object.objectId) == false)
     {
         return false;
     }
-    if (object.mt_Get_Attribute("x", m_Object.m_Object_Pix_Pos.x) == false)
+    if (object.mt_Get_Attribute("x", m_Object.objectPixPos.x) == false)
     {
         return false;
     }
-    if (object.mt_Get_Attribute("y", m_Object.m_Object_Pix_Pos.y) == false)
+    if (object.mt_Get_Attribute("y", m_Object.objectPixPos.y) == false)
     {
         return false;
     }
 
-    object.mt_Get_Attribute("name", m_Object.m_Object_Name);
-    object.mt_Get_Attribute("class", m_Object.m_Object_Class);
-    object.mt_Get_Attribute("width", m_Object.m_Object_Pix_Size.x);
-    object.mt_Get_Attribute("height", m_Object.m_Object_Pix_Size.y);
-    object.mt_Get_Attribute("rotation", m_Object.m_Object_Rotation_Degres);
-    object.mt_Get_Attribute("gid", m_Object.m_Object_Gid);
+    object.mt_Get_Attribute("name", m_Object.objectName);
+    object.mt_Get_Attribute("class", m_Object.objectClass);
+    object.mt_Get_Attribute("width", m_Object.objectPixSize.x);
+    object.mt_Get_Attribute("height", m_Object.objectPixSize.y);
+    object.mt_Get_Attribute("rotation", m_Object.objectRotationDegres);
+    object.mt_Get_Attribute("gid", m_Object.objectGid);
 
     return true;
 }
@@ -298,44 +298,44 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object_Property(const
         if (l_Property_Type == "bool")
         {
             property.mt_Get_Attribute("value", l_Bool_Value);
-            m_Object.m_Object_Properties_Bool.emplace(l_Property_Name, l_Bool_Value);
+            m_Object.objectPropertiesBool.emplace(l_Property_Name, l_Bool_Value);
             return true;
         }
         else if (l_Property_Type == "int")
         {
             property.mt_Get_Attribute("value", l_Int_Value);
-            m_Object.m_Object_Properties_Int.emplace(l_Property_Name, l_Int_Value);
+            m_Object.objectPropertiesInt.emplace(l_Property_Name, l_Int_Value);
             return true;
         }
         else if (l_Property_Type == "float")
         {
             property.mt_Get_Attribute("value", l_Float_Value);
-            m_Object.m_Object_Properties_Float.emplace(l_Property_Name, l_Float_Value);
+            m_Object.objectPropertiesFloat.emplace(l_Property_Name, l_Float_Value);
             return true;
         }
         else if (l_Property_Type == "color")
         {
             property.mt_Get_Attribute("value", l_String_Value);
-            m_Object.m_Object_Properties_Color.emplace(l_Property_Name, l_Color);
+            m_Object.objectPropertiesColor.emplace(l_Property_Name, l_Color);
             return true;
         }
         else if (l_Property_Type == "file")
         {
             property.mt_Get_Attribute("value", l_String_Value);
-            m_Object.m_Object_Properties_String.emplace(l_Property_Name, l_String_Value);
+            m_Object.objectPropertiesString.emplace(l_Property_Name, l_String_Value);
             return true;
         }
         else if (l_Property_Type == "object")
         {
             property.mt_Get_Attribute("value", l_Int_Value);
-            m_Object.m_Object_Properties_Int.emplace(l_Property_Name, l_Int_Value);
+            m_Object.objectPropertiesInt.emplace(l_Property_Name, l_Int_Value);
             return true;
         }
     }
     else
     {
         property.mt_Get_Attribute("value", l_String_Value);
-        m_Object.m_Object_Properties_String.emplace(l_Property_Name, l_String_Value);
+        m_Object.objectPropertiesString.emplace(l_Property_Name, l_String_Value);
         return true;
     }
 
@@ -366,7 +366,7 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Object_Polygon(const 
 
         l_ss2 >> l_Offset.x >> l_Coma >> l_Offset.y;
 
-        m_Object.m_Polygon.push_back(l_Offset);
+        m_Object.polygon.push_back(l_Offset);
     }
 
     return true;
@@ -383,11 +383,11 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Tileset(const char* f
         unsigned int l_Tile_Count;
         unsigned int l_Column_Count;
 
-        if (tileset.mt_Get_Attribute("tilewidth", tileset_data.m_Tileset_Info.m_Tile_Size.x) == false)
+        if (tileset.mt_Get_Attribute("tilewidth", tileset_data.tilesetInfo.tileSize.x) == false)
         {
             return false;
         }
-        if (tileset.mt_Get_Attribute("tileheight", tileset_data.m_Tileset_Info.m_Tile_Size.y) == false)
+        if (tileset.mt_Get_Attribute("tileheight", tileset_data.tilesetInfo.tileSize.y) == false)
         {
             return false;
         }
@@ -400,12 +400,10 @@ bool __MapLoaderTiled_1_9<__Vec2f, __Vec2u, __Color>::Load_Tileset(const char* f
             return false;
         }
 
-        tileset_data.m_Tileset_Info.m_Tile_Count.x = l_Column_Count;
-        tileset_data.m_Tileset_Info.m_Tile_Count.y = (l_Column_Count == 0) ? 1 : (l_Tile_Count / l_Column_Count);
-        tileset_data.m_Tileset_Info.m_Texture_Size.x =
-            tileset_data.m_Tileset_Info.m_Tile_Size.x * tileset_data.m_Tileset_Info.m_Tile_Count.x;
-        tileset_data.m_Tileset_Info.m_Texture_Size.y =
-            tileset_data.m_Tileset_Info.m_Tile_Size.y * tileset_data.m_Tileset_Info.m_Tile_Count.y;
+        tileset_data.tilesetInfo.tileCount.x   = l_Column_Count;
+        tileset_data.tilesetInfo.tileCount.y   = (l_Column_Count == 0) ? 1 : (l_Tile_Count / l_Column_Count);
+        tileset_data.tilesetInfo.textureSize.x = tileset_data.tilesetInfo.tileSize.x * tileset_data.tilesetInfo.tileCount.x;
+        tileset_data.tilesetInfo.textureSize.y = tileset_data.tilesetInfo.tileSize.y * tileset_data.tilesetInfo.tileCount.y;
 
         return true;
     });

@@ -22,6 +22,10 @@ struct Vec2Traits
     {
         return v.y;
     }
+    static constexpr Vec2Type ComponentWiseMultiply(Vec2Type a, Vec2Type b)
+    {
+        return Construct(a.x * b.x, a.y * b.y);
+    }
 };
 
 }  // namespace lys
