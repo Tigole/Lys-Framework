@@ -13,12 +13,6 @@
 namespace lys
 {
 
-class StateManager;
-
-struct Event;
-
-struct Message_ChangeState;
-
 class LYS_API ApplicationLayerStack
 {
 public:
