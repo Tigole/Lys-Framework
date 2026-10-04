@@ -37,22 +37,22 @@ public:
     const T& Get(std::size_t xx, std::size_t yy) const;
     T& Get(std::size_t xx, std::size_t yy);
 
-    std::size_t GetSizeX(void) const;
-    std::size_t GetSizeY(void) const;
+    std::size_t Get_Size_X(void) const;
+    std::size_t Get_Size_Y(void) const;
 
     const T& operator[](const Index2D& ii) const;
     T& operator[](const Index2D& ii);
 
-    Index2D GetLength(void) const;
+    Index2D Get_Length(void) const;
 
-    bool IsIndexValid(const Index2D& i) const;
+    bool Is_Index_Valid(const Index2D& i) const;
 
-    void IncrementIndex(Index2D& i) const;
+    void Increment_Index(Index2D& i) const;
 
-    std::size_t GetElementCount(void) const;
+    std::size_t Get_Element_Count(void) const;
     const T& operator[](std::size_t index) const;
 
-    Index2D FlatIndexTo2D(std::size_t index) const;
+    Index2D Flat_Index_To_2D(std::size_t index) const;
 
 private:
     Index2D size         = {};

@@ -41,13 +41,13 @@ T& Array2D<T>::Get(std::size_t xx, std::size_t yy)
 }
 
 template<typename T>
-std::size_t Array2D<T>::GetSizeX(void) const
+std::size_t Array2D<T>::Get_Size_X(void) const
 {
     return size.x;
 }
 
 template<typename T>
-std::size_t Array2D<T>::GetSizeY(void) const
+std::size_t Array2D<T>::Get_Size_Y(void) const
 {
     return size.y;
 }
@@ -65,19 +65,19 @@ T& Array2D<T>::operator[](const Index2D& ii)
 }
 
 template<typename T>
-Index2D Array2D<T>::GetLength(void) const
+Index2D Array2D<T>::Get_Length(void) const
 {
     return size;
 }
 
 template<typename T>
-bool Array2D<T>::IsIndexValid(const Index2D& i) const
+bool Array2D<T>::Is_Index_Valid(const Index2D& i) const
 {
     return i.x >= 0 && i.x < size.x && i.y >= 0 && i.y < size.y;
 }
 
 template<typename T>
-void Array2D<T>::IncrementIndex(Index2D& i) const
+void Array2D<T>::Increment_Index(Index2D& i) const
 {
     i.x++;
     if (i.x >= size.x)
@@ -88,7 +88,7 @@ void Array2D<T>::IncrementIndex(Index2D& i) const
 }
 
 template<typename T>
-std::size_t Array2D<T>::GetElementCount(void) const
+std::size_t Array2D<T>::Get_Element_Count(void) const
 {
     return array.size();
 }
@@ -100,7 +100,7 @@ const T& Array2D<T>::operator[](std::size_t index) const
 }
 
 template<typename T>
-Index2D Array2D<T>::FlatIndexTo2D(std::size_t index) const
+Index2D Array2D<T>::Flat_Index_To_2D(std::size_t index) const
 {
     return Index2D(index % size.x, index / size.x);
 }
