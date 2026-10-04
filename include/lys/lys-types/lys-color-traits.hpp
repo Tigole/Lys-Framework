@@ -2,6 +2,7 @@
 #define _LYS_COLOR_TRAIT_HPP 1
 
 #include <cstdint>
+#include <string_view>
 
 namespace lys
 {
@@ -56,6 +57,7 @@ struct ColorTraits
         return c.a;
     }
 
+private:
     // Conversion hex -> byte
     static constexpr uint8_t hexToByte(char high, char low)
     {
