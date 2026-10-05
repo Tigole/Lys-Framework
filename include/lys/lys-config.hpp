@@ -16,6 +16,8 @@
 #error "Platform undefined"
 #endif  // defined
 
+/// @xmake-config - BACKEND
+
 #ifdef LYS_BUILD_STATIC
 #define LYS_API
 #else
