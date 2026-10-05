@@ -17,10 +17,8 @@ add_requires("tinyxml-boosted")
 
 set_languages("c++20")
 
-option("backend-sfml")
+option("backend")
     set_values("sfml", "raylib")
-    --add_defines("LYS_OPTION_BACKEND_SFML")
-    set_description("Enable sfml support")
 
 includes("xmake-application-states.lua")
 includes("xmake-log.lua")
