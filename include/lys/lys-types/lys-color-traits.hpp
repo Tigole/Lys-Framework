@@ -2,6 +2,7 @@
 #define _LYS_COLOR_TRAIT_HPP 1
 
 #include <cstdint>
+#include <stdexcept>
 #include <string_view>
 
 namespace lys
