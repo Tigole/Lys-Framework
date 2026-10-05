@@ -37,6 +37,7 @@ target("lys-window-inputs")
     elseif has_config("backend", "raylib") then
         print("backend raylib")
         add_deps("lys-window-inputs-raylib")
+        add_defines("LYS_CONFIG_BACKEND_RAYLIB", {public = true})
     else
         set_default(false)
     end
