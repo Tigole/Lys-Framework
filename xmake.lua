@@ -19,6 +19,7 @@ set_languages("c++20")
 
 option("backend")
     set_values("sfml", "raylib")
+    option_end()
 
 includes("xmake-application-states.lua")
 includes("xmake-log.lua")

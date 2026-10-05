@@ -33,9 +33,12 @@ target("lys-window-inputs")
     if has_config("backend", "sfml") then
         print("backend sfml")
         add_deps("lys-window-inputs-sfml")
+        add_defines("LYS_CONFIG_BACKEND_SFML", {public = true})
     elseif has_config("backend", "raylib") then
         print("backend raylib")
         add_deps("lys-window-inputs-raylib")
+    else
+        set_default(false)
     end
     
 for _, testfile in ipairs(os.files("tests/window-inputs/sfml/**.cpp")) do
