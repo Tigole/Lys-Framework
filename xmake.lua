@@ -13,7 +13,8 @@ add_requires("gtest", {system = false, configs = {main = true, gmock = false, sh
 --add_requires("clay")
 --add_requires("tinyxml-boosted")
 --add_requires("raylib", {configs = { debug = true}})
-add_requires("tinyxml-boosted")
+add_requires("tinyxml-boosted 2.0.0")
+add_requires("tinyxml 2.6.2")
 
 set_languages("c++20")
 

@@ -1,7 +1,7 @@
 #ifndef _LYS__MAP_LOADER_TILED_1_9_HPP
 #define _LYS__MAP_LOADER_TILED_1_9_HPP 1
 
-#include <XMLFileLoader.hpp>
+#include <XML_Loader.hpp>
 #include <filesystem>
 #include <lys-tiled-map-loading/lys-map-data.hpp>
 #include <lys-tiled-map-loading/lys-map-layout.hpp>
