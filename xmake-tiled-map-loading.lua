@@ -11,7 +11,7 @@ target("lys-tiled-map-loading")
     add_includedirs("include/lys/", {public = true})
     add_defines("LYS_BUILD_STATIC", {public = true})
     add_packages("tinyxml-boosted", {public = true})
-    add_packages("tinyxml", {public = true})
+    --add_packages("tinyxml", {public = true})
     add_deps("lys-types")
     add_deps("lys-log")
 
