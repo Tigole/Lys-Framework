@@ -41,16 +41,16 @@ struct ColorTraits
         return ColorTraits<ColorType>::Construct(r, g, b, a);
     }
 
-    static constexpr const char* ToWebColor(const ColorType& c, char buffer[8])
+    static constexpr const char* ToWebColor(const ColorType& c, std::array<char, 8>& buffer)
     {
-        snprintf(buffer, 8, "#%02x%02x%02x", r(c), g(c), b(c));
-        return buffer;
+        snprintf(buffer.data(), 8, "#%02x%02x%02x", r(c), g(c), b(c));
+        return buffer.data();
     }
 
-    static constexpr const char* ToWebColorAlpha(const ColorType& c, char buffer[10])
+    static constexpr const char* ToWebColorAlpha(const ColorType& c, std::array<char, 10>& buffer)
     {
-        snprintf(buffer, 10, "#%02x%02x%02x%02x", r(c), g(c), b(c), a(c));
-        return buffer;
+        snprintf(buffer.data(), 10, "#%02x%02x%02x%02x", r(c), g(c), b(c), a(c));
+        return buffer.data();
     }
 
     static constexpr uint8_t r(const ColorType& c)

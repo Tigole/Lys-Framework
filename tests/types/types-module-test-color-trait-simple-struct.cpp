@@ -28,7 +28,7 @@ TEST(Color, _)
     EXPECT_EQ(fromStringAlpha.b, 0x55);
     EXPECT_EQ(fromStringAlpha.a, 0x66);
 
-    char buffer[8];
+    std::array<char, 8> buffer;
     lys::ColorTraits<lys::Color>::ToWebColor(c, buffer);
     EXPECT_EQ(buffer[0], '#');
     EXPECT_EQ(buffer[1], '0');
@@ -39,7 +39,7 @@ TEST(Color, _)
     EXPECT_EQ(buffer[6], '3');
     EXPECT_EQ(buffer[7], '\0');
 
-    char bufferAlpha[10];
+    std::array<char, 10> bufferAlpha;
     lys::ColorTraits<lys::Color>::ToWebColorAlpha(c, bufferAlpha);
     EXPECT_EQ(bufferAlpha[0], '#');
     EXPECT_EQ(bufferAlpha[1], '0');
