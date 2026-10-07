@@ -1,6 +1,7 @@
 #ifndef _LYS_COLOR_TRAIT_HPP
 #define _LYS_COLOR_TRAIT_HPP 1
 
+#include <array>
 #include <cstdint>
 #include <stdexcept>
 #include <string_view>
