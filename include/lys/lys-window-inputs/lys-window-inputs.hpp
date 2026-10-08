@@ -141,19 +141,89 @@ class Inputs
 {
 public:
 #ifdef LYS_CONFIG_BACKEND_SFML
-    static void On_SFML_Text(const sf::Event::TextEntered& text);
-    static void On_SFML_Close_Request(void);
+    static void On_SFML_Text(const sf::Event::TextEntered& text)
+    {
+        if (char_code_count < char_codes.size())
+        {
+            char_codes[char_code_count] = text.unicode;
+            char_code_count++;
+        }
+    }
+    static void On_SFML_Close_Request(void)
+    {
+        close_requested = true;
+    }
 #endif
     /// Call at the end of the frame
-    static void Refresh(void);
+    static void Refresh(void)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        char_code_count    = 0;
+        next_char_code_idx = 0;
+        for (std::size_t ii = 0; ii < prev_key_state_down.size(); ii++)
+        {
+            prev_key_state_down.set(ii, sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Scan>(ii)));
+        }
 
-    static bool Keyboard_Is_Key_Pressed(lys::KeyId key);
-    static bool Keyboard_Is_Key_Released(lys::KeyId key);
-    static bool Keyboard_Is_Key_Down(lys::KeyId key);
-    static bool Keyboard_Is_Key_Up(lys::KeyId key);
+        close_requested = false;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+#endif
+    }
 
-    static bool Extract_Text(uint32_t& unicode);
-    static bool Is_Close_Requested(void);
+    static bool Keyboard_Is_Key_Pressed(lys::KeyId key)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return Keyboard_Is_Key_Down(key) && prev_key_state_down.test(static_cast<std::size_t>(key)) == false;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+        return false;
+#endif
+    }
+    static bool Keyboard_Is_Key_Released(lys::KeyId key)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return Keyboard_Is_Key_Up(key) && prev_key_state_down.test(static_cast<std::size_t>(key)) == true;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+        return false;
+#endif
+    }
+    static bool Keyboard_Is_Key_Down(lys::KeyId key)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Scancode>(key)) == true;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+        return false;
+#endif
+    }
+    static bool Keyboard_Is_Key_Up(lys::KeyId key)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Scancode>(key)) == false;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+        return false;
+#endif
+    }
+
+    static bool Extract_Text(uint32_t& unicode)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        if (next_char_code_idx >= char_code_count)
+        {
+            return false;
+        }
+        unicode = char_codes[next_char_code_idx];
+        next_char_code_idx++;
+        return true;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+        return false;
+#endif
+    }
+    static bool Is_Close_Requested(void)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return close_requested;
+#elif LYS_CONFIG_BACKEND_RAYLIB
+#endif
+    }
 
 private:
 #ifdef LYS_CONFIG_BACKEND_SFML

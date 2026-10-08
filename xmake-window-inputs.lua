@@ -1,7 +1,7 @@
 add_requires("sfml 3.0.1", {configs = {shared = true}})
 
 target("lys-window-inputs-sfml")
-    set_kind("static")
+    set_kind("headeronly")
     add_headerfiles(
         "include/lys/(lys-window-inputs/**.hpp)",
         "include/lys/lys-module-window-inputs.hpp",
@@ -11,11 +11,11 @@ target("lys-window-inputs-sfml")
     add_includedirs("include/lys/", {public = true})
     add_defines("LYS_BUILD_STATIC", {public = true})
     add_defines("LYS_CONFIG_BACKEND_SFML", {public = true})
-    add_files("source/lys/lys-window-inputs/lys-window-inputs-sfml.cpp")
+    --add_files("source/lys/lys-window-inputs/lys-window-inputs-sfml.cpp")
     add_packages("sfml")
 
 target("lys-window-inputs-raylib")
-    set_kind("static")
+    set_kind("headeronly")
     add_headerfiles(
         "include/lys/(lys-window-inputs/**.hpp)",
         "include/lys/lys-module-window-inputs.hpp",
@@ -25,11 +25,11 @@ target("lys-window-inputs-raylib")
     add_includedirs("include/lys/", {public = true})
     add_defines("LYS_BUILD_STATIC", {public = true})
     add_defines("LYS_CONFIG_BACKEND_RAYLIB", {public = true})
-    add_files("source/lys/lys-window-inputs/lys-window-inputs-raylib.cpp")
+    --add_files("source/lys/lys-window-inputs/lys-window-inputs-raylib.cpp")
     add_packages("raylib")
 
 target("lys-window-inputs")
-    set_kind("static")
+    set_kind("headeronly")
     if has_config("backend", "sfml") then
         print("backend sfml")
         add_deps("lys-window-inputs-sfml")
