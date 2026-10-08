@@ -1,4 +1,4 @@
-add_requires("sfml")
+add_requires("sfml 3.0.1", {configs = {shared = true}})
 
 target("lys-window-inputs-sfml")
     set_kind("static")
