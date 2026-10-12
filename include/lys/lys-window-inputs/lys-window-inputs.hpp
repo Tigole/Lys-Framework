@@ -9,6 +9,7 @@
 #ifdef LYS_CONFIG_BACKEND_SFML
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <bitset>
 #include <cstdint>
 #elif LYS_CONFIG_BACKEND_RAYLIB
@@ -137,9 +138,26 @@ enum class KeyId
 #endif
 };
 
+enum class MouseButtonId
+{
+#ifdef LYS_CONFIG_BACKEND_SFML
+    Left   = (int)sf::Mouse::Button::Left,
+    Middle = (int)sf::Mouse::Button::Middle,
+    Right  = (int)sf::Mouse::Button::Right,
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+};
+
 class Inputs
 {
 public:
+    using _Vec2f =
+#ifdef LYS_CONFIG_BACKEND_SFML
+        sf::Vector2f
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+        ;
+
 #ifdef LYS_CONFIG_BACKEND_SFML
     static void On_SFML_Text(const sf::Event::TextEntered& text)
     {
@@ -164,9 +182,13 @@ public:
         {
             prev_key_state_down.set(ii, sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Scan>(ii)));
         }
+        for (std::size_t ii = 0; ii < prev_mouse_button_state_down.size(); ii++)
+        {
+            prev_mouse_button_state_down.set(ii, sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(ii)));
+        }
 
         close_requested = false;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
 
@@ -174,7 +196,7 @@ public:
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
         return Keyboard_Is_Key_Down(key) && prev_key_state_down.test(static_cast<std::size_t>(key)) == false;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
         return false;
 #endif
     }
@@ -182,7 +204,7 @@ public:
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
         return Keyboard_Is_Key_Up(key) && prev_key_state_down.test(static_cast<std::size_t>(key)) == true;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
         return false;
 #endif
     }
@@ -190,7 +212,7 @@ public:
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
         return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Scancode>(key)) == true;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
         return false;
 #endif
     }
@@ -198,7 +220,7 @@ public:
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
         return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Scancode>(key)) == false;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
         return false;
 #endif
     }
@@ -213,7 +235,7 @@ public:
         unicode = char_codes[next_char_code_idx];
         next_char_code_idx++;
         return true;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
         return false;
 #endif
     }
@@ -221,7 +243,48 @@ public:
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
         return close_requested;
-#elif LYS_CONFIG_BACKEND_RAYLIB
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+    }
+
+    static _Vec2f Mouse_Get_Position(void)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return sf::Vector2f(sf::Mouse::getPosition());
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+        return { 0, 0 };
+#endif
+    }
+
+    static bool Mouse_Is_Button_Pressed(MouseButtonId btnId)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return Mouse_Is_Button_Down(key) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == false;
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+    }
+
+    static bool Mouse_Is_Button_Released(MouseButtonId btnId)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return Mouse_Is_Button_Up(key) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == true;
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+    }
+
+    static bool Mouse_Is_Button_Down(MouseButtonId btnId)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId));
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+    }
+
+    static bool Mouse_Is_Button_Up(MouseButtonId btnId)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId)) == false;
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
 
@@ -234,6 +297,9 @@ private:
 
     /// Text
     inline static std::bitset<sf::Keyboard::ScancodeCount> prev_key_state_down = {};
+
+    /// Mouse
+    inline static std::bitset<sf::Mouse::ButtonCount> prev_mouse_button_state_down = {};
 
     /// Close
     inline static bool close_requested = false;
