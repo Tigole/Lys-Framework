@@ -275,7 +275,7 @@ public:
     static bool Mouse_Is_Button_Down(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId));
+        return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId));
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -283,7 +283,7 @@ public:
     static bool Mouse_Is_Button_Up(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId)) == false;
+        return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId)) == false;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
