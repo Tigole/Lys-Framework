@@ -259,7 +259,7 @@ public:
     static bool Mouse_Is_Button_Pressed(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return Mouse_Is_Button_Down(key) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == false;
+        return Mouse_Is_Button_Down(btnId) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == false;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -267,7 +267,7 @@ public:
     static bool Mouse_Is_Button_Released(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return Mouse_Is_Button_Up(key) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == true;
+        return Mouse_Is_Button_Up(btnId) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == true;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
