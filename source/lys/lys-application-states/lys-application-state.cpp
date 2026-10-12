@@ -42,9 +42,6 @@ void ApplicationState::Update_Render(void)
 
 void ApplicationState::Push_Layer(ApplicationLayer* layer)
 {
-#if 0
-    layer->mt_Add_Receiver(&State::mt_On_Change_State, this);
-#endif
     m_Push_Layers.push_back(layer);
 }
 
@@ -56,6 +53,12 @@ void ApplicationState::Pop_Layer(ApplicationLayer* layer)
 void ApplicationState::Update_Active_Layers(void)
 {
     lys::ApplicationLayerForward l_Forward;
+
+    l_Forward = lys::ApplicationLayerForward::Continue;
+    for (auto it = m_Active_Layers.rbegin(); (it != m_Active_Layers.rend()) && (l_Forward == lys::ApplicationLayerForward::Continue); it++)
+    {
+        l_Forward = (*it)->On_Handle_Events();
+    }
 
     l_Forward = lys::ApplicationLayerForward::Continue;
     for (auto it = m_Active_Layers.rbegin(); (it != m_Active_Layers.rend()) && (l_Forward == lys::ApplicationLayerForward::Continue); it++)

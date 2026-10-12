@@ -1,16 +1,11 @@
 #ifndef _LYS_APPLICATION_STATE_HPP
 #define _LYS_APPLICATION_STATE_HPP 1
 
+#include <lys-application-states/lys-application-layer.hpp>
+#include <lys-config.hpp>
 #include <memory>
 #include <mutex>
 #include <vector>
-
-#if 0
-#include "Lys/Application/Event.hpp"
-#endif
-#include "lys-application-states/lys-application-layer-stack.hpp"
-#include "lys-application-states/lys-application-layer.hpp"
-#include "lys-config.hpp"
 
 namespace lys
 {
@@ -53,7 +48,6 @@ private:
 
     void On_Change_State(std::size_t state_id);
 
-    ApplicationLayerStack m_Layer_Stack      = {};
     ApplicationStateManager* m_State_Manager = nullptr;
 };
 

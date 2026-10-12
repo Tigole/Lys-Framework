@@ -9,9 +9,9 @@
 #include "Lys/Core/Profiler.hpp"
 #include "Lys/Log/Log.hpp"
 #endif
-#include "lys-application-states/lys-application-state.hpp"
-#include "lys-config.hpp"
-#include "lys-working-thread/lys-working-task.hpp"
+#include <lys-application-states/lys-application-state.hpp>
+#include <lys-config.hpp>
+#include <lys-working-thread/lys-working-task.hpp>
 
 namespace lys
 {
@@ -40,7 +40,7 @@ public:
             return state;
         });
     }
-    template<class StateType>
+    template<class StateType = ApplicationState>
     void Set_Initial_State(std::size_t state_id, std::function<void(StateType&)> init = nullptr)
     {
 #if 0

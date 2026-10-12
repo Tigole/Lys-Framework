@@ -1,11 +1,7 @@
 #ifndef _LYS_APPLICATION_LAYER_HPP
 #define _LYS_APPLICATION_LAYER_HPP 1
 
-#if 0
-#include "Lys/Application/Event.hpp"
-#include "Lys/MessageModule/MessageManager.hpp"
-#endif
-#include "lys-config.hpp"
+#include <lys-config.hpp>
 
 namespace lys
 {
@@ -26,6 +22,11 @@ public:
 
     virtual void On_Activate(void) {}
     virtual void On_Deactivate(void) {}
+
+    virtual ApplicationLayerForward On_Handle_Events(void)
+    {
+        return ApplicationLayerForward::Continue;
+    }
 
     virtual ApplicationLayerForward On_Update(void)
     {

@@ -16,6 +16,7 @@ public:
 
     void On_Deactivate(void) override;
 
+    lys::ApplicationLayerForward On_Handle_Events(void) override;
     lys::ApplicationLayerForward On_Update(void) override;
 
     void On_Render(void) override;
@@ -58,24 +59,30 @@ void MonitoredLayer::On_Activate(void)
 
 void MonitoredLayer::On_Deactivate(void)
 {
-    phases.push_back(4);
+    phases.push_back(5);
 }
 
-lys::ApplicationLayerForward MonitoredLayer::On_Update(void)
+lys::ApplicationLayerForward MonitoredLayer::On_Handle_Events(void)
 {
     phases.push_back(1);
     return lys::ApplicationLayerForward::Continue;
 }
 
+lys::ApplicationLayerForward MonitoredLayer::On_Update(void)
+{
+    phases.push_back(2);
+    return lys::ApplicationLayerForward::Continue;
+}
+
 void MonitoredLayer::On_Render(void)
 {
-    phases.push_back(3);
+    phases.push_back(4);
     m_State.Change_Layer();
 }
 
 lys::ApplicationLayerForward MonitoredLayer::Get_Rendering_Forward_Strategy(void) const
 {
-    phases.push_back(2);
+    phases.push_back(3);
     return lys::ApplicationLayerForward::Stop;
 }
 
@@ -90,19 +97,21 @@ TEST(ApplicationStateModule, SequenceDiagram)
     applicationStateManager.On_Update_Logic();
     applicationStateManager.On_Update_Render();
 
-    ASSERT_EQ(phases.size(), (std::size_t)4);
-    EXPECT_EQ(phases[0], 0);
-    EXPECT_EQ(phases[1], 1);
-    EXPECT_EQ(phases[2], 2);
-    EXPECT_EQ(phases[3], 3);
-
-    applicationStateManager.On_Update_Logic();
-    applicationStateManager.On_Update_Render();
-
     ASSERT_EQ(phases.size(), (std::size_t)5);
     EXPECT_EQ(phases[0], 0);
     EXPECT_EQ(phases[1], 1);
     EXPECT_EQ(phases[2], 2);
     EXPECT_EQ(phases[3], 3);
     EXPECT_EQ(phases[4], 4);
+
+    applicationStateManager.On_Update_Logic();
+    applicationStateManager.On_Update_Render();
+
+    ASSERT_EQ(phases.size(), (std::size_t)6);
+    EXPECT_EQ(phases[0], 0);
+    EXPECT_EQ(phases[1], 1);
+    EXPECT_EQ(phases[2], 2);
+    EXPECT_EQ(phases[3], 3);
+    EXPECT_EQ(phases[4], 4);
+    EXPECT_EQ(phases[5], 5);
 }
