@@ -132,6 +132,14 @@ enum class KeyId
     Numpad8        = (int)sf::Keyboard::Scan::Numpad8,         //!< Keypad 8 and Up Arrow key
     Numpad9        = (int)sf::Keyboard::Scan::Numpad9,         //!< Keypad 9 and Page Up key
     Numpad0        = (int)sf::Keyboard::Scan::Numpad0,         //!< Keypad 0 and Insert key
+    LControl       = (int)sf::Keyboard::Scan::LControl,        //!< Keyboard Left Control key
+    LShift         = (int)sf::Keyboard::Scan::LShift,          //!< Keyboard Left Shift key
+    LAlt           = (int)sf::Keyboard::Scan::LAlt,            //!< Keyboard Left Alt key
+    LSystem        = (int)sf::Keyboard::Scan::LSystem,         //!< Keyboard Left System key
+    RControl       = (int)sf::Keyboard::Scan::RControl,        //!< Keyboard Right Control key
+    RShift         = (int)sf::Keyboard::Scan::RShift,          //!< Keyboard Right Shift key
+    RAlt           = (int)sf::Keyboard::Scan::RAlt,            //!< Keyboard Right Alt key
+    RSystem        = (int)sf::Keyboard::Scan::RSystem,         //!< Keyboard Right System key
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 // A =
 
