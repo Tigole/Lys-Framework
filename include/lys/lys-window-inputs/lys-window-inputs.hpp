@@ -179,6 +179,14 @@ public:
     {
         close_requested = true;
     }
+    static void On_SFML_Mouse_Presssed(sf::Mouse::Button btn)
+    {
+        curr_mouse_button_state_down.set(static_cast<std::size_t>(btn), true);
+    }
+    static void On_SFML_Mouse_Released(sf::Mouse::Button btn)
+    {
+        curr_mouse_button_state_down.set(static_cast<std::size_t>(btn), false);
+    }
 #endif
     /// Call at the end of the frame
     static void Refresh(void)
@@ -192,7 +200,7 @@ public:
         }
         for (std::size_t ii = 0; ii < prev_mouse_button_state_down.size(); ii++)
         {
-            prev_mouse_button_state_down.set(ii, sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(ii)));
+            prev_mouse_button_state_down[ii] = curr_mouse_button_state_down[ii];
         }
 
         close_requested = false;
@@ -267,7 +275,8 @@ public:
     static bool Mouse_Is_Button_Pressed(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return Mouse_Is_Button_Down(btnId) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == false;
+        const std::size_t b = static_cast<std::size_t>(btnId);
+        return curr_mouse_button_state_down[b] && prev_mouse_button_state_down[b] == false;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -275,7 +284,8 @@ public:
     static bool Mouse_Is_Button_Released(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return Mouse_Is_Button_Up(btnId) && prev_mouse_button_state_down.test(static_cast<std::size_t>(btnId)) == true;
+        const std::size_t b = static_cast<std::size_t>(btnId);
+        return curr_mouse_button_state_down[b] == false && prev_mouse_button_state_down[b];
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -283,7 +293,8 @@ public:
     static bool Mouse_Is_Button_Down(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId));
+        const std::size_t b = static_cast<std::size_t>(btnId);
+        return curr_mouse_button_state_down[b];
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -291,7 +302,8 @@ public:
     static bool Mouse_Is_Button_Up(MouseButtonId btnId)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(btnId)) == false;
+        const std::size_t b = static_cast<std::size_t>(btnId);
+        return curr_mouse_button_state_down[b] == false;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -307,6 +319,7 @@ private:
     inline static std::bitset<sf::Keyboard::ScancodeCount> prev_key_state_down = {};
 
     /// Mouse
+    inline static std::bitset<sf::Mouse::ButtonCount> curr_mouse_button_state_down = {};
     inline static std::bitset<sf::Mouse::ButtonCount> prev_mouse_button_state_down = {};
 
     /// Close
