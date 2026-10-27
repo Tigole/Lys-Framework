@@ -187,6 +187,17 @@ public:
     {
         curr_mouse_button_state_down.set(static_cast<std::size_t>(btn), false);
     }
+    static void On_SFML_Mouse_Wheel(sf::Mouse::Wheel wheel, float delta)
+    {
+        if (wheel == sf::Mouse::Wheel::Vertical)
+        {
+            mouse_wheel_delta.y = delta;
+        }
+        else if (wheel == sf::Mouse::Wheel::Horizontal)
+        {
+            mouse_wheel_delta.x = delta;
+        }
+    }
 #endif
     /// Call at the end of the frame
     static void Refresh(void)
@@ -202,8 +213,8 @@ public:
         {
             prev_mouse_button_state_down[ii] = curr_mouse_button_state_down[ii];
         }
-
-        close_requested = false;
+        mouse_wheel_delta = { 0, 0 };
+        close_requested   = false;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
@@ -307,6 +318,13 @@ public:
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
 #endif
     }
+    static _Vec2f Mouse_Get_Wheel_Delta(void)
+    {
+#ifdef LYS_CONFIG_BACKEND_SFML
+        return mouse_wheel_delta;
+#elif defined(LYS_CONFIG_BACKEND_RAYLIB)
+#endif
+    }
 
 private:
 #ifdef LYS_CONFIG_BACKEND_SFML
@@ -321,6 +339,7 @@ private:
     /// Mouse
     inline static std::bitset<sf::Mouse::ButtonCount> curr_mouse_button_state_down = {};
     inline static std::bitset<sf::Mouse::ButtonCount> prev_mouse_button_state_down = {};
+    inline static sf::Vector2f mouse_wheel_delta                                   = {};
 
     /// Close
     inline static bool close_requested = false;
