@@ -6,15 +6,8 @@ add_repositories("TigoleRepo https://github.com/Tigole/xmake-repo.git")
 add_rules("mode.debug", "mode.release")
 set_policy("build.ccache", false)
 
---add_requires("sfml master", { configs = { shared = true }})
 add_requires("gtest", {system = false, configs = {main = true, gmock = false, shared = false}})
---add_requires("magic_enum", "glm", "fmt")
---add_requires("glew", "opengl")
---add_requires("clay")
---add_requires("tinyxml-boosted")
---add_requires("raylib", {configs = { debug = true}})
 add_requires("tinyxml-boosted 2.0.0")
---add_requires("tinyxml 2.6.2")
 
 set_languages("c++20")
 
@@ -23,6 +16,7 @@ option("backend")
     option_end()
 
 includes("xmake-application-states.lua")
+includes("xmake-frame.lua")
 includes("xmake-log.lua")
 includes("xmake-particle-system.lua")
 includes("xmake-random.lua")
