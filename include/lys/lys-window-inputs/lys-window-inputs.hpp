@@ -167,11 +167,11 @@ public:
         ;
 
 #ifdef LYS_CONFIG_BACKEND_SFML
-    static void On_SFML_Text(const sf::Event::TextEntered& text)
+    static void On_SFML_Text(uint32_t unicode)
     {
         if (char_code_count < char_codes.size())
         {
-            char_codes[char_code_count] = text.unicode;
+            char_codes[char_code_count] = unicode;
             char_code_count++;
         }
     }
