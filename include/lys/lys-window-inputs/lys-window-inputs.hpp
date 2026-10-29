@@ -179,6 +179,10 @@ public:
     {
         close_requested = true;
     }
+    static void On_SFML_Mouse_Moved(sf::Vector2f mouse_pos_)
+    {
+        mouse_pos = mouse_pos_;
+    }
     static void On_SFML_Mouse_Presssed(sf::Mouse::Button btn)
     {
         curr_mouse_button_state_down.set(static_cast<std::size_t>(btn), true);
@@ -199,7 +203,7 @@ public:
         }
     }
 #endif
-    /// Call at the end of the frame
+    /// Call at the end of the frame (SFML, before display on main window)
     static void Refresh(void)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
@@ -277,7 +281,7 @@ public:
     static _Vec2f Mouse_Get_Position(void)
     {
 #ifdef LYS_CONFIG_BACKEND_SFML
-        return sf::Vector2f(sf::Mouse::getPosition());
+        return mouse_pos;
 #elif defined(LYS_CONFIG_BACKEND_RAYLIB)
         return { 0, 0 };
 #endif
@@ -340,6 +344,7 @@ private:
     inline static std::bitset<sf::Mouse::ButtonCount> curr_mouse_button_state_down = {};
     inline static std::bitset<sf::Mouse::ButtonCount> prev_mouse_button_state_down = {};
     inline static sf::Vector2f mouse_wheel_delta                                   = {};
+    inline static sf::Vector2f mouse_pos                                           = {};
 
     /// Close
     inline static bool close_requested = false;
